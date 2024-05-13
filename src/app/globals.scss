@@ -1,0 +1,580 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #a392fb;
+  color: #000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 900;
+  margin: 0;
+}
+
+h1,
+h2 {
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 0.0938rem + 6vw, 4.625rem);
+}
+h2 {
+  font-size: clamp(1.25rem, -0.3125rem + 5vw, 2.5rem);
+}
+h3 {
+  font-size: clamp(1.125rem, -0.2813rem + 4.5vw, 2.25rem);
+}
+h4 {
+  font-size: clamp(1rem, 0.5rem + 3vw, 1.75rem);
+}
+h5 {
+  font-size: clamp(0.9375rem, 0.7031rem + 0.75vw, 1.125rem);
+}
+
+p {
+  font-size: clamp(0.9375rem, 0.7031rem + 0.75vw, 1.125rem);
+  font-size: clamp(0.9375rem, 0.7031rem + 1.95vw, 1.325rem);
+  color: #333;
+  line-height: 1.6;
+}
+
+.btn {
+  background-color: rgb(253, 70, 210);
+  font-size: clamp(0.9375rem, 0.7031rem + 0.75vw, 1.125rem);
+  padding: 10px 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1;
+  color: #fff;
+  display: inline-block;
+  margin: 20px 0;
+  &:hover {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 3px rgb(253, 70, 210);
+  }
+  &.black {
+    background-color: #000;
+    &:hover {
+      color: #000;
+      background-color: transparent;
+      box-shadow: inset 0 0 0 3px #000;
+    }
+  }
+}
+
+.border {
+  background: url("../../public/images/bg-lines.png");
+  height: 10px;
+  width: 100%;
+}
+
+.specialIngress {
+  transform: rotate(-2deg);
+  display: inline-block;
+  background: url("../../public/images/btn-splash.svg") no-repeat;
+  background-size: cover;
+  color: #fff;
+  padding: 8px 28px;
+  margin-left: -10px;
+  margin-top: 10px;
+}
+
+a {
+  color: #a392fb;
+  text-decoration: none;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+header {
+  background: rgba(26, 26, 26, 0.64);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10.8px);
+  -webkit-backdrop-filter: blur(10.8px);
+  border-bottom: 1px solid rgba(212, 212, 212, 0.22);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 20px;
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+      a {
+        font-weight: 700;
+        font-size: 14px;
+        color: #ededed;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+footer {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 100px 20px;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 40px;
+    li {
+      display: block;
+      padding: 5px 0;
+    }
+  }
+}
+
+.beerHero {
+  width: 100%;
+  height: 80vh;
+  position: relative;
+  .heroBeerLabel {
+    position: absolute;
+    bottom: 9%;
+    left: 0%;
+    height: 75%;
+    width: 280%;
+  }
+  &.black {
+    background-color: #333;
+  }
+  .backdrop {
+    width: auto;
+    height: 100%;
+    background: url("../../public/images/bg-lines.png");
+    .shiftLeft {
+      left: -28% !important;
+      width: 128% !important;
+    }
+    img {
+      opacity: 0.45;
+    }
+  }
+  .beerShowcase {
+    width: 240px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.beerBlock {
+  background-color: #f5f5f5;
+  position: relative;
+  &.black {
+    background-color: #333;
+  }
+}
+
+.beerSlide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.beerDesc {
+  display: block;
+  position: relative;
+  z-index: 1;
+  top: -100px;
+  padding: 40px;
+  box-sizing: border-box;
+  background-color: #fff;
+  p {
+    font-size: clamp(0.9375rem, 0.7031rem + 1.95vw, 1.325rem);
+  }
+  .border {
+    margin-bottom: 20px;
+  }
+  .grid {
+    gap: 40px;
+  }
+  h1 {
+    font-size: clamp(1.5rem, 0.0938rem + 6vw, 4.625rem);
+    line-height: 1.2;
+  }
+  .beerHeader {
+    h4 {
+      margin-top: -0px;
+    }
+    margin-bottom: 80px;
+  }
+}
+
+.landingHero {
+  overflow: hidden;
+  position: relative;
+  &.videoBg {
+    .container {
+      padding: 25% 0;
+    }
+  }
+  .bgVideo {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.hero {
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 60px;
+  color: #fff;
+  background-color: #000;
+  .heroBgImage {
+    opacity: 0.8;
+  }
+  .heroBgOverlay {
+    background: url("../../public/images/bg-lines.png");
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    padding-top: 200px;
+    padding-bottom: 200px;
+  }
+}
+
+.darkSection {
+  background-color: #000;
+  color: #ccc;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: #fff;
+  }
+  p {
+    color: #ccc;
+  }
+  .border,
+  .specialIngress {
+    filter: invert(1);
+  }
+}
+
+.singlePage {
+  margin-bottom: 160px;
+}
+
+.container {
+  display: block;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 60px;
+  box-sizing: border-box;
+  &.beers {
+    max-width: 1800px;
+  }
+  &.superSmall {
+    max-width: 700px;
+  }
+  &.narrow {
+    max-width: 960px;
+  }
+  &.smaller {
+    max-width: 1140px;
+  }
+  &.marginSmall {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  &.marginMedium {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  &.marginLarge {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
+
+.beerGrid {
+  a {
+    color: #fff;
+    text-align: center;
+    display: block;
+    padding: 20px;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    height: 100%;
+    line-height: 1;
+    overflow: hidden;
+    position: relative;
+    &:after {
+      opacity: 0;
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.75) 0%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      transition: all 0.2s ease-in-out;
+    }
+    h5 {
+      position: relative;
+      z-index: 1;
+    }
+    &.black {
+      background-color: #333;
+    }
+    &.white {
+      background-color: #f5f5f5;
+    }
+    .backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: 0.2s ease-in-out;
+      img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 120%;
+        width: auto;
+        transition: 0.2s ease-in-out;
+        &.shiftLeft {
+          left: 25%;
+        }
+      }
+    }
+    .beerShowcase {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30%;
+      margin: 0 auto;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      transition: all 0.2s ease-in-out;
+    }
+    &:hover {
+      .backdrop {
+        opacity: 0.2;
+        img {
+          height: 100%;
+        }
+      }
+      &:after {
+        opacity: 1;
+      }
+      .beerShowcase {
+        width: 34%;
+        margin-top: 40px;
+        margin-bottom: 80px;
+        transform: rotate(15deg) translateX(-50%);
+        .beerLabel {
+          animation-play-state: running;
+        }
+      }
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  box-sizing: border-box;
+  grid-gap: 20px;
+  &.centerAlign {
+    align-items: center;
+  }
+  .col {
+    grid-column: span 12;
+    box-sizing: border-box;
+  }
+  .col-9 {
+    grid-column: span 9;
+  }
+  .col-8 {
+    grid-column: span 8;
+  }
+  .col-7 {
+    grid-column: span 7;
+  }
+  .col-6 {
+    grid-column: span 6;
+  }
+  .col-5 {
+    grid-column: span 5;
+  }
+  .col-4 {
+    grid-column: span 4;
+  }
+  .col-3 {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 920px) {
+  .grid {
+    .col-9,
+    .col-8 {
+      grid-column: span 12;
+    }
+  }
+  .grid {
+    .col-7,
+    .col-4,
+    .col-3 {
+      grid-column: span 6;
+    }
+  }
+
+  .container {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    .col,
+    .col-9,
+    .col-8,
+    .col-7,
+    .col-6,
+    .col-5,
+    .col-4,
+    .col-3 {
+      grid-column: span 12;
+    }
+  }
+}
+
+.blockWrap {
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 0;
+}
+
+.beerShowcaseContainer {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  height: 0;
+}
+
+.beerShowcase {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  .beerLabelShading {
+    display: block;
+    position: absolute;
+    bottom: 9%;
+    left: 0;
+    height: 75%;
+    width: 100%;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0) 20%,
+      rgba(0, 0, 0, 0) 80%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+  .beerCan {
+    width: 100%;
+    height: auto;
+  }
+  .beerLabel {
+    animation-play-state: paused;
+    position: absolute;
+    bottom: 9%;
+    left: 0%;
+    height: 75%;
+    width: 280%;
+    animation-name: example;
+    animation-timing-function: linear;
+    animation-duration: 2s;
+    /* animation-direction: alternate; */
+    animation-iteration-count: infinite;
+    &.two {
+      left: 100%;
+      animation-name: example2;
+    }
+  }
+}
+
+/* @keyframes example {
+  0% {
+    left: -115%;
+  }
+  33% {
+    left: -180%;
+  }
+  100% {
+    left: -20%;
+  }
+} */
+@keyframes example {
+  0% {
+    left: -115%;
+  }
+  100% {
+    left: -390%;
+  }
+}
+
+@keyframes example2 {
+  0% {
+    left: 165%;
+  }
+  100% {
+    left: -115%;
+  }
+}
