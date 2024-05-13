@@ -29,6 +29,13 @@ export interface aboutPage {
     description: any;
 }
 
+export interface beveragesPage {
+    title: string;
+    ingress: string;
+    heroImage: any;
+    description: any;
+}
+
 export interface bookPage {
     title: string;
     ingress: string;
@@ -41,4 +48,21 @@ export interface contactPage {
     ingress: string;
     heroImage: any;
     description: any;
+}
+
+export interface landingPage {  
+    title: string;
+    ingress: string;
+    aboutTitle: string;
+    aboutIngress: string;
+    aboutDesc: any;
+    drinkTitle: string;
+    drinkIngress: string;
+    drinkDesc: any;
+    eventTitle: string;
+    eventIngress: string;
+    eventDesc: any;
+    merchTitle: string;
+    merchIngress: string;
+    merchDesc: any;
 }

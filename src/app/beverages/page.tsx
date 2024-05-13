@@ -1,8 +1,9 @@
-import Link from "next/link";
-import { beverageThumb } from "../lib/interface";
-import { client, urlFor } from "../lib/sanity";
-import Image from "next/image";
 import { Permanent_Marker } from "next/font/google";
+import BeerGrid from "../components/BeerGrid";
+import { client, urlFor } from "../lib/sanity";
+import { beveragesPage } from "../lib/interface";
+import Image from "next/image";
+import { PortableText } from "next-sanity";
 
 const permMarker = Permanent_Marker({
   subsets: ["latin"],
@@ -10,93 +11,65 @@ const permMarker = Permanent_Marker({
 });
 
 async function getData() {
-  const query = `*[_type == 'beverage'] | order(_createdAt desc) {
+  const query = `*[_type == 'beverages'] {
     title,
-      labelImage,
-      "currentSlug": slug.current,
-      can,
-      bgColor,
-      backgroundImage,
-  }`;
+    ingress,
+    heroImage,
+    description
+  }[0]`;
 
   const data = await client.fetch(query);
-
   return data;
 }
+
 export default async function () {
-  const data: beverageThumb[] = await getData();
+  const data: beveragesPage = await getData();
   return (
-    <article>
+    <article className="singlePage">
       <div className="hero">
+        {data.heroImage ? (
+          <Image
+            className="heroBgImage"
+            src={urlFor(data.heroImage).url()}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            alt=""
+            objectFit="cover"
+          />
+        ) : (
+          <video
+            className="bgVideo"
+            autoPlay
+            muted
+            loop
+            aria-label="Video player"
+          >
+            <source src="/videos/burk-to-render.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+
+        <div className="heroBgOverlay"></div>
         <div className="container">
-          <h1>Våra drycker</h1>
+          <h1>{data.title}</h1>
           <h3 className={`specialIngress ${permMarker.className}`}>
-            Städat eller stökigt?
-            <br />
-            Vi har dryck för varje tillfälle.
+            {data.ingress}
           </h3>
         </div>
       </div>
 
       <div className="block">
         <div className="container beers">
-          <div className="grid beerGrid">
-            {data.map((post) => (
-              <div className="col col-3">
-                <Link
-                  className={`${post.can}`}
-                  href={`/beverages/${post.currentSlug}`}
-                  style={{ backgroundColor: `${post.bgColor}` }}
-                >
-                  <div className="backdrop">
-                    {post.backgroundImage ? (
-                      <Image
-                        src={urlFor(post.backgroundImage).url()}
-                        width={300}
-                        height={300}
-                        alt=""
-                      />
-                    ) : (
-                      <Image
-                        className="shiftLeft"
-                        src={urlFor(post.labelImage).url()}
-                        width={300}
-                        height={300}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                  <div className="beerShowcaseContainer">
-                    <div className="beerShowcase">
-                      <Image
-                        className="beerLabel"
-                        src={urlFor(post.labelImage).url()}
-                        width={300}
-                        height={115}
-                        alt={"label"}
-                      />
-                      <Image
-                        className="beerLabel two"
-                        src={urlFor(post.labelImage).url()}
-                        width={300}
-                        height={115}
-                        alt={"label"}
-                      />
-                      <div className="beerLabelShading"></div>
-                      <Image
-                        className="beerCan"
-                        src={`/images/${post.can}can.png`}
-                        width={160}
-                        height={300}
-                        alt={"beer"}
-                      />
-                    </div>
-                  </div>
-                  <h5 className="specialIngress">{post.title}</h5>
-                </Link>
-              </div>
-            ))}
+          <BeerGrid />
+        </div>
+      </div>
+
+      <div className="container darkSection marginLarge">
+        <div className="grid">
+          <div className="col col-6">
+            <PortableText value={data.description} />
           </div>
+          <div className="col col-6"></div>
         </div>
       </div>
     </article>

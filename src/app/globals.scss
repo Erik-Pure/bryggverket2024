@@ -257,6 +257,15 @@ footer {
   margin-bottom: 60px;
   color: #fff;
   background-color: #000;
+  .bgVideo {
+    position: absolute;
+    opacity: 0.4;
+    min-width: 100%;
+    min-height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   .heroBgImage {
     opacity: 0.8;
   }
@@ -296,7 +305,7 @@ footer {
 }
 
 .singlePage {
-  margin-bottom: 160px;
+  margin-bottom: 100px;
 }
 
 .container {
@@ -333,6 +342,7 @@ footer {
 }
 
 .beerGrid {
+  margin-bottom: 100px;
   a {
     color: #fff;
     text-align: center;
