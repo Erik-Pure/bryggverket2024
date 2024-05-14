@@ -30,12 +30,16 @@ export default function BeerOverview({
   const beerTwo = useTransform(scrollYProgress, [0, 1], ["-40%", "230%"]);
   const beerThree = useTransform(scrollYProgress, [0, 1], ["0%", "300%"]);
   const opac = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
+  const scal = useTransform(scrollYProgress, [0, 1], ["1", "1.4"]);
 
   return (
     <section ref={ref} className="beersOverview darkSection">
       <div className="container">
         <div className="grid centerAlign">
-          <div className="col col-6">
+          <motion.div
+            className="col col-6"
+            style={{ opacity: opac, scale: scal }}
+          >
             <h2>{title}</h2>
             <div className="border"></div>
             <h4 className={permMarker.className}>{ingress}</h4>
@@ -43,7 +47,7 @@ export default function BeerOverview({
             <Link href="/beverages" className="btn">
               Alla våra drycker
             </Link>
-          </div>
+          </motion.div>
           <div className="col col-6">
             <motion.img
               className="fadeCan one"
