@@ -80,7 +80,7 @@ export default async function Home() {
         </div>
       </section>
       <section className="merchOverview">
-        <div className="container textCenter marginLarge">
+        <div className="container textCenter narrow marginLarge">
           <h2>{data.merchTitle}</h2>
           <h4 className={permMarker.className}>{data.merchIngress}</h4>
           <PortableText value={data.merchDesc} />
