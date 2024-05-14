@@ -51,13 +51,8 @@ export default async function () {
         </div>
       </div>
 
-      <div className="container darkSection marginLarge">
-        <div className="grid">
-          <div className="col col-6">
-            <PortableText value={data.description} />
-          </div>
-          <div className="col col-6"></div>
-        </div>
+      <div className="container narrow marginLarge textCenter">
+        <PortableText value={data.description} />
       </div>
     </article>
   );

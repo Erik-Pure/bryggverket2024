@@ -24,6 +24,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/images/favicon/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/images/favicon/favicon-16x16.png"
+        />
+      </head>
       <body className={saira.className}>
         <header>
           <Link className="logo" href="/">
@@ -61,14 +81,13 @@ export default function RootLayout({
         {children}
         <footer>
           <div className="grid">
-            <div className="col col-3">
+            <div className="col col-3 textCenter">
               <Link href="/">
                 <Image
-                  src="images/bryggverket_horizontal_white.svg"
+                  src="images/bv-icon.svg"
                   alt="Bryggverket"
-                  width={200}
-                  height={40}
-                  priority
+                  width={120}
+                  height={120}
                 />
               </Link>
             </div>

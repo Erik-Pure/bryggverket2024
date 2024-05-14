@@ -42,7 +42,7 @@ export default async function About() {
           </h3>
         </div>
       </div>
-      <div className="container">
+      <div className="container narrow">
         <PortableText value={data.description} />
       </div>
     </div>
