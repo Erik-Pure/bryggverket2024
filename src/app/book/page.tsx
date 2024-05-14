@@ -9,6 +9,9 @@ const permMarker = Permanent_Marker({
   weight: "400",
 });
 
+export const revalidate = 300;
+export const dynamic = "force-dynamic";
+
 async function getData() {
   const query = `*[_type == 'book'] {
     title,

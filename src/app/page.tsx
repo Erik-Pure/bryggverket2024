@@ -8,6 +8,9 @@ import { PortableText } from "next-sanity";
 import LandingHero from "./components/LandingHero";
 import BeerOverview from "./components/BeerOverview";
 
+export const revalidate = 300;
+export const dynamic = "force-dynamic";
+
 async function getData() {
   const query = `*[_type == 'landing'] {
     title,

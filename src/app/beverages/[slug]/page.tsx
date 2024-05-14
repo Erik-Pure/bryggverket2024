@@ -4,6 +4,9 @@ import { client, urlFor } from "@/app/lib/sanity";
 import { PortableText } from "next-sanity";
 import { Permanent_Marker } from "next/font/google";
 
+export const revalidate = 300;
+export const dynamic = "force-dynamic";
+
 async function getData(slug: string) {
   const query = `*[_type == 'beverage' && slug.current == '${slug}'] {
         "currentSlug": slug.current,
