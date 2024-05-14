@@ -71,11 +71,14 @@ export default async function BeveragePage({
     <article>
       <BeerHero
         can={data.can}
-        bgColor={data.bgColor}
+        title={data.title}
         labelImage={data.labelImage}
         backgroundImage={data.backgroundImage}
       />
-      <div className={`block beerBlock ${data.can}`}>
+      <div
+        className={`block beerBlock ${data.can}`}
+        style={{ backgroundColor: data.bgColor }}
+      >
         <div className="container">
           <div className="beerDesc">
             <div className="beerHeader textCenter">

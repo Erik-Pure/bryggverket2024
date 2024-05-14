@@ -4,34 +4,44 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import { urlFor } from "../lib/sanity";
+import { Permanent_Marker } from "next/font/google";
+
+const permMarker = Permanent_Marker({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function BeerHero({
   can,
-  bgColor,
+  title,
   labelImage,
   backgroundImage,
 }: {
   can: string;
-  bgColor: string;
+  title: string;
   labelImage: any;
   backgroundImage: any;
 }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "30vh start"],
+    offset: ["start start", "70vh start"],
   });
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const beerY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const labelRotateX = useTransform(scrollYProgress, [0, 1], ["-180%", "-80%"]);
-  const labelRotateY = useTransform(scrollYProgress, [0, 1], ["15deg", "0deg"]);
+  const labelRotateY = useTransform(scrollYProgress, [0, 1], ["25deg", "0deg"]);
   const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["18%", "80%"]);
 
   return (
-    <div
-      ref={ref}
-      className={`beerHero ${can}`}
-      style={{ backgroundColor: bgColor }}
-    >
+    <div ref={ref} className="beerHero">
+      <motion.div
+        className={`beerTitle specialIngress ${permMarker.className}`}
+        style={{ opacity: titleOpacity, top: titleY }}
+      >
+        <h2>{title}</h2>
+      </motion.div>
       <motion.div className="backdrop" style={{ y: foregroundY }}>
         {backgroundImage ? (
           <Image
@@ -53,8 +63,8 @@ export default function BeerHero({
         )}
       </motion.div>
       <motion.div
-        className="beerSlide"
-        style={{ y: backgroundY, rotate: labelRotateY }}
+        className={`beerSlide ${can}`}
+        style={{ y: beerY, rotate: labelRotateY }}
       >
         <div className="beerShowcase">
           <motion.img
@@ -70,11 +80,18 @@ export default function BeerHero({
           <Image
             className="beerCan"
             src={`/images/${can}can.png`}
-            width={320}
-            height={600}
+            width={240}
+            height={440}
             alt={"beer"}
           />
         </div>
+        <Image
+          className="canShadow"
+          src={`/images/can-shadow.png`}
+          width={300}
+          height={440}
+          alt={"beer"}
+        />
       </motion.div>
     </div>
   );

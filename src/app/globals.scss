@@ -48,6 +48,10 @@ p {
   line-height: 1.6;
 }
 
+main {
+  overflow: hidden;
+}
+
 .btn {
   background-color: rgb(253, 70, 210);
   font-size: clamp(0.9375rem, 0.7031rem + 0.75vw, 1.125rem);
@@ -108,7 +112,7 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 5;
 
   display: flex;
   justify-content: space-between;
@@ -148,19 +152,37 @@ footer {
   }
 }
 
+article {
+  overflow: hidden;
+}
+
 .beerHero {
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   position: relative;
+  pointer-events: none;
+  .beerTitle {
+    left: 35%;
+    top: 18%;
+    position: absolute;
+    transform: rotate(-15deg) translateX(-50%);
+    z-index: 1;
+  }
+  .canShadow {
+    position: absolute;
+    height: 50%;
+    left: 48%;
+    top: 53%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: 0.5;
+  }
   .heroBeerLabel {
     position: absolute;
     bottom: 9%;
     left: 0%;
     height: 75%;
     width: 280%;
-  }
-  &.black {
-    background-color: #333;
   }
   .backdrop {
     width: auto;
@@ -171,7 +193,7 @@ footer {
       width: 128% !important;
     }
     img {
-      opacity: 0.45;
+      opacity: 0.9;
     }
   }
   .beerShowcase {
@@ -181,13 +203,59 @@ footer {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+  .beerSlide {
+    z-index: 2;
+    &.sleek {
+      .beerShowcase {
+        width: 200px;
+        .heroBeerLabel,
+        .beerLabelShading {
+          height: 80%;
+        }
+      }
+    }
+  }
+}
+
+.beersOverview {
+  .grid {
+    position: relative;
+    height: 100vh;
+
+    .col {
+      position: relative;
+      z-index: 1;
+    }
+  }
+  .beersSpline {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 1) 20%,
+        rgba(0, 0, 0, 0) 50%
+      );
+    }
+  }
 }
 
 .beerBlock {
   background-color: #f5f5f5;
   position: relative;
+  padding-bottom: 100px;
   &.black {
-    background-color: #333;
+    background-color: #1a1a1a;
   }
 }
 
@@ -203,7 +271,6 @@ footer {
   display: block;
   position: relative;
   z-index: 1;
-  top: -100px;
   padding: 40px;
   box-sizing: border-box;
   background-color: #fff;
@@ -224,31 +291,29 @@ footer {
     h4 {
       margin-top: -0px;
     }
-    margin-bottom: 80px;
+    margin-bottom: 640px;
   }
 }
 
 .landingHero {
-  overflow: hidden;
+  height: 100vh;
   position: relative;
-  &.videoBg {
-    .container {
-      padding: 25% 0;
-    }
-  }
-  .bgVideo {
-    position: absolute;
-    min-width: 100%;
-    min-height: 100%;
-    width: 100%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
   .container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    > div {
+      padding-top: 25vh;
+    }
   }
+}
+
+.landingSpline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
 .hero {
@@ -285,6 +350,24 @@ footer {
   }
 }
 
+.aboutOverview {
+  color: #ccc;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: #fff;
+  }
+  p {
+    color: #ccc;
+  }
+  .border,
+  .specialIngress {
+    filter: invert(1);
+  }
+}
+
 .darkSection {
   background-color: #000;
   color: #ccc;
@@ -308,6 +391,12 @@ footer {
   margin-bottom: 100px;
 }
 
+.container.landingShortDesc {
+  position: relative;
+  z-index: 2;
+  padding: 280px 0;
+}
+
 .container {
   display: block;
   width: 100%;
@@ -319,7 +408,7 @@ footer {
     max-width: 1800px;
   }
   &.superSmall {
-    max-width: 700px;
+    max-width: 380px;
   }
   &.narrow {
     max-width: 960px;
@@ -354,6 +443,15 @@ footer {
     line-height: 1;
     overflow: hidden;
     position: relative;
+    &.sleek {
+      .beerShowcase {
+        width: 25%;
+        .beerLabel,
+        .beerLabelShading {
+          height: 80%;
+        }
+      }
+    }
     &:after {
       opacity: 0;
       content: "";

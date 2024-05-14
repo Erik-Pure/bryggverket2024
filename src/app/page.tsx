@@ -5,6 +5,8 @@ import { client, urlFor } from "./lib/sanity";
 import { landingPage } from "./lib/interface";
 import Link from "next/link";
 import { PortableText } from "next-sanity";
+import SplineViewer from "./components/SplineViewer";
+import LandingHero from "./components/LandingHero";
 
 async function getData() {
   const query = `*[_type == 'landing'] {
@@ -39,37 +41,13 @@ export default async function Home() {
 
   return (
     <main className={styles.main}>
-      <div className="landingHero videoBg textCenter">
-        <video
-          className="bgVideo"
-          autoPlay
-          muted
-          loop
-          aria-label="Video player"
-        >
-          <source src="/videos/bv-intro.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="container">
-          <h1>{data.title}</h1>
-          <h2 className={`specialIngress ${permMarker.className}`}>
-            {data.ingress}
-          </h2>
-        </div>
-      </div>
-      <section className="aboutOverview darkSection">
-        <div className="container marginLarge superSmall textCenter">
-          <h2>{data.aboutTitle}</h2>
-          <div className="border"></div>
-          <h4 className={`specialIngress ${permMarker.className}`}>
-            {data.aboutIngress}
-          </h4>
-          <PortableText value={data.aboutDesc} />
-          <Link href="/about" className="btn">
-            Läs mer om oss
-          </Link>
-        </div>
-      </section>
+      <LandingHero
+        title={data.title}
+        ingress={data.ingress}
+        aboutTitle={data.aboutTitle}
+        aboutIngress={data.aboutIngress}
+        aboutDesc={data.aboutDesc}
+      />
 
       <section className="beersOverview darkSection">
         <div className="container marginLarge">
@@ -84,7 +62,14 @@ export default async function Home() {
                 Alla våra drycker
               </Link>
             </div>
-            <div className="col col-6"></div>
+
+            <div className="beersSpline">
+              <SplineViewer
+                url={
+                  "https://prod.spline.design/aH8bAg6y1DrUFA48/scene.splinecode"
+                }
+              />
+            </div>
           </div>
         </div>
       </section>
