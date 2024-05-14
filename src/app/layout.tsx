@@ -105,6 +105,11 @@ export default function RootLayout({
                 <li>
                   <a href="https://untappd.com/Bryggverket">Untappd</a>
                 </li>
+                <li>
+                  <a href="https://www.systembolaget.se/sortiment/?q=bryggverket">
+                    Systembolaget
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="col col-3">
