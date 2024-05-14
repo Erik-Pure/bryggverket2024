@@ -31,9 +31,9 @@ export default async function BeerGrid() {
   const data: beverageThumb[] = await getData();
   return (
     <div className="grid beerGrid">
-      {data.map((post) => {
+      {data.map((post, idx) => {
         return (
-          <div className="col col-3">
+          <div className="col col-3" key={idx}>
             <Link
               className={`${post.can}`}
               href={`/beverages/${post.currentSlug}`}

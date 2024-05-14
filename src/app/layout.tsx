@@ -52,7 +52,6 @@ export default function RootLayout({
               alt="Bryggverket"
               width={200}
               height={40}
-              priority
             />
           </Link>
           <ul>
