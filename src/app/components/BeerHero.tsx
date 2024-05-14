@@ -27,7 +27,7 @@ export default function BeerHero({
     target: ref,
     offset: ["start start", "70vh start"],
   });
-  const beerY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const beerY = useTransform(scrollYProgress, [0, 1], ["0%", "110%"]);
   const labelRotateX = useTransform(scrollYProgress, [0, 1], ["-180%", "-80%"]);
   const labelRotateY = useTransform(scrollYProgress, [0, 1], ["25deg", "0deg"]);
   const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
@@ -89,8 +89,8 @@ export default function BeerHero({
           <Image
             className="beerCan"
             src={`/images/${can}can.png`}
-            width={240}
-            height={440}
+            width={270}
+            height={500}
             alt={"beer"}
           />
         </div>

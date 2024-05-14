@@ -81,15 +81,18 @@ export default async function BeveragePage({
       >
         <div className="container">
           <div className="beerDesc">
-            <div className="beerHeader textCenter">
+            <div className={`beerHeader textCenter ${data.can}`}>
               <h1>{data.title}</h1>
               {data.style ? (
                 <h4 className={`specialIngress ${permMarker.className}`}>
                   {data.style}
                 </h4>
               ) : (
-                ""
+                <h4 className={`specialIngress ${permMarker.className}`}>
+                  {getCat(data.category)}
+                </h4>
               )}
+              <div className="beerLandingPad"></div>
             </div>
 
             <div className="grid">
