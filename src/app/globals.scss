@@ -586,6 +586,7 @@ article {
         height: 120%;
         width: auto;
         transition: 0.2s ease-in-out;
+        max-width: unset;
         &.shiftLeft {
           left: 25%;
         }
