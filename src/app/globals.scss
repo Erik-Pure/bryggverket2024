@@ -50,6 +50,7 @@ p {
 
 main {
   overflow: hidden;
+  max-width: 100vw;
 }
 
 .btn {
@@ -152,6 +153,68 @@ footer {
   }
 }
 
+.scroller {
+  position: absolute;
+  right: 25%;
+  bottom: 25%;
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  border-radius: 50%;
+  display: block;
+  background-color: #fff;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:before {
+    content: "";
+    background: url("../../public/images/spinner-txt.svg") no-repeat;
+    background-size: cover;
+    height: 90%;
+    width: 90%;
+    position: absolute;
+    animation-name: labelSpin;
+    animation-timing-function: linear;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+  }
+  &:after {
+    content: "";
+    background: url("../../public/images/spinner-can-content.svg") repeat-x;
+    background-size: cover;
+    height: 45%;
+    width: 30%;
+    position: absolute;
+    animation-name: labelBg;
+    animation-timing-function: linear;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+  }
+  img {
+    width: 40%;
+    height: auto;
+  }
+}
+
+@keyframes labelSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes labelBg {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 135% 0;
+  }
+}
+
 article {
   overflow: hidden;
 }
@@ -163,9 +226,9 @@ article {
   pointer-events: none;
   .beerTitle {
     left: 35%;
-    top: 18%;
+    top: 15%;
     position: absolute;
-    transform: rotate(-15deg) translateX(-50%);
+    transform: rotate(-18deg) translateX(-50%);
     z-index: 1;
   }
   .canShadow {
@@ -218,10 +281,24 @@ article {
 }
 
 .beersOverview {
+  .fadeCan {
+    position: absolute;
+    width: 50%;
+    height: auto;
+    &.one {
+      position: relative;
+    }
+    &.three {
+      left: 25%;
+      top: 40%;
+    }
+    &.two {
+      right: 0;
+      top: 10%;
+    }
+  }
   .grid {
-    position: relative;
-    height: 100vh;
-
+    min-height: 100vh;
     .col {
       position: relative;
       z-index: 1;
@@ -284,14 +361,14 @@ article {
     gap: 40px;
   }
   h1 {
-    font-size: clamp(1.5rem, 0.0938rem + 6vw, 4.625rem);
+    font-size: clamp(1.5rem, 0.0938rem + 6vw, 3.825rem);
     line-height: 1.2;
   }
   .beerHeader {
     h4 {
       margin-top: -0px;
     }
-    margin-bottom: 640px;
+    margin-bottom: 590px;
   }
 }
 
@@ -304,6 +381,20 @@ article {
     > div {
       padding-top: 25vh;
     }
+  }
+}
+
+.landingCan {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 70%;
+  max-width: 720px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  img {
+    width: 100%;
+    height: auto;
   }
 }
 
@@ -394,7 +485,8 @@ article {
 .container.landingShortDesc {
   position: relative;
   z-index: 2;
-  padding: 280px 0;
+  padding-top: 280px;
+  padding-bottom: 280px;
 }
 
 .container {
@@ -408,7 +500,7 @@ article {
     max-width: 1800px;
   }
   &.superSmall {
-    max-width: 380px;
+    max-width: 640px;
   }
   &.narrow {
     max-width: 960px;
@@ -543,6 +635,10 @@ article {
   .col {
     grid-column: span 12;
     box-sizing: border-box;
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   }
   .col-9 {
     grid-column: span 9;
@@ -567,6 +663,14 @@ article {
   }
 }
 
+@media (max-width: 1160px) {
+  .grid {
+    .col-3 {
+      grid-column: span 4;
+    }
+  }
+}
+
 @media (max-width: 920px) {
   .grid {
     .col-9,
@@ -583,11 +687,11 @@ article {
   }
 
   .container {
-    padding: 0 40px;
+    padding: 0 24px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 750px) {
   .grid {
     .col,
     .col-9,
@@ -599,6 +703,13 @@ article {
     .col-3 {
       grid-column: span 12;
     }
+  }
+}
+
+.merchOverview {
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -646,6 +757,7 @@ article {
     left: 0%;
     height: 75%;
     width: 280%;
+    max-width: unset;
     animation-name: example;
     animation-timing-function: linear;
     animation-duration: 2s;
@@ -658,17 +770,52 @@ article {
   }
 }
 
-/* @keyframes example {
-  0% {
-    left: -115%;
+.grid {
+  .beerShowcase {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    .beerLabelShading {
+      display: block;
+      position: absolute;
+      bottom: 9%;
+      left: 0;
+      height: 75%;
+      width: 100%;
+      background: rgb(0, 0, 0);
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 20%,
+        rgba(0, 0, 0, 0) 80%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+    }
+    .beerCan {
+      width: 100%;
+      height: auto;
+    }
+    .beerLabel {
+      animation-play-state: paused;
+      position: absolute;
+      bottom: 9%;
+      left: 0%;
+      height: 75%;
+      width: 280%;
+      max-width: unset;
+      animation-name: example;
+      animation-timing-function: linear;
+      animation-duration: 2s;
+      /* animation-direction: alternate; */
+      animation-iteration-count: infinite;
+      &.two {
+        left: 100%;
+        animation-name: example2;
+      }
+    }
   }
-  33% {
-    left: -180%;
-  }
-  100% {
-    left: -20%;
-  }
-} */
+}
+
 @keyframes example {
   0% {
     left: -115%;
@@ -684,5 +831,94 @@ article {
   }
   100% {
     left: -115%;
+  }
+}
+
+@media (max-width: 760px) {
+  .scroller {
+    right: 15%;
+    bottom: 15%;
+    width: 80px;
+    height: 80px;
+  }
+  .beerHero {
+    .beerShowcase {
+      width: 120px;
+    }
+    .canShadow {
+      height: 35%;
+      width: 40%;
+    }
+  }
+  .beerDesc {
+    padding: 60px 20px;
+    .grid {
+      gap: 20px;
+    }
+    .beerHeader {
+      margin-bottom: 350px;
+    }
+  }
+  footer {
+    text-align: center;
+    ul {
+      margin-bottom: 10px;
+    }
+  }
+  .hero .container {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .landingHero .container > div {
+    padding-top: 35vh;
+  }
+  .container.landingShortDesc {
+    padding-top: 210px;
+    padding-bottom: 120px;
+  }
+  header {
+    background: none;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    bottom: 0;
+    justify-content: space-between;
+    flex-flow: column;
+    padding: 0;
+    pointer-events: none;
+    .logo {
+      pointer-events: all;
+      background: rgba(26, 26, 26, 0.64);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10.8px);
+      -webkit-backdrop-filter: blur(10.8px);
+      border-bottom: 1px solid rgba(212, 212, 212, 0.22);
+      width: 100%;
+      padding: 5px;
+      text-align: center;
+    }
+    ul {
+      pointer-events: all;
+      background: rgba(26, 26, 26, 0.64);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10.8px);
+      -webkit-backdrop-filter: blur(10.8px);
+      border-top: 1px solid rgba(212, 212, 212, 0.22);
+      display: flex;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      li {
+        width: 25%;
+        text-align: center;
+        a {
+          display: inline-block;
+          padding: 20px 0;
+          line-height: 1;
+        }
+      }
+    }
   }
 }

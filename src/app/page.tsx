@@ -5,8 +5,8 @@ import { client, urlFor } from "./lib/sanity";
 import { landingPage } from "./lib/interface";
 import Link from "next/link";
 import { PortableText } from "next-sanity";
-import SplineViewer from "./components/SplineViewer";
 import LandingHero from "./components/LandingHero";
+import BeerOverview from "./components/BeerOverview";
 
 async function getData() {
   const query = `*[_type == 'landing'] {
@@ -48,42 +48,30 @@ export default async function Home() {
         aboutIngress={data.aboutIngress}
         aboutDesc={data.aboutDesc}
       />
-
-      <section className="beersOverview darkSection">
+      <BeerOverview
+        title={data.drinkTitle}
+        ingress={data.drinkIngress}
+        text={data.drinkDesc}
+      />
+      <section className="eventsOverview darkSection">
         <div className="container marginLarge">
           <div className="grid centerAlign">
-            <div className="col col-6">
-              <h2>{data.drinkTitle}</h2>
-              <div className="border"></div>
-              <h4 className={permMarker.className}>{data.drinkIngress}</h4>
-              <PortableText value={data.drinkDesc} />
-
-              <Link href="/beverages" className="btn">
-                Alla våra drycker
-              </Link>
-            </div>
-
-            <div className="beersSpline">
-              <SplineViewer
-                url={
-                  "https://prod.spline.design/aH8bAg6y1DrUFA48/scene.splinecode"
-                }
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="eventsOverview">
-        <div className="container marginLarge">
-          <div className="grid">
             <div className="col col-6">
               <h2>{data.eventTitle}</h2>
               <div className="border"></div>
               <h4 className={permMarker.className}>{data.eventIngress}</h4>
               <PortableText value={data.eventDesc} />
-              <Link href="/book" className="btn black">
+              <Link href="/book" className="btn">
                 Ja! Jag vill ha kul
               </Link>
+            </div>
+            <div className="col col-6">
+              <Image
+                src="/images/event.webp"
+                width={640}
+                height={640}
+                alt={""}
+              />
             </div>
           </div>
         </div>
@@ -105,7 +93,7 @@ export default async function Home() {
             src="/images/merch.webp"
             width={1024}
             height={500}
-            alt={"beer"}
+            alt={""}
           />
         </div>
       </section>

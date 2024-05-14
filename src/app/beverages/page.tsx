@@ -27,27 +27,14 @@ export default async function () {
   return (
     <article className="singlePage">
       <div className="hero">
-        {data.heroImage ? (
-          <Image
-            className="heroBgImage"
-            src={urlFor(data.heroImage).url()}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt=""
-            objectFit="cover"
-          />
-        ) : (
-          <video
-            className="bgVideo"
-            autoPlay
-            muted
-            loop
-            aria-label="Video player"
-          >
-            <source src="/videos/burk-to-render.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
+        <Image
+          className="heroBgImage"
+          src={urlFor(data.heroImage).url()}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          alt=""
+          objectFit="cover"
+        />
 
         <div className="heroBgOverlay"></div>
         <div className="container">

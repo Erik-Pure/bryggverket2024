@@ -2,10 +2,10 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Permanent_Marker } from "next/font/google";
-import SplineViewer from "./SplineViewer";
 import Link from "next/link";
 import React, { useRef } from "react";
 import { PortableText } from "next-sanity";
+import Image from "next/image";
 
 const permMarker = Permanent_Marker({
   subsets: ["latin"],
@@ -28,16 +28,17 @@ export default function LandingHero({
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "70vh start"],
+    offset: ["start start", "90vh start"],
   });
-  const beerY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const beerY = useTransform(scrollYProgress, [0, 1], ["100%", "150%"]);
 
   const trans = useTransform(scrollYProgress, [0, 1], ["0", "1"]);
   const scaleTxt = useTransform(scrollYProgress, [0, 1], ["1.4", "1"]);
   const color = useTransform(scrollYProgress, [0, 1], ["#fff", "#000"]);
+  const rotate = useTransform(scrollYProgress, [0, 1], ["0deg", "180deg"]);
 
   return (
-    <motion.div style={{ backgroundColor: color }}>
+    <motion.div style={{ overflow: "hidden", backgroundColor: color }}>
       <div ref={ref} className="landingHero textCenter">
         <div className="container">
           <div>
@@ -48,9 +49,14 @@ export default function LandingHero({
           </div>
         </div>
       </div>
-      <motion.div className="landingSpline" style={{ top: beerY }}>
-        <SplineViewer
-          url={"https://prod.spline.design/gkMXnTon7dIKCyc5/scene.splinecode"}
+      <motion.div className="landingCan" style={{ top: beerY }}>
+        <motion.img
+          className="beerCan"
+          src="/images/can-top.png"
+          width={800}
+          height={800}
+          alt={"beer"}
+          style={{ rotate: rotate }}
         />
       </motion.div>
       <div className="aboutOverview">
@@ -59,7 +65,6 @@ export default function LandingHero({
           style={{
             opacity: trans,
             scale: scaleTxt,
-            top: beerY,
           }}
         >
           <h2>{aboutTitle}</h2>

@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={saira.className}>
         <header>
-          <Link href="/">
+          <Link className="logo" href="/">
             <Image
               src="images/bryggverket_horizontal_white.svg"
               alt="Bryggverket"
@@ -37,7 +37,7 @@ export default function RootLayout({
           </Link>
           <ul>
             <li>
-              <Link href="/beverages">Våra drycker</Link>
+              <Link href="/beverages">Drycker</Link>
             </li>
             <li>
               <Link href="/book">Boka</Link>

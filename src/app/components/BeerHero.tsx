@@ -32,7 +32,7 @@ export default function BeerHero({
   const labelRotateY = useTransform(scrollYProgress, [0, 1], ["25deg", "0deg"]);
   const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const titleOpacity = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
-  const titleY = useTransform(scrollYProgress, [0, 1], ["18%", "80%"]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["14%", "60%"]);
 
   return (
     <div ref={ref} className="beerHero">
@@ -42,6 +42,15 @@ export default function BeerHero({
       >
         <h2>{title}</h2>
       </motion.div>
+      <motion.div style={{ opacity: titleOpacity }} className="scroller">
+        <Image
+          src={"/images/spinner-can.svg"}
+          width={100}
+          height={100}
+          alt=""
+        />
+      </motion.div>
+
       <motion.div className="backdrop" style={{ y: foregroundY }}>
         {backgroundImage ? (
           <Image
