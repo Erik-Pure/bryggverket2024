@@ -30,7 +30,7 @@ export default function BeerOverview({
   const beerTwo = useTransform(scrollYProgress, [0, 1], ["-40%", "230%"]);
   const beerThree = useTransform(scrollYProgress, [0, 1], ["0%", "300%"]);
   const opac = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
-  const scal = useTransform(scrollYProgress, [0, 1], ["1", "1.4"]);
+  const scal = useTransform(scrollYProgress, [0, 1], ["1", "1.2"]);
 
   return (
     <section ref={ref} className="beersOverview darkSection">
