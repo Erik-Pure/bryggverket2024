@@ -66,3 +66,9 @@ export interface landingPage {
     merchIngress: string;
     merchDesc: any;
 }
+
+export interface employee {
+    title: string;
+    role: string;
+    profilePicture: any;
+}

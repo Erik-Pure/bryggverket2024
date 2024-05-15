@@ -3,6 +3,7 @@ import Image from "next/image";
 import { client, urlFor } from "../lib/sanity";
 import { aboutPage } from "../lib/interface";
 import { PortableText } from "next-sanity";
+import EmployeeGrid from "../components/EmployeeGrid";
 
 const permMarker = Permanent_Marker({
   subsets: ["latin"],
@@ -44,6 +45,9 @@ export default async function About() {
             {data.ingress}
           </h3>
         </div>
+      </div>
+      <div className="container marginLarge">
+        <EmployeeGrid />
       </div>
       <div className="container narrow">
         <PortableText value={data.description} />
