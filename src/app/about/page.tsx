@@ -46,10 +46,10 @@ export default async function About() {
           </h3>
         </div>
       </div>
-      <div className="container marginLarge">
+      <div className="container marginMedium">
         <EmployeeGrid />
       </div>
-      <div className="container narrow">
+      <div className="container narrow marginMedium">
         <PortableText value={data.description} />
       </div>
     </div>
