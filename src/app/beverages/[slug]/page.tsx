@@ -139,10 +139,10 @@ export default async function BeveragePage({
                     </h4>
                   </div>
                   {data.link ? (
-                    <div className="col col-4">
+                    <div className="col col-12">
                       <h5>Beställ här</h5>
 
-                      <a target="_blank" href={data.link}>
+                      <a target="_blank" className="btn black" href={data.link}>
                         Systembolaget
                       </a>
                     </div>
