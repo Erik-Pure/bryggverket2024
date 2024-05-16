@@ -7,6 +7,8 @@ import Link from "next/link";
 import { PortableText } from "next-sanity";
 import LandingHero from "./components/LandingHero";
 import BeerOverview from "./components/BeerOverview";
+import EventOverview from "./components/EventOverview";
+import MerchOverview from "./components/MerchOverview";
 
 export const revalidate = 300;
 export const dynamic = "force-dynamic";
@@ -56,50 +58,16 @@ export default async function Home() {
         ingress={data.drinkIngress}
         text={data.drinkDesc}
       />
-      <section className="eventsOverview darkSection">
-        <div className="container marginLarge">
-          <div className="grid centerAlign">
-            <div className="col col-6">
-              <h2>{data.eventTitle}</h2>
-              <div className="border"></div>
-              <h4 className={permMarker.className}>{data.eventIngress}</h4>
-              <PortableText value={data.eventDesc} />
-              <Link href="/book" className="btn">
-                Ja! Jag vill ha kul
-              </Link>
-            </div>
-            <div className="col col-6">
-              <Image
-                src="/images/event.webp"
-                width={640}
-                height={640}
-                alt={""}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="merchOverview">
-        <div className="container textCenter narrow marginLarge">
-          <h2>{data.merchTitle}</h2>
-          <h4 className={permMarker.className}>{data.merchIngress}</h4>
-          <PortableText value={data.merchDesc} />
-          <a
-            className="btn black"
-            href="https://brewmerch.se/collections/bryggverket"
-            target="_blank"
-          >
-            Brewmerch
-          </a>
-          <Image
-            className="beerCan"
-            src="/images/merch.webp"
-            width={1024}
-            height={500}
-            alt={""}
-          />
-        </div>
-      </section>
+      <EventOverview
+        title={data.eventTitle}
+        ingress={data.eventIngress}
+        text={data.eventDesc}
+      />
+      <MerchOverview
+        title={data.merchTitle}
+        ingress={data.merchIngress}
+        text={data.merchDesc}
+      />
     </main>
   );
 }

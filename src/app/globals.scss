@@ -53,6 +53,10 @@ main {
   max-width: 100vw;
 }
 
+.eventsOverview {
+  position: relative;
+}
+
 .btn {
   background-color: rgb(253, 70, 210);
   font-size: clamp(0.9375rem, 0.7031rem + 0.75vw, 1.125rem);
