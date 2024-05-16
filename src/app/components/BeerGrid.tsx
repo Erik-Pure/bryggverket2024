@@ -13,7 +13,7 @@ export const revalidate = 300;
 export const dynamic = "force-dynamic";
 
 async function getData() {
-  const query = `*[_type == 'beverage'] | order(_createdAt desc) {
+  const query = `*[_type == 'beverage'] | order(title asc) {
       title,
         labelImage,
         "currentSlug": slug.current,
