@@ -82,7 +82,7 @@ main {
 }
 
 .border {
-  background: url("../../public/images/bg-lines.png");
+  background: url("/images/bg-lines.png");
   height: 10px;
   width: 100%;
 }
@@ -90,7 +90,7 @@ main {
 .specialIngress {
   transform: rotate(-2deg);
   display: inline-block;
-  background: url("../../public/images/btn-splash.svg") no-repeat;
+  background: url("/images/btn-splash.svg") no-repeat;
   background-size: cover;
   color: #fff;
   padding: 8px 28px;
@@ -173,7 +173,7 @@ footer {
   justify-content: center;
   &:before {
     content: "";
-    background: url("../../public/images/spinner-txt.svg") no-repeat;
+    background: url("/images/spinner-txt.svg") no-repeat;
     background-size: cover;
     height: 90%;
     width: 90%;
@@ -185,7 +185,7 @@ footer {
   }
   &:after {
     content: "";
-    background: url("../../public/images/spinner-can-content.svg") repeat-x;
+    background: url("/images/spinner-can-content.svg") repeat-x;
     background-size: cover;
     height: 45%;
     width: 30%;
@@ -256,7 +256,7 @@ article {
   .backdrop {
     width: auto;
     height: 100%;
-    background: url("../../public/images/bg-lines.png");
+    background: url("/images/bg-lines.png");
     .shiftLeft {
       left: -28% !important;
       width: 128% !important;
@@ -437,7 +437,7 @@ article {
     opacity: 0.8;
   }
   .heroBgOverlay {
-    background: url("../../public/images/bg-lines.png");
+    background: url("/images/bg-lines.png");
     position: absolute;
     left: 0;
     top: 0;
@@ -738,6 +738,7 @@ article {
   height: 0;
 }
 
+.grid .beerShowcase,
 .beerShowcase {
   position: relative;
   overflow: hidden;
@@ -778,52 +779,6 @@ article {
     &.two {
       left: 100%;
       animation-name: example2;
-    }
-  }
-}
-
-.grid {
-  .beerShowcase {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    .beerLabelShading {
-      display: block;
-      position: absolute;
-      bottom: 9%;
-      left: 0;
-      height: 75%;
-      width: 100%;
-      background: rgb(0, 0, 0);
-      background: linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0) 20%,
-        rgba(0, 0, 0, 0) 80%,
-        rgba(0, 0, 0, 0.5) 100%
-      );
-    }
-    .beerCan {
-      width: 100%;
-      height: auto;
-    }
-    .beerLabel {
-      animation-play-state: paused;
-      position: absolute;
-      bottom: 9%;
-      left: 0%;
-      height: 75%;
-      width: 280%;
-      max-width: unset;
-      animation-name: example;
-      animation-timing-function: linear;
-      animation-duration: 2s;
-      /* animation-direction: alternate; */
-      animation-iteration-count: infinite;
-      &.two {
-        left: 100%;
-        animation-name: example2;
-      }
     }
   }
 }

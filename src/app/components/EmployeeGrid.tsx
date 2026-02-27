@@ -1,15 +1,9 @@
-import { Permanent_Marker } from "next/font/google";
 import Image from "next/image";
+import { permMarker } from "../lib/fonts";
+import type { employee } from "../lib/interface";
 import { client, urlFor } from "../lib/sanity";
-import { employee } from "../lib/interface";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData() {
   const query = `*[_type == 'employee'] | order(_createdAt asc) {
@@ -26,8 +20,8 @@ export default async function EmployeeGrid() {
   const data: employee[] = await getData();
   return (
     <div className="grid">
-      {data.map((post, idx) => (
-        <div className="col col-4 textCenter" key={idx}>
+      {data.map((post) => (
+        <div className="col col-4 textCenter" key={post.title}>
           <Image
             src={urlFor(post.profilePicture).url()}
             width={300}

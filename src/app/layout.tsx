@@ -1,21 +1,13 @@
 import type { Metadata } from "next";
-import { Saira } from "next/font/google";
-import { Permanent_Marker } from "next/font/google";
 import Image from "next/image";
 import "./globals.scss";
 import Link from "next/link";
-
-const saira = Saira({ subsets: ["latin"] });
+import { permMarker, saira } from "./lib/fonts";
 
 export const metadata: Metadata = {
   title: "Bryggverket",
   description: "Bryggverket - How can less be more? Ett bryggeri från Umeå",
 };
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export default function RootLayout({
   children,
@@ -23,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="sv">
       <head>
         <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
         <link
@@ -71,6 +63,7 @@ export default function RootLayout({
               <a
                 href="https://brewmerch.se/collections/bryggverket"
                 target="_blank"
+                rel="noopener"
               >
                 Merch
               </a>

@@ -1,29 +1,29 @@
-import BeerHero from "@/app/components/BeerHero";
-import { beverage } from "@/app/lib/interface";
-import { client, urlFor } from "@/app/lib/sanity";
+import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
-import { Permanent_Marker } from "next/font/google";
+import BeerHero from "@/app/components/BeerHero";
+import { permMarker } from "@/app/lib/fonts";
+import type { beverage } from "@/app/lib/interface";
+import { client } from "@/app/lib/sanity";
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData(slug: string) {
-  const query = `*[_type == 'beverage' && slug.current == '${slug}'] {
+  const query = `*[_type == 'beverage' && slug.current == $slug] {
         "currentSlug": slug.current,
         title,
-          labelImage,
-          description,
-          can,
-          percentage,
-          style,
-          category,
-          link,
-          bgColor,
-          backgroundImage,
-          ingredients,          
+        labelImage,
+        description,
+        can,
+        percentage,
+        style,
+        category,
+        link,
+        bgColor,
+        backgroundImage,
+        ingredients,
       }[0]`;
 
-  const data = await client.fetch(query);
+  const data = await client.fetch(query, { slug });
   return data;
 }
 
@@ -59,17 +59,14 @@ function getCat(canCat: string) {
   }
 }
 
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
-
 export default async function BeveragePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const data: beverage = await getData(params.slug);
+  const { slug } = await params;
+  const data: beverage = await getData(slug);
+  if (!data) notFound();
   return (
     <article>
       <BeerHero
@@ -107,9 +104,7 @@ export default async function BeveragePage({
                     <h5>Innehåll</h5>
                     <PortableText value={data.ingredients} />
                   </div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </div>
               <div className="col col-6">
                 <div className="border"></div>
@@ -128,9 +123,7 @@ export default async function BeveragePage({
                         {data.percentage}%
                       </h4>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
 
                   <div className="col col-3">
                     <h5>Storlek</h5>
@@ -146,9 +139,7 @@ export default async function BeveragePage({
                         Systembolaget
                       </a>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>

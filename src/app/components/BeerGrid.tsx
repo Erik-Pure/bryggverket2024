@@ -1,16 +1,9 @@
-import Link from "next/link";
 import Image from "next/image";
-import { beverageThumb } from "../lib/interface";
+import Link from "next/link";
+import type { beverageThumb } from "../lib/interface";
 import { client, urlFor } from "../lib/sanity";
-import { Permanent_Marker } from "next/font/google";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData() {
   const query = `*[_type == 'beverage'] | order(title asc) {
@@ -31,11 +24,11 @@ export default async function BeerGrid() {
   const data: beverageThumb[] = await getData();
   return (
     <div className="grid beerGrid">
-      {data.map((post, idx) => {
+      {data.map((post) => {
         return (
-          <div className="col col-3" key={idx}>
+          <div className="col col-3" key={post.currentSlug}>
             <Link
-              className={`${post.can}`}
+              className={post.can}
               href={`/beverages/${post.currentSlug}`}
               style={{ backgroundColor: `${post.bgColor}` }}
             >
@@ -59,19 +52,17 @@ export default async function BeerGrid() {
               </div>
               <div className="beerShowcaseContainer">
                 <div className="beerShowcase">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element -- animated label needs CSS-controlled sizing */}
+                  <img
                     className="beerLabel"
                     src={urlFor(post.labelImage).url()}
-                    width={300}
-                    height={115}
-                    alt={"label"}
+                    alt=""
                   />
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     className="beerLabel two"
                     src={urlFor(post.labelImage).url()}
-                    width={300}
-                    height={115}
-                    alt={"label"}
+                    alt=""
                   />
                   <div className="beerLabelShading"></div>
                   <Image

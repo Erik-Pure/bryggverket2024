@@ -2,7 +2,6 @@ import aboutPage from "./aboutPage";
 import beverage from "./beverage";
 import beveragesPage from "./beveragesPage";
 import bookPage from "./bookPage";
-import contactPage from "./contactPage";
 import employee from "./employee";
 import landingPage from "./landingPage";
 
