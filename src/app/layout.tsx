@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import "./globals.scss";
 import Link from "next/link";
+import AgeGate from "./components/AgeGate";
 import { permMarker, saira } from "./lib/fonts";
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({
         />
       </head>
       <body className={saira.className}>
+        <AgeGate />
         <header>
           <Link className="logo" href="/">
             <Image
