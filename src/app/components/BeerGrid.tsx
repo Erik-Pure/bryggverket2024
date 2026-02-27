@@ -52,19 +52,17 @@ export default async function BeerGrid() {
               </div>
               <div className="beerShowcaseContainer">
                 <div className="beerShowcase">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element -- animated label needs CSS-controlled sizing */}
+                  <img
                     className="beerLabel"
                     src={urlFor(post.labelImage).url()}
-                    width={300}
-                    height={115}
-                    alt={"label"}
+                    alt=""
                   />
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     className="beerLabel two"
                     src={urlFor(post.labelImage).url()}
-                    width={300}
-                    height={115}
-                    alt={"label"}
+                    alt=""
                   />
                   <div className="beerLabelShading"></div>
                   <Image

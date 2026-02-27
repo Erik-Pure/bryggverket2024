@@ -62,9 +62,10 @@ function getCat(canCat: string) {
 export default async function BeveragePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const data: beverage = await getData(params.slug);
+  const { slug } = await params;
+  const data: beverage = await getData(slug);
   if (!data) notFound();
   return (
     <article>
@@ -103,9 +104,7 @@ export default async function BeveragePage({
                     <h5>Innehåll</h5>
                     <PortableText value={data.ingredients} />
                   </div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </div>
               <div className="col col-6">
                 <div className="border"></div>
@@ -124,9 +123,7 @@ export default async function BeveragePage({
                         {data.percentage}%
                       </h4>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
 
                   <div className="col col-3">
                     <h5>Storlek</h5>
@@ -142,9 +139,7 @@ export default async function BeveragePage({
                         Systembolaget
                       </a>
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>

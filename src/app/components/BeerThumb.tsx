@@ -43,19 +43,13 @@ export default function BeerThumb({
       </div>
       <div className="beerShowcaseContainer">
         <div className="beerShowcase">
-          <Image
-            className="beerLabel"
-            src={urlFor(labelImage).url()}
-            width={300}
-            height={115}
-            alt={"label"}
-          />
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element -- animated label needs CSS-controlled sizing */}
+          <img className="beerLabel" src={urlFor(labelImage).url()} alt="" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             className="beerLabel two"
             src={urlFor(labelImage).url()}
-            width={300}
-            height={115}
-            alt={"label"}
+            alt=""
           />
           <div className="beerLabelShading"></div>
           <Image
