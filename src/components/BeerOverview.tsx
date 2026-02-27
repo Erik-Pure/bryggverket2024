@@ -1,30 +1,26 @@
-"use client";
-
-import { motion, useScroll, useTransform } from "motion/react";
-import Link from "next/link";
-import { PortableText } from "next-sanity";
-import { useRef } from "react";
-import { permMarker } from "../lib/fonts";
+import { PortableText } from '@portabletext/react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef } from 'react'
 
 export default function BeerOverview({
   title,
   ingress,
   text,
 }: {
-  title: string;
-  ingress: string;
-  text: any;
+  title: string
+  ingress: string
+  text: any
 }) {
-  const ref = useRef(null);
+  const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "0vh end"],
-  });
-  const beerOne = useTransform(scrollYProgress, [0, 1], ["-30%", "70%"]);
-  const beerTwo = useTransform(scrollYProgress, [0, 1], ["-40%", "230%"]);
-  const beerThree = useTransform(scrollYProgress, [0, 1], ["0%", "300%"]);
-  const opac = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
-  const scal = useTransform(scrollYProgress, [0, 1], ["1", "1.2"]);
+    offset: ['start start', '0vh end'],
+  })
+  const beerOne = useTransform(scrollYProgress, [0, 1], ['-30%', '70%'])
+  const beerTwo = useTransform(scrollYProgress, [0, 1], ['-40%', '230%'])
+  const beerThree = useTransform(scrollYProgress, [0, 1], ['0%', '300%'])
+  const opac = useTransform(scrollYProgress, [0, 1], ['1', '0'])
+  const scal = useTransform(scrollYProgress, [0, 1], ['1', '1.2'])
 
   return (
     <section ref={ref} className="beersOverview darkSection">
@@ -36,11 +32,11 @@ export default function BeerOverview({
           >
             <h2>{title}</h2>
             <div className="border"></div>
-            <h4 className={permMarker.className}>{ingress}</h4>
+            <h4 className="font-marker">{ingress}</h4>
             <PortableText value={text} />
-            <Link href="/beverages" className="btn">
+            <a href="/beverages" className="btn">
               Alla våra drycker
-            </Link>
+            </a>
           </motion.div>
           <div className="col col-6">
             <motion.img
@@ -48,7 +44,7 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ marginTop: beerOne, opacity: opac }}
             />
             <motion.img
@@ -56,7 +52,7 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ top: beerTwo, opacity: opac }}
             />
             <motion.img
@@ -64,12 +60,12 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ top: beerThree, opacity: opac }}
             />
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,0 +1,52 @@
+---
+import { urlFor } from "@/lib/sanity";
+
+interface Props {
+  currentSlug: string;
+  bgColor: string;
+  backgroundImage: any;
+  labelImage: any;
+  can: string;
+  title: string;
+}
+
+const { currentSlug, bgColor, backgroundImage, labelImage, can, title } =
+  Astro.props;
+---
+
+<a
+  class={can}
+  href={`/beverages/${currentSlug}`}
+  style={{ backgroundColor: bgColor }}
+>
+  <div class="backdrop">
+    {
+      backgroundImage ? (
+        <img src={urlFor(backgroundImage).url()} width="300" height="300" alt="" />
+      ) : (
+        <img
+          class="shiftLeft"
+          src={urlFor(labelImage).url()}
+          width="300"
+          height="300"
+          alt=""
+        />
+      )
+    }
+  </div>
+  <div class="beerShowcaseContainer">
+    <div class="beerShowcase">
+      <img class="beerLabel" src={urlFor(labelImage).url()} alt="" />
+      <img class="beerLabel two" src={urlFor(labelImage).url()} alt="" />
+      <div class="beerLabelShading"></div>
+      <img
+        class="beerCan"
+        src={`/images/${can}can.png`}
+        width="160"
+        height="300"
+        alt="beer"
+      />
+    </div>
+  </div>
+  <h5 class="specialIngress">{title}</h5>
+</a>

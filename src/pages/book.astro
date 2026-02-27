@@ -1,0 +1,37 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { PortableText } from "astro-portabletext";
+import type { bookPage } from "@/lib/interface";
+import { sanityClient } from "sanity:client";
+import { urlFor } from "@/lib/sanity";
+
+const data: bookPage = await sanityClient.fetch(
+  `*[_type == 'book'] {
+    title,
+    ingress,
+    heroImage,
+    description,
+  }[0]`,
+);
+---
+
+<Layout title="Boka — Bryggverket">
+  <div class="singlePage">
+    <div class="hero">
+      <img
+        class="heroBgImage"
+        src={urlFor(data.heroImage).url()}
+        alt=""
+        style="object-fit: cover; position: absolute; inset: 0; width: 100%; height: 100%;"
+      />
+      <div class="heroBgOverlay"></div>
+      <div class="container">
+        <h1>{data.title}</h1>
+        <h3 class="specialIngress font-marker">{data.ingress}</h3>
+      </div>
+    </div>
+    <div class="container narrow">
+      <PortableText value={data.description} />
+    </div>
+  </div>
+</Layout>

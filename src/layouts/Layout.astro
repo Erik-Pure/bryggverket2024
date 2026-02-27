@@ -1,0 +1,127 @@
+---
+import "@fontsource/saira/400.css";
+import "@fontsource/saira/700.css";
+import "@fontsource/saira/900.css";
+import "@fontsource/permanent-marker/400.css";
+import "@/styles/globals.scss";
+import AgeGate from "@/components/AgeGate";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Bryggverket",
+  description = "Bryggverket - How can less be more? Ett bryggeri från Umeå",
+} = Astro.props;
+---
+
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon/favicon-16x16.png"
+    />
+  </head>
+  <body class="font-saira">
+    <AgeGate client:load />
+    <header>
+      <a class="logo" href="/">
+        <img
+          src="/images/bryggverket_horizontal_white.svg"
+          alt="Bryggverket"
+          width="200"
+          height="40"
+        />
+      </a>
+      <ul>
+        <li><a href="/beverages">Drycker</a></li>
+        <li><a href="/book">Boka</a></li>
+        <li><a href="/about">Om oss</a></li>
+        <li>
+          <a
+            href="https://brewmerch.se/collections/bryggverket"
+            target="_blank"
+            rel="noopener">Merch</a
+          >
+        </li>
+      </ul>
+    </header>
+    <slot />
+    <footer>
+      <div class="grid">
+        <div class="col col-3 textCenter">
+          <a href="/">
+            <img
+              src="/images/bv-icon.svg"
+              alt="Bryggverket"
+              width="120"
+              height="120"
+            />
+          </a>
+        </div>
+        <div class="col col-3">
+          <h5 class="font-marker">Följ oss</h5>
+          <ul>
+            <li><a href="https://instagram.com/bryggverket">Instagram</a></li>
+            <li><a href="https://facebook.com/bryggverket">Facebook</a></li>
+            <li><a href="https://twitter.com/bryggverket">X</a></li>
+            <li><a href="https://untappd.com/Bryggverket">Untappd</a></li>
+            <li>
+              <a href="https://www.systembolaget.se/sortiment/?q=bryggverket"
+                >Systembolaget</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="col col-3">
+          <h5 class="font-marker">Elbrev</h5>
+          <ul>
+            <li><a href="mailto:hej@bryggverket.se">hej@bryggverket.se</a></li>
+          </ul>
+          <h5 class="font-marker">Snigelbrev</h5>
+          <ul>
+            <li>Bryggverket</li>
+            <li>Förrådsvägen 22</li>
+            <li>901 32 Umeå</li>
+          </ul>
+        </div>
+        <div class="col col-3">
+          <h5 class="font-marker">Besöksadress</h5>
+          <ul>
+            <li>Förrådsvägen 22</li>
+            <li>901 32 Umeå</li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global lang="scss">
+  .font-saira {
+    font-family: "Saira", sans-serif;
+  }
+  .font-marker {
+    font-family: "Permanent Marker", cursive;
+  }
+</style>
