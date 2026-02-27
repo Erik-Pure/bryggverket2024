@@ -14,15 +14,30 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "recommended": true
+      },
       "correctness": {
-        "noUnusedImports": "warn"
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": "warn",
+        "useHookAtTopLevel": "error"
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noArrayIndexKey": "warn"
+        "noArrayIndexKey": "warn",
+        "noConsole": "warn"
       },
       "performance": {
         "noImgElement": "off"
+      },
+      "style": {
+        "useConst": "error",
+        "noNonNullAssertion": "warn",
+        "useFragmentSyntax": "warn",
+        "noParameterAssign": "error"
+      },
+      "nursery": {
+        "noLeakedRender": "warn"
       }
     }
   },
@@ -35,7 +50,8 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double",
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
       "trailingCommas": "all"
     }
   },

@@ -1,6 +1,6 @@
-import { PortableText } from "@portabletext/react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { PortableText } from '@portabletext/react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef } from 'react'
 
 export default function LandingHero({
   title,
@@ -9,26 +9,26 @@ export default function LandingHero({
   aboutIngress,
   aboutDesc,
 }: {
-  title: string;
-  ingress: string;
-  aboutTitle: string;
-  aboutIngress: string;
-  aboutDesc: any;
+  title: string
+  ingress: string
+  aboutTitle: string
+  aboutIngress: string
+  aboutDesc: any
 }) {
-  const ref = useRef(null);
+  const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "90vh start"],
-  });
-  const beerY = useTransform(scrollYProgress, [0, 1], ["100%", "150%"]);
+    offset: ['start start', '90vh start'],
+  })
+  const beerY = useTransform(scrollYProgress, [0, 1], ['100%', '150%'])
 
-  const trans = useTransform(scrollYProgress, [0, 1], ["0", "1"]);
-  const scaleTxt = useTransform(scrollYProgress, [0, 1], ["1.4", "1"]);
-  const color = useTransform(scrollYProgress, [0, 1], ["#fff", "#000"]);
-  const rotate = useTransform(scrollYProgress, [0, 1], ["0deg", "180deg"]);
+  const trans = useTransform(scrollYProgress, [0, 1], ['0', '1'])
+  const scaleTxt = useTransform(scrollYProgress, [0, 1], ['1.4', '1'])
+  const color = useTransform(scrollYProgress, [0, 1], ['#fff', '#000'])
+  const rotate = useTransform(scrollYProgress, [0, 1], ['0deg', '180deg'])
 
   return (
-    <motion.div style={{ overflow: "hidden", backgroundColor: color }}>
+    <motion.div style={{ overflow: 'hidden', backgroundColor: color }}>
       <div ref={ref} className="landingHero textCenter">
         <div className="container">
           <div>
@@ -43,7 +43,7 @@ export default function LandingHero({
           src="/images/can-top.png"
           width={800}
           height={800}
-          alt={"beer"}
+          alt={'beer'}
           style={{ rotate: rotate }}
         />
       </motion.div>
@@ -65,5 +65,5 @@ export default function LandingHero({
         </motion.div>
       </div>
     </motion.div>
-  );
+  )
 }

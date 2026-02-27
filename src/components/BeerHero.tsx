@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
-import { urlFor } from "@/lib/sanity";
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef } from 'react'
+import { urlFor } from '@/lib/sanity'
 
 export default function BeerHero({
   can,
@@ -8,22 +8,22 @@ export default function BeerHero({
   labelImage,
   backgroundImage,
 }: {
-  can: string;
-  title: string;
-  labelImage: any;
-  backgroundImage: any;
+  can: string
+  title: string
+  labelImage: any
+  backgroundImage: any
 }) {
-  const ref = useRef(null);
+  const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "70vh start"],
-  });
-  const beerY = useTransform(scrollYProgress, [0, 1], ["0%", "110%"]);
-  const labelRotateX = useTransform(scrollYProgress, [0, 1], ["-180%", "-80%"]);
-  const labelRotateY = useTransform(scrollYProgress, [0, 1], ["25deg", "0deg"]);
-  const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
-  const titleY = useTransform(scrollYProgress, [0, 1], ["14%", "60%"]);
+    offset: ['start start', '70vh start'],
+  })
+  const beerY = useTransform(scrollYProgress, [0, 1], ['0%', '110%'])
+  const labelRotateX = useTransform(scrollYProgress, [0, 1], ['-180%', '-80%'])
+  const labelRotateY = useTransform(scrollYProgress, [0, 1], ['25deg', '0deg'])
+  const foregroundY = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
+  const titleOpacity = useTransform(scrollYProgress, [0, 1], ['1', '0'])
+  const titleY = useTransform(scrollYProgress, [0, 1], ['14%', '60%'])
 
   return (
     <div ref={ref} className="beerHero">
@@ -42,14 +42,14 @@ export default function BeerHero({
           <img
             src={urlFor(backgroundImage).url()}
             alt=""
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         ) : (
           <img
             className="shiftLeft"
             src={urlFor(labelImage).url()}
             alt=""
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         )}
       </motion.div>
@@ -85,5 +85,5 @@ export default function BeerHero({
         />
       </motion.div>
     </div>
-  );
+  )
 }

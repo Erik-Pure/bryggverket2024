@@ -1,23 +1,23 @@
-import { PortableText } from "@portabletext/react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { PortableText } from '@portabletext/react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef } from 'react'
 
 export default function MerchOverview({
   title,
   ingress,
   text,
 }: {
-  title: string;
-  ingress: string;
-  text: any;
+  title: string
+  ingress: string
+  text: any
 }) {
-  const ref = useRef(null);
+  const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 30vh", "0vh end"],
-  });
+    offset: ['start 30vh', '0vh end'],
+  })
 
-  const scrollY = useTransform(scrollYProgress, [0, 1], ["0", "-100%"]);
+  const scrollY = useTransform(scrollYProgress, [0, 1], ['0', '-100%'])
 
   return (
     <section ref={ref} className="merchOverview">
@@ -44,5 +44,5 @@ export default function MerchOverview({
         />
       </div>
     </section>
-  );
+  )
 }
