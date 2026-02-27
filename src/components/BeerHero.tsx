@@ -1,10 +1,6 @@
-"use client";
-
 import { motion, useScroll, useTransform } from "motion/react";
-import Image from "next/image";
 import { useRef } from "react";
-import { permMarker } from "../lib/fonts";
-import { urlFor } from "../lib/sanity";
+import { urlFor } from "@/lib/sanity";
 
 export default function BeerHero({
   can,
@@ -32,37 +28,28 @@ export default function BeerHero({
   return (
     <div ref={ref} className="beerHero">
       <motion.div
-        className={`beerTitle specialIngress ${permMarker.className}`}
+        className="beerTitle specialIngress font-marker"
         style={{ opacity: titleOpacity, top: titleY }}
       >
         <h2>{title}</h2>
       </motion.div>
       <motion.div style={{ opacity: titleOpacity }} className="scroller">
-        <Image
-          src={"/images/spinner-can.svg"}
-          width={100}
-          height={100}
-          alt=""
-        />
+        <img src="/images/spinner-can.svg" width={100} height={100} alt="" />
       </motion.div>
 
       <motion.div className="backdrop" style={{ y: foregroundY }}>
         {backgroundImage ? (
-          <Image
+          <img
             src={urlFor(backgroundImage).url()}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />
         ) : (
-          <Image
+          <img
             className="shiftLeft"
             src={urlFor(labelImage).url()}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", width: "100%", height: "100%" }}
           />
         )}
       </motion.div>
@@ -76,25 +63,25 @@ export default function BeerHero({
             src={urlFor(labelImage).url()}
             width={600}
             height={230}
-            alt={"label"}
+            alt="label"
             style={{ left: labelRotateX }}
           />
 
           <div className="beerLabelShading"></div>
-          <Image
+          <img
             className="beerCan"
             src={`/images/${can}can.png`}
             width={270}
             height={500}
-            alt={"beer"}
+            alt="beer"
           />
         </div>
-        <Image
+        <img
           className="canShadow"
-          src={`/images/can-shadow.png`}
+          src="/images/can-shadow.png"
           width={300}
           height={440}
-          alt={"beer"}
+          alt="beer"
         />
       </motion.div>
     </div>

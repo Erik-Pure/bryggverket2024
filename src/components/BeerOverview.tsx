@@ -1,10 +1,6 @@
-"use client";
-
+import { PortableText } from "@portabletext/react";
 import { motion, useScroll, useTransform } from "motion/react";
-import Link from "next/link";
-import { PortableText } from "next-sanity";
 import { useRef } from "react";
-import { permMarker } from "../lib/fonts";
 
 export default function BeerOverview({
   title,
@@ -36,11 +32,11 @@ export default function BeerOverview({
           >
             <h2>{title}</h2>
             <div className="border"></div>
-            <h4 className={permMarker.className}>{ingress}</h4>
+            <h4 className="font-marker">{ingress}</h4>
             <PortableText value={text} />
-            <Link href="/beverages" className="btn">
+            <a href="/beverages" className="btn">
               Alla våra drycker
-            </Link>
+            </a>
           </motion.div>
           <div className="col col-6">
             <motion.img
@@ -48,7 +44,7 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ marginTop: beerOne, opacity: opac }}
             />
             <motion.img
@@ -56,7 +52,7 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ top: beerTwo, opacity: opac }}
             />
             <motion.img
@@ -64,7 +60,7 @@ export default function BeerOverview({
               src="/images/can-faded.png"
               width={300}
               height={400}
-              alt={""}
+              alt=""
               style={{ top: beerThree, opacity: opac }}
             />
           </div>

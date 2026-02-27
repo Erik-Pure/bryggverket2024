@@ -1,0 +1,59 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import BeerOverview from "@/components/BeerOverview";
+import EventOverview from "@/components/EventOverview";
+import LandingHero from "@/components/LandingHero";
+import MerchOverview from "@/components/MerchOverview";
+import type { landingPage } from "@/lib/interface";
+import { sanityClient } from "sanity:client";
+
+const data: landingPage = await sanityClient.fetch(
+  `*[_type == 'landing'] {
+    title,
+    ingress,
+    aboutTitle,
+    aboutIngress,
+    aboutDesc,
+    drinkTitle,
+    drinkIngress,
+    drinkDesc,
+    eventTitle,
+    eventIngress,
+    eventDesc,
+    merchTitle,
+    merchIngress,
+    merchDesc,
+  }[0]`,
+);
+---
+
+<Layout>
+  <main>
+    <LandingHero
+      client:load
+      title={data.title}
+      ingress={data.ingress}
+      aboutTitle={data.aboutTitle}
+      aboutIngress={data.aboutIngress}
+      aboutDesc={data.aboutDesc}
+    />
+    <BeerOverview
+      client:visible
+      title={data.drinkTitle}
+      ingress={data.drinkIngress}
+      text={data.drinkDesc}
+    />
+    <EventOverview
+      client:visible
+      title={data.eventTitle}
+      ingress={data.eventIngress}
+      text={data.eventDesc}
+    />
+    <MerchOverview
+      client:visible
+      title={data.merchTitle}
+      ingress={data.merchIngress}
+      text={data.merchDesc}
+    />
+  </main>
+</Layout>

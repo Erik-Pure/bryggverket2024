@@ -4,8 +4,8 @@ Website for [Bryggverket](https://bryggverket.se), a brewery in Umeå, Sweden.
 
 ## Tech stack
 
-- **Next.js 16** (App Router, Turbopack)
-- **React 19**
+- **Astro 5** — static site with React islands
+- **React 19** — interactive components (scroll animations, age gate)
 - **Sanity v3** — headless CMS ([studio](./sanity/))
 - **Motion** — scroll-driven animations
 - **SCSS** — global styles
@@ -22,7 +22,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:4321](http://localhost:4321).
 
 ## Scripts
 
@@ -30,10 +30,10 @@ Open [http://localhost:3000](http://localhost:3000).
 |---------|-------------|
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
-| `npm run start` | Serve production build |
+| `npm run preview` | Preview production build |
 | `npm run lint` | Run Biome linter |
 | `npm run format` | Auto-fix lint and formatting |
-| `npm run check` | Lint + build (CI check) |
+| `npm run check` | Type check + lint + build (CI) |
 
 ## Sanity Studio
 
@@ -47,4 +47,4 @@ npm run dev
 
 ## Deployment
 
-Deployed to Vercel. CI runs lint and build on every PR via GitHub Actions.
+Deployed to Vercel. CI runs type check, lint, and build on every PR via GitHub Actions.

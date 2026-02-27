@@ -1,10 +1,6 @@
-"use client";
-
+import { PortableText } from "@portabletext/react";
 import { motion, useScroll, useTransform } from "motion/react";
-import Link from "next/link";
-import { PortableText } from "next-sanity";
 import { useRef } from "react";
-import { permMarker } from "../lib/fonts";
 
 export default function LandingHero({
   title,
@@ -37,9 +33,7 @@ export default function LandingHero({
         <div className="container">
           <div>
             <h1>{title}</h1>
-            <h2 className={`specialIngress ${permMarker.className}`}>
-              {ingress}
-            </h2>
+            <h2 className="specialIngress font-marker">{ingress}</h2>
           </div>
         </div>
       </div>
@@ -63,13 +57,11 @@ export default function LandingHero({
         >
           <h2>{aboutTitle}</h2>
           <div className="border"></div>
-          <h4 className={`specialIngress ${permMarker.className}`}>
-            {aboutIngress}
-          </h4>
+          <h4 className="specialIngress font-marker">{aboutIngress}</h4>
           <PortableText value={aboutDesc} />
-          <Link href="/about" className="btn">
+          <a href="/about" className="btn">
             Läs mer om oss
-          </Link>
+          </a>
         </motion.div>
       </div>
     </motion.div>

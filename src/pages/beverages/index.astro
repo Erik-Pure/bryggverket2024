@@ -1,0 +1,45 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import BeerGrid from "@/components/BeerGrid.astro";
+import { PortableText } from "astro-portabletext";
+import type { beveragesPage } from "@/lib/interface";
+import { sanityClient } from "sanity:client";
+import { urlFor } from "@/lib/sanity";
+
+const data: beveragesPage = await sanityClient.fetch(
+  `*[_type == 'beverages'] {
+    title,
+    ingress,
+    heroImage,
+    description
+  }[0]`,
+);
+---
+
+<Layout title="Drycker — Bryggverket">
+  <article class="singlePage">
+    <div class="hero">
+      <img
+        class="heroBgImage"
+        src={urlFor(data.heroImage).url()}
+        alt=""
+        style="object-fit: cover; position: absolute; inset: 0; width: 100%; height: 100%;"
+      />
+      <div class="heroBgOverlay"></div>
+      <div class="container">
+        <h1>{data.title}</h1>
+        <h3 class="specialIngress font-marker">{data.ingress}</h3>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="container beers">
+        <BeerGrid />
+      </div>
+    </div>
+
+    <div class="container narrow marginLarge textCenter">
+      <PortableText value={data.description} />
+    </div>
+  </article>
+</Layout>

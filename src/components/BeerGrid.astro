@@ -1,0 +1,33 @@
+---
+import { sanityClient } from "sanity:client";
+import type { beverageThumb } from "@/lib/interface";
+import BeerThumb from "./BeerThumb.astro";
+
+const data: beverageThumb[] = await sanityClient.fetch(
+  `*[_type == 'beverage'] | order(title asc) {
+    title,
+    labelImage,
+    "currentSlug": slug.current,
+    can,
+    bgColor,
+    backgroundImage,
+  }`,
+);
+---
+
+<div class="grid beerGrid">
+  {
+    data.map((post) => (
+      <div class="col col-3">
+        <BeerThumb
+          currentSlug={post.currentSlug}
+          bgColor={post.bgColor}
+          backgroundImage={post.backgroundImage}
+          labelImage={post.labelImage}
+          can={post.can}
+          title={post.title}
+        />
+      </div>
+    ))
+  }
+</div>

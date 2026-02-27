@@ -1,0 +1,149 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import BeerHero from "@/components/BeerHero";
+import { PortableText } from "astro-portabletext";
+import type { beverage } from "@/lib/interface";
+import { sanityClient } from "sanity:client";
+
+export async function getStaticPaths() {
+  const beverages = await sanityClient.fetch(
+    `*[_type == 'beverage'] { "slug": slug.current }`,
+  );
+  return beverages.map((b: { slug: string }) => ({ params: { slug: b.slug } }));
+}
+
+const { slug } = Astro.params;
+
+const data: beverage = await sanityClient.fetch(
+  `*[_type == 'beverage' && slug.current == $slug] {
+    "currentSlug": slug.current,
+    title,
+    labelImage,
+    description,
+    can,
+    percentage,
+    style,
+    category,
+    link,
+    bgColor,
+    backgroundImage,
+    ingredients,
+  }[0]`,
+  { slug },
+);
+
+if (!data) {
+  return Astro.redirect("/404");
+}
+
+function getVolume(canType: string) {
+  switch (canType) {
+    case "black":
+    case "white":
+      return "33 Cl";
+    case "big":
+      return "44 Cl";
+    case "sleek":
+      return "25 Cl";
+    default:
+      return "33 cl";
+  }
+}
+
+function getCat(canCat: string) {
+  switch (canCat) {
+    case "strong":
+      return "Starköl";
+    case "weak":
+      return "Folköl";
+    case "drink":
+      return "Blanddryck";
+    case "soda":
+      return "Läsk";
+    case "noalco":
+      return "Alkoholfri öl";
+    default:
+      return "-";
+  }
+}
+---
+
+<Layout title={`${data.title} — Bryggverket`}>
+  <article>
+    <BeerHero
+      client:load
+      can={data.can}
+      title={data.title}
+      labelImage={data.labelImage}
+      backgroundImage={data.backgroundImage}
+    />
+    <div
+      class={`block beerBlock ${data.can}`}
+      style={{ backgroundColor: data.bgColor }}
+    >
+      <div class="container">
+        <div class="beerDesc">
+          <div class={`beerHeader textCenter ${data.can}`}>
+            <h1>{data.title}</h1>
+            {
+              data.style ? (
+                <h4 class="specialIngress font-marker">{data.style}</h4>
+              ) : (
+                <h4 class="specialIngress font-marker">
+                  {getCat(data.category)}
+                </h4>
+              )
+            }
+            <div class="beerLandingPad"></div>
+          </div>
+
+          <div class="grid">
+            <div class="col col-6">
+              <div class="border"></div>
+              <PortableText value={data.description} />
+              {
+                data.ingredients && (
+                  <div>
+                    <h5>Innehåll</h5>
+                    <PortableText value={data.ingredients} />
+                  </div>
+                )
+              }
+            </div>
+            <div class="col col-6">
+              <div class="border"></div>
+              <div class="grid">
+                <div class="col col-6">
+                  <h5>Typ</h5>
+                  <h4 class="font-marker">{getCat(data.category)}</h4>
+                </div>
+                {
+                  data.percentage && (
+                    <div class="col col-3">
+                      <h5>ABV</h5>
+                      <h4 class="font-marker">{data.percentage}%</h4>
+                    </div>
+                  )
+                }
+                <div class="col col-3">
+                  <h5>Storlek</h5>
+                  <h4 class="font-marker">{getVolume(data.can)}</h4>
+                </div>
+                {
+                  data.link && (
+                    <div class="col col-12">
+                      <h5>Beställ här</h5>
+                      <a target="_blank" class="btn black" href={data.link}>
+                        Systembolaget
+                      </a>
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>

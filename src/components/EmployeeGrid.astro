@@ -1,0 +1,30 @@
+---
+import { sanityClient } from "sanity:client";
+import type { employee } from "@/lib/interface";
+import { urlFor } from "@/lib/sanity";
+
+const data: employee[] = await sanityClient.fetch(
+  `*[_type == 'employee'] | order(_createdAt asc) {
+    title,
+    role,
+    profilePicture,
+  }`,
+);
+---
+
+<div class="grid">
+  {
+    data.map((post) => (
+      <div class="col col-4 textCenter">
+        <img
+          src={urlFor(post.profilePicture).url()}
+          width="300"
+          height="300"
+          alt={post.title}
+        />
+        <h4>{post.title}</h4>
+        <h5 class="specialIngress font-marker">{post.role}</h5>
+      </div>
+    ))
+  }
+</div>
