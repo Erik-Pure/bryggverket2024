@@ -1,17 +1,12 @@
-import Image from "next/image";
-import styles from "./page.module.scss";
-import { Permanent_Marker } from "next/font/google";
-import { client, urlFor } from "./lib/sanity";
-import { landingPage } from "./lib/interface";
-import Link from "next/link";
-import { PortableText } from "next-sanity";
-import LandingHero from "./components/LandingHero";
 import BeerOverview from "./components/BeerOverview";
 import EventOverview from "./components/EventOverview";
+import LandingHero from "./components/LandingHero";
 import MerchOverview from "./components/MerchOverview";
+import type { landingPage } from "./lib/interface";
+import { client } from "./lib/sanity";
+import styles from "./page.module.scss";
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData() {
   const query = `*[_type == 'landing'] {
@@ -35,11 +30,6 @@ async function getData() {
 
   return data;
 }
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export default async function Home() {
   const data: landingPage = await getData();

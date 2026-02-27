@@ -1,16 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { Permanent_Marker } from "next/font/google";
-import { PortableText } from "next-sanity";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { PortableText } from "next-sanity";
 import { useRef } from "react";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { permMarker } from "../lib/fonts";
 
 export default function EventOverview({
   title,

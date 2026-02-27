@@ -1,15 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import Image from "next/image";
+import { useRef } from "react";
+import { permMarker } from "../lib/fonts";
 import { urlFor } from "../lib/sanity";
-import { Permanent_Marker } from "next/font/google";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export default function BeerHero({
   can,
@@ -58,7 +53,7 @@ export default function BeerHero({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
         ) : (
           <Image
@@ -67,7 +62,7 @@ export default function BeerHero({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
         )}
       </motion.div>

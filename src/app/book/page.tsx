@@ -1,16 +1,10 @@
-import { Permanent_Marker } from "next/font/google";
-import { client, urlFor } from "../lib/sanity";
-import { bookPage } from "../lib/interface";
 import Image from "next/image";
 import { PortableText } from "next-sanity";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { permMarker } from "../lib/fonts";
+import type { bookPage } from "../lib/interface";
+import { client, urlFor } from "../lib/sanity";
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData() {
   const query = `*[_type == 'book'] {
@@ -35,7 +29,7 @@ export default async function Book() {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt=""
-          objectFit="cover"
+          style={{ objectFit: "cover" }}
         />
         <div className="heroBgOverlay"></div>
         <div className="container">

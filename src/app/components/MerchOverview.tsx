@@ -1,17 +1,12 @@
 "use client";
 
-import { PortableText } from "next-sanity";
-import Image from "next/image";
-import { Permanent_Marker } from "next/font/google";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { PortableText } from "next-sanity";
 import { useRef } from "react";
+import { permMarker } from "../lib/fonts";
 
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
-
-export default function ({
+export default function MerchOverview({
   title,
   ingress,
   text,
@@ -27,7 +22,7 @@ export default function ({
   });
 
   const scrollY = useTransform(scrollYProgress, [0, 1], ["0", "-100%"]);
-  const trans = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
+  const _trans = useTransform(scrollYProgress, [0, 1], ["1", "0"]);
 
   return (
     <section ref={ref} className="merchOverview">
@@ -40,6 +35,7 @@ export default function ({
             className="btn black"
             href="https://brewmerch.se/collections/bryggverket"
             target="_blank"
+            rel="noopener"
           >
             Brewmerch
           </a>

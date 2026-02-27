@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome check ./src",
+    "format": "biome check --write ./src",
+    "check": "biome check ./src && next build"
   },
   "dependencies": {
     "@portabletext/react": "^3.0.18",
@@ -22,6 +24,7 @@
     "universal-cookie": "^7.1.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

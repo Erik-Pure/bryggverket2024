@@ -1,17 +1,11 @@
-import { Permanent_Marker } from "next/font/google";
 import Image from "next/image";
-import { client, urlFor } from "../lib/sanity";
-import { aboutPage } from "../lib/interface";
 import { PortableText } from "next-sanity";
 import EmployeeGrid from "../components/EmployeeGrid";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { permMarker } from "../lib/fonts";
+import type { aboutPage } from "../lib/interface";
+import { client, urlFor } from "../lib/sanity";
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 async function getData() {
   const query = `*[_type == 'about'] {
@@ -36,7 +30,7 @@ export default async function About() {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt=""
-          objectFit="cover"
+          style={{ objectFit: "cover" }}
         />
         <div className="heroBgOverlay"></div>
         <div className="container">

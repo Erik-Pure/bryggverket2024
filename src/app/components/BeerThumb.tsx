@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { urlFor } from "../lib/sanity";
 
 export default function BeerThumb({
@@ -19,7 +19,7 @@ export default function BeerThumb({
 }) {
   return (
     <Link
-      className={`${can}`}
+      className={can}
       href={`/beverages/${currentSlug}`}
       style={{ backgroundColor: `${bgColor}` }}
     >

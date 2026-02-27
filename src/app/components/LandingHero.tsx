@@ -1,16 +1,10 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Permanent_Marker } from "next/font/google";
 import Link from "next/link";
-import React, { useRef } from "react";
 import { PortableText } from "next-sanity";
-import Image from "next/image";
-
-const permMarker = Permanent_Marker({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { useRef } from "react";
+import { permMarker } from "../lib/fonts";
 
 export default function LandingHero({
   title,

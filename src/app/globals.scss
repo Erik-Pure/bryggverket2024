@@ -782,52 +782,6 @@ article {
   }
 }
 
-.grid {
-  .beerShowcase {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    .beerLabelShading {
-      display: block;
-      position: absolute;
-      bottom: 9%;
-      left: 0;
-      height: 75%;
-      width: 100%;
-      background: rgb(0, 0, 0);
-      background: linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0) 20%,
-        rgba(0, 0, 0, 0) 80%,
-        rgba(0, 0, 0, 0.5) 100%
-      );
-    }
-    .beerCan {
-      width: 100%;
-      height: auto;
-    }
-    .beerLabel {
-      animation-play-state: paused;
-      position: absolute;
-      bottom: 9%;
-      left: 0%;
-      height: 75%;
-      width: 280%;
-      max-width: unset;
-      animation-name: example;
-      animation-timing-function: linear;
-      animation-duration: 2s;
-      /* animation-direction: alternate; */
-      animation-iteration-count: infinite;
-      &.two {
-        left: 100%;
-        animation-name: example2;
-      }
-    }
-  }
-}
-
 @keyframes example {
   0% {
     left: -115%;
