@@ -12,7 +12,9 @@
     "preview": "astro preview",
     "lint": "biome check ./src",
     "format": "biome check --write ./src",
-    "check": "astro check && biome check ./src && astro build"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "astro check && biome check ./src && vitest run && astro build"
   },
   "dependencies": {
     "@astrojs/react": "^4",
@@ -32,9 +34,14 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@biomejs/biome": "^2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5"
+    "happy-dom": "^20.7.0",
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

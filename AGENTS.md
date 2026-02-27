@@ -13,6 +13,7 @@ Bryggverket — marketing site for a Swedish craft brewery. Static site built wi
 - **Fonts**: Fontsource (Saira, Permanent Marker) — no external font loading
 - **Animations**: Motion (Framer Motion) for scroll-driven effects
 - **Linting/Formatting**: Biome (single quotes, no semicolons, space indent)
+- **Testing**: Vitest (unit/component), Playwright (visual regression)
 - **Hosting**: Vercel (static)
 
 ## Directory Structure
@@ -24,6 +25,7 @@ src/
   components/     # .astro = static, .tsx = React islands
   lib/            # sanity.ts (client + urlFor), interface.ts (types)
   styles/         # globals.scss
+tests/            # Vitest unit/component tests + Playwright visual tests
 sanity/           # Sanity Studio (separate package in same repo)
   schemaTypes/    # Content models
 ```
@@ -81,7 +83,9 @@ Biome handles both. Config in `biome.json`.
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Biome lint check |
 | `npm run format` | Biome auto-fix + format |
-| `npm run check` | Full validation (types + lint + build) |
+| `npm run test` | Run Vitest tests once |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run check` | Full validation (types + lint + tests + build) |
 
 ## Sanity Studio
 
@@ -91,6 +95,7 @@ The `sanity/` directory is a separate package with its own `package.json`. Schem
 
 - **Never** commit, push, or create PRs/branches on remote without explicit confirmation from the user.
 - Run `npm run format` before committing.
+- Run `npm run check` to validate (types + lint + tests + build).
 
 ## Gotchas
 
