@@ -21,8 +21,7 @@
     "next-sanity": "^12",
     "react": "^19",
     "react-dom": "^19",
-    "sass": "^1",
-    "universal-cookie": "^7"
+    "sass": "^1"
   },
   "devDependencies": {
     "@biomejs/biome": "^2",
