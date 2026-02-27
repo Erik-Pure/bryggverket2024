@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 
 const COOKIE_NAME = "age_verified";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
@@ -37,7 +36,7 @@ export default function AgeGate() {
     setState("hidden");
   };
 
-  return createPortal(
+  return (
     <div className={`ageGate${show ? " visible" : ""}`}>
       <div className="ageGateCard">
         {state === "denied" ? (
@@ -72,7 +71,6 @@ export default function AgeGate() {
           </>
         )}
       </div>
-    </div>,
-    document.body,
+    </div>
   );
 }

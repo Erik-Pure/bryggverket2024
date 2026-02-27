@@ -103,6 +103,85 @@ a {
   text-decoration: none;
 }
 
+.ageGate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.ageGateCard {
+  text-align: center;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 60px 48px;
+  max-width: 420px;
+  width: 90%;
+  img {
+    margin-bottom: 24px;
+  }
+  h2 {
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  p {
+    color: #aaa;
+    margin-top: 0;
+  }
+}
+
+.ageGateButtons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  .btn {
+    min-width: 120px;
+    margin: 0;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+}
+
+.ageGateDenied {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.ageGateSad {
+  font-size: 4rem;
+  color: #666;
+}
+
+.ageGateCan {
+  animation: ageGateSpin 3s linear infinite;
+  img {
+    width: 80px;
+    height: auto;
+  }
+}
+
+@keyframes ageGateSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .textCenter {
   text-align: center;
 }
