@@ -15,13 +15,18 @@
   },
   "dependencies": {
     "@portabletext/react": "^3",
+    "@react-three/fiber": "^9.8.2",
+    "@remotion/player": "4.0.543",
+    "@remotion/three": "4.0.543",
     "@sanity/image-url": "^1",
     "motion": "^12",
     "next": "^16",
     "next-sanity": "^12",
     "react": "^19",
     "react-dom": "^19",
+    "remotion": "4.0.543",
     "sass": "^1",
+    "three": "^0.187.0",
     "universal-cookie": "^7"
   },
   "devDependencies": {
@@ -29,6 +34,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.187.0",
     "typescript": "^5"
   }
 }
