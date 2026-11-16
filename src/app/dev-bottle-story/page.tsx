@@ -31,8 +31,8 @@ export default function DevBottleStoryPage() {
           canSize="bottle"
           canColor="clear"
           labelUrl="/images/dev-baverhojt-label.jpg"
-          labelAspect={1.6}
-          labelFront={0.5}
+          labelAspect={1.85}
+          labelFront={0.45}
           bg="#d9c4a0"
           glow="#efe2c6"
           ink="#101011"
