@@ -34,13 +34,14 @@ export default {
         {
             name: 'can',
             type: 'string',
-            title: 'Typ av burk',
+            title: 'Förpackning',
             options: {
                 list: [
                     {title: '33 Black can', value: 'black'},
                     {title: '33 White can', value: 'white'},
                     {title: '25 Sleek can', value: 'sleek'},
                     {title: '44 Big can', value: 'big'},
+                    {title: '50 cl Glasflaska', value: 'bottle'},
                 ],
             }
         },
@@ -62,7 +63,7 @@ export default {
         {
             name: 'style',
             type: 'string',
-            title: 'Ölstil'
+            title: 'Stil'
         },
         {
             name: 'category',
@@ -74,6 +75,7 @@ export default {
                     {title: 'Folköl', value: 'weak'},
                     {title: 'Läsk', value: 'soda'},
                     {title: 'Blanddryck', value: 'drink'},
+                    {title: 'Sprit', value: 'spirit'},
                     {title: 'Alkoholfri öl', value: 'noalco'},
                 ],
             }

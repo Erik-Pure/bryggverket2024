@@ -44,31 +44,42 @@ export default function BeverageTile({ drink }: { drink: beverageThumb }) {
     >
       <span className={styles.glow} aria-hidden="true" />
       <div className={styles.stage}>
-        <div
-          className={`${styles.can} ${drink.can === "sleek" ? styles.sleek : ""}`}
-        >
-          <div className="beerShowcase">
-            {labelUrl ? (
-              <>
-                <img
-                  className="beerLabel"
-                  src={labelUrl}
-                  alt=""
-                  style={{ left: "-115%" }}
-                />
-                <img className="beerLabel two" src={labelUrl} alt="" />
-              </>
-            ) : null}
-            <div className="beerLabelShading" />
+        {drink.can === "bottle" ? (
+          <div className={`${styles.can} ${styles.bottle}`}>
             <Image
-              className="beerCan"
-              src={`/images/${drink.can ?? "black"}can.png`}
-              width={160}
-              height={300}
+              src="/images/bottlecan.png"
+              width={200}
+              height={480}
               alt=""
             />
           </div>
-        </div>
+        ) : (
+          <div
+            className={`${styles.can} ${drink.can === "sleek" ? styles.sleek : ""}`}
+          >
+            <div className="beerShowcase">
+              {labelUrl ? (
+                <>
+                  <img
+                    className="beerLabel"
+                    src={labelUrl}
+                    alt=""
+                    style={{ left: "-115%" }}
+                  />
+                  <img className="beerLabel two" src={labelUrl} alt="" />
+                </>
+              ) : null}
+              <div className="beerLabelShading" />
+              <Image
+                className="beerCan"
+                src={`/images/${drink.can ?? "black"}can.png`}
+                width={160}
+                height={300}
+                alt=""
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.copy}>
         <p className={styles.meta}>{meta}</p>

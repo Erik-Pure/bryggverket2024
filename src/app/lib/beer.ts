@@ -8,8 +8,8 @@ import {
   toHex,
 } from "./color";
 
-export type CanSize = "33" | "44" | "25";
-export type CanColor = "black" | "white";
+export type CanSize = "33" | "44" | "25" | "bottle";
+export type CanColor = "black" | "white" | "clear";
 
 export interface CanConfig {
   size: CanSize;
@@ -42,6 +42,13 @@ export function getCan(canType: string | null | undefined): CanConfig {
         volume: "25 cl",
         description: "Sleek-burk",
       };
+    case "bottle":
+      return {
+        size: "bottle",
+        color: "clear",
+        volume: "50 cl",
+        description: "Glasflaska",
+      };
     default:
       return {
         size: "33",
@@ -57,6 +64,7 @@ export const CATEGORY_ORDER = [
   "strong",
   "drink",
   "soda",
+  "spirit",
   "weak",
   "noalco",
 ] as const;
@@ -73,6 +81,8 @@ export function getCategory(category: string | null | undefined): string {
       return "Blanddryck";
     case "soda":
       return "Läsk";
+    case "spirit":
+      return "Sprit";
     case "noalco":
       return "Alkoholfri";
     default:
@@ -80,11 +90,17 @@ export function getCategory(category: string | null | undefined): string {
   }
 }
 
-/** Categories that actually appear in a list of beverages, in filter order. */
+/**
+ * Categories that actually appear in a list of beverages, in filter order.
+ * Empty types (no drinks yet) are omitted — applies to every category,
+ * including Sprit before any spirit has been published.
+ */
 export function listPresentCategories(
   categories: Array<string | null | undefined>,
 ): BeverageCategory[] {
-  const present = new Set(categories.filter(Boolean));
+  const present = new Set(
+    categories.filter((value): value is string => Boolean(value)),
+  );
   return CATEGORY_ORDER.filter((id) => present.has(id));
 }
 
@@ -139,7 +155,7 @@ export function buildTheme(
     parseHex(bgColor) ??
     parseHex(palette?.vibrant?.background) ??
     parseHex(palette?.dominant?.background) ??
-    parseHex(canColor === "black" ? "#1c1c1f" : "#e8e5de");
+    parseHex(canColor === "black" ? "#1c1c1f" : "#e8e5de"); // clear glass falls through to the light neutral
   const source = base ?? [28, 28, 31];
 
   const isDark = luminance(source) <= 0.3;

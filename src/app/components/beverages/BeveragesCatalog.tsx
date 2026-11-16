@@ -31,11 +31,6 @@ export default function BeveragesCatalog({
   const [, startTransition] = useTransition();
   const reduced = useReducedMotion();
 
-  const categories = useMemo(
-    () => listPresentCategories(drinks.map((drink) => drink.category)),
-    [drinks],
-  );
-
   const counts = useMemo(() => {
     const next: Record<string, number> = { all: drinks.length };
     for (const drink of drinks) {
@@ -44,6 +39,16 @@ export default function BeveragesCatalog({
     }
     return next;
   }, [drinks]);
+
+  // Only categories that actually have at least one drink — empty types
+  // (e.g. Sprit before any spirit exists) never get a chip.
+  const categories = useMemo(
+    () =>
+      listPresentCategories(drinks.map((drink) => drink.category)).filter(
+        (id) => (counts[id] ?? 0) > 0,
+      ),
+    [drinks, counts],
+  );
 
   const visible = useMemo(
     () =>
@@ -57,6 +62,9 @@ export default function BeveragesCatalog({
     startTransition(() => setFilter(next));
   };
 
+  // No point showing filters when there is only one (or zero) type.
+  const showFilters = categories.length > 1;
+
   return (
     <section className={styles.catalog} aria-label="Alla drycker">
       <div
@@ -64,27 +72,31 @@ export default function BeveragesCatalog({
         role="toolbar"
         aria-label="Filtrera drycker"
       >
-        <button
-          type="button"
-          className={`${styles.chip} ${filter === "all" ? styles.chipActive : ""}`}
-          aria-pressed={filter === "all"}
-          onClick={() => select("all")}
-        >
-          Alla
-          <span className={styles.chipCount}>{counts.all}</span>
-        </button>
-        {categories.map((id) => (
-          <button
-            key={id}
-            type="button"
-            className={`${styles.chip} ${filter === id ? styles.chipActive : ""}`}
-            aria-pressed={filter === id}
-            onClick={() => select(id)}
-          >
-            {getCategory(id)}
-            <span className={styles.chipCount}>{counts[id] ?? 0}</span>
-          </button>
-        ))}
+        {showFilters ? (
+          <>
+            <button
+              type="button"
+              className={`${styles.chip} ${filter === "all" ? styles.chipActive : ""}`}
+              aria-pressed={filter === "all"}
+              onClick={() => select("all")}
+            >
+              Alla
+              <span className={styles.chipCount}>{counts.all}</span>
+            </button>
+            {categories.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={`${styles.chip} ${filter === id ? styles.chipActive : ""}`}
+                aria-pressed={filter === id}
+                onClick={() => select(id)}
+              >
+                {getCategory(id)}
+                <span className={styles.chipCount}>{counts[id] ?? 0}</span>
+              </button>
+            ))}
+          </>
+        ) : null}
         <p className={styles.status} aria-live="polite">
           {visible.length} {visible.length === 1 ? "dryck" : "drycker"}
         </p>

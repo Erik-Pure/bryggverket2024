@@ -69,7 +69,7 @@ function useLabelTexture(url: string | null, onSettled: () => void) {
       },
       undefined,
       () => {
-        // A blank can is better than no can at all.
+        // A blank vessel is better than no vessel at all.
         if (!cancelled) settled.current();
       },
     );
@@ -112,6 +112,149 @@ function usePointer(enabled: boolean) {
 }
 
 const easeOutQuart = (t: number) => 1 - (1 - t) ** 4;
+
+function CanMeshes({
+  geometry,
+  texture,
+  blackCan,
+}: {
+  geometry: ReturnType<typeof buildCanGeometry>;
+  texture: Texture | null;
+  blackCan: boolean;
+}) {
+  if (!geometry.base || !geometry.body || !geometry.end || !geometry.tab) {
+    return null;
+  }
+
+  return (
+    <>
+      <mesh geometry={geometry.base}>
+        <meshStandardMaterial color="#d9dbde" metalness={1} roughness={0.3} />
+      </mesh>
+      <mesh geometry={geometry.body}>
+        {blackCan ? (
+          <meshPhysicalMaterial
+            color="#0a0a0b"
+            metalness={0.2}
+            roughness={0.36}
+            clearcoat={1}
+            clearcoatRoughness={0.16}
+          />
+        ) : (
+          <meshPhysicalMaterial
+            color="#f3f1ec"
+            metalness={0}
+            roughness={0.46}
+            clearcoat={0.5}
+            clearcoatRoughness={0.3}
+          />
+        )}
+      </mesh>
+      {[geometry.end, geometry.tab, geometry.rivet].map((part) =>
+        part ? (
+          <mesh key={part.uuid} geometry={part}>
+            {blackCan ? (
+              <meshPhysicalMaterial
+                color="#1b1b1e"
+                metalness={0.85}
+                roughness={0.3}
+                clearcoat={1}
+                clearcoatRoughness={0.12}
+              />
+            ) : (
+              <meshStandardMaterial
+                color="#dcdee1"
+                metalness={1}
+                roughness={0.26}
+              />
+            )}
+          </mesh>
+        ) : null,
+      )}
+      {geometry.score ? (
+        <mesh geometry={geometry.score}>
+          <meshStandardMaterial
+            color={blackCan ? "#060607" : "#9c9ea3"}
+            metalness={1}
+            roughness={0.45}
+          />
+        </mesh>
+      ) : null}
+      {geometry.label && texture ? (
+        <mesh geometry={geometry.label}>
+          <meshPhysicalMaterial
+            map={texture}
+            metalness={0}
+            roughness={0.56}
+            specularIntensity={0.7}
+            clearcoat={0.18}
+            clearcoatRoughness={0.3}
+          />
+        </mesh>
+      ) : null}
+    </>
+  );
+}
+
+/** Clear glass spirit bottle with cork — no painted body, no lid tab. */
+function BottleMeshes({
+  geometry,
+  texture,
+}: {
+  geometry: ReturnType<typeof buildCanGeometry>;
+  texture: Texture | null;
+}) {
+  if (!geometry.glass || !geometry.cork || !geometry.corkTop) return null;
+
+  return (
+    <>
+      {geometry.liquid ? (
+        <mesh geometry={geometry.liquid}>
+          <meshPhysicalMaterial
+            color="#dfd09a"
+            metalness={0}
+            roughness={0.55}
+            transparent
+            opacity={0.28}
+            depthWrite={false}
+          />
+        </mesh>
+      ) : null}
+      <mesh geometry={geometry.glass}>
+        <meshPhysicalMaterial
+          color="#f7fbff"
+          metalness={0}
+          roughness={0.05}
+          transmission={0.94}
+          thickness={1.5}
+          ior={1.47}
+          envMapIntensity={1.7}
+          transparent
+          opacity={0.42}
+          clearcoat={1}
+          clearcoatRoughness={0.04}
+        />
+      </mesh>
+      <mesh geometry={geometry.cork}>
+        <meshStandardMaterial color="#c9a56b" roughness={0.92} metalness={0} />
+      </mesh>
+      <mesh geometry={geometry.corkTop}>
+        <meshStandardMaterial color="#5a3720" roughness={0.78} metalness={0} />
+      </mesh>
+      {geometry.label && texture ? (
+        <mesh geometry={geometry.label}>
+          <meshPhysicalMaterial
+            map={texture}
+            metalness={0}
+            roughness={0.62}
+            clearcoat={0.08}
+            clearcoatRoughness={0.45}
+          />
+        </mesh>
+      ) : null}
+    </>
+  );
+}
 
 export default function CanScene({
   pose,
@@ -156,13 +299,10 @@ export default function CanScene({
   const scale = (pose.size * visibleHeight) / getFitHeight(canSize);
   const floating = 1 - pose.grounded;
 
-  // Everything that is alive rather than scripted: the entrance, a slow
-  // hover and a hint of parallax. The scripted pose comes from the timeline.
   useFrame((state, elapsed) => {
     const group = live.current;
     const spin = liveSpin.current;
     if (!group || !spin) return;
-    // Rendering pauses while idle, so the first frame back can be a long one.
     const delta = Math.min(elapsed, 0.1);
 
     if (ready$.current && intro.current < 1) {
@@ -176,7 +316,6 @@ export default function CanScene({
     eased.current.x += (pointer.current.x - eased.current.x) * follow;
     eased.current.y += (pointer.current.y - eased.current.y) * follow;
 
-    // The hover eases out before rendering pauses, and back in on waking.
     energy.current +=
       ((calm ? 0 : 1) - energy.current) * (1 - Math.exp(-delta * 2.5));
     const drift = floating * motion * energy.current;
@@ -194,6 +333,7 @@ export default function CanScene({
   });
 
   const blackCan = canColor === "black";
+  const isBottle = geometry.kind === "bottle";
 
   return (
     <>
@@ -210,71 +350,20 @@ export default function CanScene({
         <group ref={live}>
           <group rotation={[pose.tiltX, 0, pose.tiltZ]} scale={scale}>
             <group ref={liveSpin}>
-              <group rotation-y={-(turns + labelFront) * Math.PI * 2}>
-                <mesh geometry={geometry.base}>
-                  <meshStandardMaterial
-                    color="#d9dbde"
-                    metalness={1}
-                    roughness={0.3}
+              <group
+                rotation-y={
+                  -(turns + (isBottle ? 0 : labelFront)) * Math.PI * 2
+                }
+              >
+                {isBottle ? (
+                  <BottleMeshes geometry={geometry} texture={texture} />
+                ) : (
+                  <CanMeshes
+                    geometry={geometry}
+                    texture={texture}
+                    blackCan={blackCan}
                   />
-                </mesh>
-                <mesh geometry={geometry.body}>
-                  {blackCan ? (
-                    <meshPhysicalMaterial
-                      color="#0a0a0b"
-                      metalness={0.2}
-                      roughness={0.36}
-                      clearcoat={1}
-                      clearcoatRoughness={0.16}
-                    />
-                  ) : (
-                    <meshPhysicalMaterial
-                      color="#f3f1ec"
-                      metalness={0}
-                      roughness={0.46}
-                      clearcoat={0.5}
-                      clearcoatRoughness={0.3}
-                    />
-                  )}
-                </mesh>
-                {[geometry.end, geometry.tab, geometry.rivet].map((part) => (
-                  <mesh key={part.uuid} geometry={part}>
-                    {blackCan ? (
-                      <meshPhysicalMaterial
-                        color="#1b1b1e"
-                        metalness={0.85}
-                        roughness={0.3}
-                        clearcoat={1}
-                        clearcoatRoughness={0.12}
-                      />
-                    ) : (
-                      <meshStandardMaterial
-                        color="#dcdee1"
-                        metalness={1}
-                        roughness={0.26}
-                      />
-                    )}
-                  </mesh>
-                ))}
-                <mesh geometry={geometry.score}>
-                  <meshStandardMaterial
-                    color={blackCan ? "#060607" : "#9c9ea3"}
-                    metalness={1}
-                    roughness={0.45}
-                  />
-                </mesh>
-                {geometry.label && texture ? (
-                  <mesh geometry={geometry.label}>
-                    <meshPhysicalMaterial
-                      map={texture}
-                      metalness={0}
-                      roughness={0.56}
-                      specularIntensity={0.7}
-                      clearcoat={0.18}
-                      clearcoatRoughness={0.3}
-                    />
-                  </mesh>
-                ) : null}
+                )}
               </group>
             </group>
           </group>
