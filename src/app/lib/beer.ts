@@ -90,11 +90,17 @@ export function getCategory(category: string | null | undefined): string {
   }
 }
 
-/** Categories that actually appear in a list of beverages, in filter order. */
+/**
+ * Categories that actually appear in a list of beverages, in filter order.
+ * Empty types (no drinks yet) are omitted — applies to every category,
+ * including Sprit before any spirit has been published.
+ */
 export function listPresentCategories(
   categories: Array<string | null | undefined>,
 ): BeverageCategory[] {
-  const present = new Set(categories.filter(Boolean));
+  const present = new Set(
+    categories.filter((value): value is string => Boolean(value)),
+  );
   return CATEGORY_ORDER.filter((id) => present.has(id));
 }
 
