@@ -327,17 +327,3 @@ export function getPose(timeline: Timeline, frame: number): Pose {
 export function getTurns(timeline: Timeline, frame: number): number {
   return sample(timeline.turns, frame, false);
 }
-
-/** Progress (0-1) through a chapter's own stretch of the timeline. */
-export function getChapterProgress(
-  marks: ChapterMark[],
-  id: ChapterId,
-  frame: number,
-): number {
-  const mark = marks.find((candidate) => candidate.id === id);
-  if (!mark || mark.end <= mark.start) return 0;
-  return interpolate(frame, [mark.start, mark.end], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-}

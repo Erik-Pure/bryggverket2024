@@ -48,9 +48,13 @@ export type StageProps = {
   onReady: () => void;
 };
 
-/** Frames of fade around the label chapter's turntable read-out. */
-const DIAL_FADE = 45;
+/** Frames the turntable read-out takes to fade in and out. */
+const DIAL_FADE = 30;
 
+/**
+ * Read-out for the label chapter. It lives inside the pinned part of the
+ * chapter only, so it never meets the caption scrolling in or out.
+ */
 function Dial({
   duration,
   ink,
@@ -65,15 +69,10 @@ function Dial({
   left: number;
 }) {
   const frame = useCurrentFrame();
-  const progress = interpolate(
-    frame,
-    [DIAL_FADE, duration - DIAL_FADE],
-    [0, 1],
-    {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    },
-  );
+  const progress = interpolate(frame, [0, duration], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
   const opacity = interpolate(
     frame,
     [0, DIAL_FADE, duration - DIAL_FADE, duration],
@@ -282,12 +281,12 @@ export default function StageComposition({
       </ThreeCanvas>
       {labelMark && labelDuration > DIAL_FADE * 2 ? (
         <Sequence
-          from={labelMark.start - DIAL_FADE}
-          durationInFrames={labelDuration + DIAL_FADE * 2}
+          from={labelMark.start}
+          durationInFrames={labelDuration}
           layout="none"
         >
           <Dial
-            duration={labelDuration + DIAL_FADE * 2}
+            duration={labelDuration}
             ink={ink}
             fontFamily={fontFamily}
             left={centerX}
