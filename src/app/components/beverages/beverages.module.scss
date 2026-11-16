@@ -306,12 +306,33 @@ $tablet: 700px;
   }
 
   &.bottle {
-    width: min(38%, 150px);
+    // Taller vessel — keep it a touch narrower than a can so the neck reads.
+    width: min(34%, 140px);
 
-    img {
+    :global(.beerCan) {
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    // Clip the spinning label to the glass body width (~90% of the asset).
+    :global(.beerLabelClip) {
+      position: absolute;
+      // Slightly inside the glass silhouette so the band reads as on the body.
+      left: 6%;
+      right: 6%;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    // Mid-body — under the shoulder, not hugging the base.
+    :global(.beerLabel),
+    :global(.beerLabelShading) {
+      bottom: 8%;
+      height: 48%;
     }
   }
 }

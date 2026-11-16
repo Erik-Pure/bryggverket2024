@@ -82,6 +82,10 @@ $desktop: 900px;
     width: min(34vw, 20vh, 220px);
   }
 
+  &.stageFallbackBottle :global(.beerShowcase) {
+    width: min(28vw, 26vh, 180px);
+  }
+
   @media (min-width: $desktop) {
     place-items: center end;
     padding: 60px 16vw 0 0;

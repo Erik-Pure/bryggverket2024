@@ -503,6 +503,26 @@ article {
       animation-name: example2;
     }
   }
+
+  // Spirit bottle: label clipped to the body width, below the shoulder.
+  &.beerShowcaseBottle {
+    .beerLabelClip {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    .beerLabel,
+    .beerLabelShading {
+      bottom: 8%;
+      height: 48%;
+    }
+  }
 }
 
 @keyframes example {
