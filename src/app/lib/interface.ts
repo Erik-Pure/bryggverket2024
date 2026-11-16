@@ -41,8 +41,6 @@ export interface beverage {
   category: string;
   link?: string;
   bgColor?: string;
-  backgroundImage: any;
-  backgroundMeta?: imageMeta;
 }
 
 export interface aboutPage {
