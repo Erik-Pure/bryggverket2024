@@ -255,7 +255,7 @@ export default async function BeveragePage({
               <div className={styles.inner}>
                 <div className={`${styles.column} ${styles.columnStart}`}>
                   <Reveal>
-                    <Kicker index={numberOf("story")}>Innehåll</Kicker>
+                    <Kicker index={numberOf("story")}>Beskrivning</Kicker>
                   </Reveal>
                   <Reveal delay={0.06} className={styles.prose}>
                     <PortableText value={data.description} />
