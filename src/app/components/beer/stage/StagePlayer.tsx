@@ -15,12 +15,32 @@ const FPS = 60;
 const EASE_SECONDS = 0.1;
 const DESKTOP_QUERY = "(min-width: 900px)";
 
+/** Idle time before the can's hover settles, and then before rendering
+ * pauses altogether, so a reader is not kept at 60 fps by a still image. */
+const CALM_AFTER_MS = 6000;
+const SLEEP_AFTER_MS = 2500;
+const ACTIVITY_EVENTS = [
+  "scroll",
+  "pointermove",
+  "pointerdown",
+  "touchstart",
+  "keydown",
+] as const;
+
+type Energy = "awake" | "calm" | "asleep";
+
 /** Space reserved for the fixed site header. */
 const HEADER_CLEARANCE = 60;
 
 export type StagePlayerProps = Omit<
   StageProps,
-  "marks" | "layout" | "heroBox" | "reducedMotion" | "onReady" | "active"
+  | "marks"
+  | "layout"
+  | "heroBox"
+  | "reducedMotion"
+  | "onReady"
+  | "active"
+  | "calm"
 > & {
   onReady: () => void;
 };
@@ -134,7 +154,9 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
   const player = useRef<PlayerRef>(null);
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [active, setActive] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const [energy, setEnergy] = useState<Energy>("awake");
+  const touch = useRef<() => void>(() => {});
 
   useEffect(() => {
     const element = host.current;
@@ -153,7 +175,7 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
 
     // Rendering pauses once the can has scrolled out of view.
     const visibility = new IntersectionObserver(([entry]) =>
-      setActive(entry.isIntersecting),
+      setVisible(entry.isIntersecting),
     );
     visibility.observe(element);
 
@@ -167,6 +189,35 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
       visibility.disconnect();
       window.removeEventListener("resize", update);
       motion.removeEventListener("change", onMotion);
+    };
+  }, []);
+
+  useEffect(() => {
+    let last = performance.now();
+    let level: Energy = "awake";
+    const set = (next: Energy) => {
+      if (next === level) return;
+      level = next;
+      setEnergy(next);
+    };
+    const onActivity = () => {
+      last = performance.now();
+      set("awake");
+    };
+    touch.current = onActivity;
+    const timer = window.setInterval(() => {
+      const idle = performance.now() - last;
+      if (idle > CALM_AFTER_MS + SLEEP_AFTER_MS) set("asleep");
+      else if (idle > CALM_AFTER_MS) set("calm");
+    }, 500);
+    for (const name of ACTIVITY_EVENTS) {
+      window.addEventListener(name, onActivity, { passive: true });
+    }
+    return () => {
+      window.clearInterval(timer);
+      for (const name of ACTIVITY_EVENTS) {
+        window.removeEventListener(name, onActivity);
+      }
     };
   }, []);
 
@@ -216,7 +267,13 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
     };
   }, [metrics, reducedMotion]);
 
-  const handleReady = useCallback(() => onReady(), [onReady]);
+  // The entrance starts when the label has loaded, however long that took.
+  const handleReady = useCallback(() => {
+    touch.current();
+    onReady();
+  }, [onReady]);
+  const active = visible && energy !== "asleep";
+  const calm = energy !== "awake";
 
   const {
     canSize,
@@ -256,6 +313,7 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
             fontFamily,
             reducedMotion,
             active,
+            calm,
             onReady: handleReady,
           }
         : null,
@@ -276,6 +334,7 @@ export default function StagePlayer({ onReady, ...scene }: StagePlayerProps) {
       fontFamily,
       reducedMotion,
       active,
+      calm,
       handleReady,
     ],
   );

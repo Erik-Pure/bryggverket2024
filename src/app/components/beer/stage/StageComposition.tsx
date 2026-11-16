@@ -43,8 +43,10 @@ export type StageProps = {
   isDark: boolean;
   fontFamily: string;
   reducedMotion: boolean;
-  /** False while the stage is off screen, to stop rendering. */
+  /** False while the stage is off screen or idle, to stop rendering. */
   active: boolean;
+  /** True once the reader has been idle for a while: the hover settles. */
+  calm: boolean;
   onReady: () => void;
 };
 
@@ -172,6 +174,7 @@ export default function StageComposition({
   fontFamily,
   reducedMotion,
   active,
+  calm,
   onReady,
 }: StageProps) {
   const frame = useCurrentFrame();
@@ -276,6 +279,7 @@ export default function StageComposition({
           labelFront={labelFront}
           tint={bg}
           reducedMotion={reducedMotion}
+          calm={calm}
           onReady={onReady}
         />
       </ThreeCanvas>

@@ -32,6 +32,8 @@ interface CanSceneProps {
   labelFront: number;
   tint: string;
   reducedMotion: boolean;
+  /** The reader is idle: let the hover settle. */
+  calm: boolean;
   onReady: () => void;
 }
 
@@ -123,6 +125,7 @@ export default function CanScene({
   labelFront,
   tint,
   reducedMotion,
+  calm,
   onReady,
 }: CanSceneProps) {
   const [ready, setReady] = useState(false);
@@ -145,6 +148,7 @@ export default function CanScene({
   const liveSpin = useRef<Group>(null);
   const intro = useRef(reducedMotion ? 1 : 0);
   const eased = useRef({ x: 0, y: 0 });
+  const energy = useRef(1);
 
   const visibleHeight =
     2 * CAMERA_DISTANCE * Math.tan(MathUtils.degToRad(CAMERA_FOV / 2));
@@ -154,10 +158,12 @@ export default function CanScene({
 
   // Everything that is alive rather than scripted: the entrance, a slow
   // hover and a hint of parallax. The scripted pose comes from the timeline.
-  useFrame((state, delta) => {
+  useFrame((state, elapsed) => {
     const group = live.current;
     const spin = liveSpin.current;
     if (!group || !spin) return;
+    // Rendering pauses while idle, so the first frame back can be a long one.
+    const delta = Math.min(elapsed, 0.1);
 
     if (ready$.current && intro.current < 1) {
       intro.current = Math.min(1, intro.current + delta / INTRO_SECONDS);
@@ -170,13 +176,18 @@ export default function CanScene({
     eased.current.x += (pointer.current.x - eased.current.x) * follow;
     eased.current.y += (pointer.current.y - eased.current.y) * follow;
 
-    const hover = Math.sin(time * 0.9) * 0.014 * floating * motion;
+    // The hover eases out before rendering pauses, and back in on waking.
+    energy.current +=
+      ((calm ? 0 : 1) - energy.current) * (1 - Math.exp(-delta * 2.5));
+    const drift = floating * motion * energy.current;
+
+    const hover = Math.sin(time * 0.9) * 0.014 * drift;
     group.position.y = (hover - (1 - arrival) * 0.5) * visibleHeight * 0.5;
     group.rotation.x =
-      (Math.sin(time * 0.7 + 1.3) * 0.02 * floating + eased.current.y * 0.05) *
-      motion;
+      Math.sin(time * 0.7 + 1.3) * 0.02 * drift +
+      eased.current.y * 0.05 * motion;
     group.rotation.z =
-      Math.cos(time * 0.55) * 0.016 * floating * motion + (1 - arrival) * -0.35;
+      Math.cos(time * 0.55) * 0.016 * drift + (1 - arrival) * -0.35;
     group.scale.setScalar(0.72 + 0.28 * arrival);
     spin.rotation.y =
       (1 - arrival) * -Math.PI * 1.15 + eased.current.x * 0.14 * motion;
