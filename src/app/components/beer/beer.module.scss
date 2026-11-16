@@ -194,7 +194,7 @@ $desktop: 900px;
     /* From the column's left edge to the left side of the hero can, which is
        placed by viewport width but sized by viewport height. */
     --title-width: calc(
-      72vw - 27vh - max(var(--pad), (100vw - 1320px) / 2)
+      72vw - 32vh - max(var(--pad), (100vw - 1320px) / 2)
     );
     max-width: calc(var(--title-width) * 1.1);
     font-size: min(
