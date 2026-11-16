@@ -40,7 +40,7 @@ export default function RootLayout({
         <header>
           <Link className="logo" href="/">
             <Image
-              src="images/bryggverket_horizontal_white.svg"
+              src="/images/bryggverket_horizontal_white.svg"
               alt="Bryggverket"
               width={200}
               height={40}
@@ -76,7 +76,7 @@ export default function RootLayout({
             <div className="col col-3 textCenter">
               <Link href="/">
                 <Image
-                  src="images/bv-icon.svg"
+                  src="/images/bv-icon.svg"
                   alt="Bryggverket"
                   width={120}
                   height={120}
