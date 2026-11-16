@@ -54,11 +54,6 @@ const getData = cache(async (slug: string): Promise<PageData> => {
       category,
       link,
       bgColor,
-      backgroundImage,
-      "backgroundMeta": backgroundImage.asset->metadata {
-        "aspectRatio": dimensions.aspectRatio,
-        lqip
-      },
       ingredients,
     },
     "siblings": *[_type == 'beverage' && defined(slug.current)] | order(title asc) {
@@ -260,30 +255,11 @@ export default async function BeveragePage({
               <div className={styles.inner}>
                 <div className={`${styles.column} ${styles.columnStart}`}>
                   <Reveal>
-                    <Kicker index={numberOf("story")}>Berättelsen</Kicker>
+                    <Kicker index={numberOf("story")}>Innehåll</Kicker>
                   </Reveal>
                   <Reveal delay={0.06} className={styles.prose}>
                     <PortableText value={data.description} />
                   </Reveal>
-                  {data.backgroundImage ? (
-                    <Reveal delay={0.1}>
-                      <figure className={styles.poster}>
-                        <Image
-                          src={urlFor(data.backgroundImage).width(1400).url()}
-                          width={1400}
-                          height={Math.round(
-                            1400 / (data.backgroundMeta?.aspectRatio ?? 1.5),
-                          )}
-                          sizes="(max-width: 900px) 100vw, 640px"
-                          placeholder={
-                            data.backgroundMeta?.lqip ? "blur" : "empty"
-                          }
-                          blurDataURL={data.backgroundMeta?.lqip}
-                          alt={`Bild till ${data.title}`}
-                        />
-                      </figure>
-                    </Reveal>
-                  ) : null}
                 </div>
               </div>
             </section>
@@ -363,7 +339,9 @@ export default async function BeveragePage({
               <div className={styles.inner}>
                 <div className={`${styles.column} ${styles.columnStart}`}>
                   <Reveal>
-                    <Kicker index={numberOf("ingredients")}>Innehåll</Kicker>
+                    <Kicker index={numberOf("ingredients")}>
+                      Ingredienser
+                    </Kicker>
                   </Reveal>
                   <Reveal
                     delay={0.06}
@@ -415,7 +393,7 @@ export default async function BeveragePage({
                   </div>
                   {hasIngredients ? (
                     <div className={styles.specsWide}>
-                      <dt>Innehåll</dt>
+                      <dt>Ingredienser</dt>
                       <dd>{toPlainText(data.ingredients)}</dd>
                     </div>
                   ) : null}
@@ -429,7 +407,6 @@ export default async function BeveragePage({
                       rel="noopener"
                     >
                       Köp på Systembolaget
-                      <span aria-hidden="true">↗</span>
                     </a>
                   ) : null}
                   <Link className={styles.ctaGhost} href="/beverages">
