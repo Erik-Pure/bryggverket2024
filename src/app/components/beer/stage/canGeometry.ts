@@ -62,8 +62,7 @@ const DIMENSIONS: Record<CanOnlySize, CanDimensions> = {
  * T-top cork. The cork sits on top of `height`.
  */
 const BOTTLE = {
-  // Bäverhojt: shorter neck and body, rounded shoulder,
-  // larger front-panel label (still not a full wrap).
+  // Bäverhojt: shorter neck and body, rounded shoulder.
   radius: 44,
   height: 168,
   neckRadius: 13.6,
@@ -75,8 +74,8 @@ const BOTTLE = {
   corkHeight: 7,
   corkPlugRadius: 11.6,
   corkPlugDepth: 10,
-  /** Nearly full wrap — small gap at the back so it is not a closed sleeve. */
-  labelArc: Math.PI * 1.88,
+  /** Wrap most of the way around; leave a clear gap at the back. */
+  labelArc: Math.PI * 1.55,
 };
 
 const RADIAL_SEGMENTS = 96;
@@ -288,11 +287,16 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   if (labelAspect && labelAspect > 0) {
     const labelRadius = radius + LABEL_OFFSET;
     const straight = shoulderStart - heel * 0.35;
-    const arc = BOTTLE.labelArc;
-    // Height from arc length ÷ artwork aspect so a wide wraparound label
-    // is not horizontally crushed onto a short arc.
-    const fromAspect = (labelRadius * arc) / labelAspect;
-    const labelHeight = Math.min(fromAspect, straight * 0.92);
+    const maxArc = BOTTLE.labelArc;
+    // Keep artwork aspect: if height would exceed the straight wall, shrink
+    // the arc too — otherwise the texture stretches horizontally.
+    let labelHeight = (labelRadius * maxArc) / labelAspect;
+    let arc = maxArc;
+    const maxHeight = straight * 0.92;
+    if (labelHeight > maxHeight) {
+      labelHeight = maxHeight;
+      arc = Math.min(maxArc, (labelHeight * labelAspect) / labelRadius);
+    }
     // Same UV convention as cans (thetaStart = 0); labelFront rotation
     // brings the artwork's front to the camera. Gap sits near the seam.
     const geometry = new CylinderGeometry(
