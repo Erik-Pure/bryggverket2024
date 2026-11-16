@@ -75,8 +75,8 @@ const BOTTLE = {
   corkHeight: 7,
   corkPlugRadius: 11.6,
   corkPlugDepth: 10,
-  /** Larger front panel — still leaves clear glass at the back. */
-  labelArc: Math.PI * 0.72,
+  /** Nearly full wrap — small gap at the back so it is not a closed sleeve. */
+  labelArc: Math.PI * 1.88,
 };
 
 const RADIAL_SEGMENTS = 96;
@@ -289,26 +289,23 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
     const labelRadius = radius + LABEL_OFFSET;
     const straight = shoulderStart - heel * 0.35;
     const arc = BOTTLE.labelArc;
-    // Partial wrap: prefer a tall panel on the straight wall. Cap so it stays
-    // on the body and does not climb the shoulder.
+    // Height from arc length ÷ artwork aspect so a wide wraparound label
+    // is not horizontally crushed onto a short arc.
     const fromAspect = (labelRadius * arc) / labelAspect;
-    const labelHeight = Math.min(
-      Math.max(fromAspect, straight * 0.88),
-      straight * 0.98,
-    );
-    // Centre the panel on +Z (toward the camera), not a full 360° sleeve.
-    const thetaStart = Math.PI / 2 - arc / 2;
+    const labelHeight = Math.min(fromAspect, straight * 0.92);
+    // Same UV convention as cans (thetaStart = 0); labelFront rotation
+    // brings the artwork's front to the camera. Gap sits near the seam.
     const geometry = new CylinderGeometry(
       labelRadius,
       labelRadius,
       labelHeight,
-      Math.max(24, Math.round(RADIAL_SEGMENTS * (arc / (Math.PI * 2)))),
+      Math.max(48, Math.round(RADIAL_SEGMENTS * (arc / (Math.PI * 2)))),
       1,
       true,
-      thetaStart,
+      0,
       arc,
     );
-    geometry.translate(0, heel * 0.35 + straight * 0.52, 0);
+    geometry.translate(0, heel * 0.45 + labelHeight / 2, 0);
     label = geometry;
   }
 
