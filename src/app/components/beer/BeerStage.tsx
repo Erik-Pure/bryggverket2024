@@ -47,15 +47,31 @@ export default function BeerStage({ canType, ...scene }: BeerStageProps) {
         aria-hidden="true"
       >
         <div className={`beerShowcase ${isBottle ? "beerShowcaseBottle" : ""}`}>
-          {scene.labelUrl ? (
-            <img
-              className="beerLabel"
-              src={scene.labelUrl}
-              alt=""
-              style={{ left: "-115%" }}
-            />
-          ) : null}
-          <div className="beerLabelShading" />
+          {isBottle ? (
+            <div className="beerLabelClip">
+              {scene.labelUrl ? (
+                <img
+                  className="beerLabel"
+                  src={scene.labelUrl}
+                  alt=""
+                  style={{ left: "-115%" }}
+                />
+              ) : null}
+              <div className="beerLabelShading" />
+            </div>
+          ) : (
+            <>
+              {scene.labelUrl ? (
+                <img
+                  className="beerLabel"
+                  src={scene.labelUrl}
+                  alt=""
+                  style={{ left: "-115%" }}
+                />
+              ) : null}
+              <div className="beerLabelShading" />
+            </>
+          )}
           <img className="beerCan" src={vesselSrc} alt="" />
         </div>
       </div>

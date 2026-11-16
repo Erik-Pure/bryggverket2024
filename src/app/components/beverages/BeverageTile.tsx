@@ -59,19 +59,40 @@ export default function BeverageTile({ drink }: { drink: beverageThumb }) {
             drink.can === "sleek" ? styles.sleek : ""
           }`}
         >
-          <div className="beerShowcase">
-            {labelUrl ? (
+          <div
+            className={`beerShowcase ${isBottle ? "beerShowcaseBottle" : ""}`}
+          >
+            {isBottle ? (
+              <div className="beerLabelClip">
+                {labelUrl ? (
+                  <>
+                    <img
+                      className="beerLabel"
+                      src={labelUrl}
+                      alt=""
+                      style={{ left: "-115%" }}
+                    />
+                    <img className="beerLabel two" src={labelUrl} alt="" />
+                  </>
+                ) : null}
+                <div className="beerLabelShading" />
+              </div>
+            ) : (
               <>
-                <img
-                  className="beerLabel"
-                  src={labelUrl}
-                  alt=""
-                  style={{ left: "-115%" }}
-                />
-                <img className="beerLabel two" src={labelUrl} alt="" />
+                {labelUrl ? (
+                  <>
+                    <img
+                      className="beerLabel"
+                      src={labelUrl}
+                      alt=""
+                      style={{ left: "-115%" }}
+                    />
+                    <img className="beerLabel two" src={labelUrl} alt="" />
+                  </>
+                ) : null}
+                <div className="beerLabelShading" />
               </>
-            ) : null}
-            <div className="beerLabelShading" />
+            )}
             <Image
               className="beerCan"
               src={vesselSrc}

@@ -504,12 +504,23 @@ article {
     }
   }
 
-  // Spirit bottle: label on the lower cylindrical body only.
+  // Spirit bottle: label clipped to the body width, below the shoulder.
   &.beerShowcaseBottle {
+    .beerLabelClip {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
     .beerLabel,
     .beerLabelShading {
-      bottom: 6%;
-      height: 44%;
+      bottom: 11%;
+      height: 52%;
     }
   }
 }
