@@ -15,7 +15,7 @@ import type { Pose } from "../components/beer/stage/choreography";
 const POSE: Pose = {
   x: 0,
   y: 0,
-  size: 0.68,
+  size: 0.7,
   tiltX: 0.06,
   tiltZ: -0.1,
   grounded: 0.2,
@@ -32,7 +32,7 @@ export default function DevBottlePage() {
         style={{
           margin: 0,
           minHeight: "100vh",
-          background: "#000",
+          background: "#111",
           display: "grid",
           placeItems: "center",
         }}
@@ -64,7 +64,7 @@ export default function DevBottlePage() {
               labelUrl={null}
               labelAspect={null}
               labelFront={0.6}
-              tint="#222226"
+              tint="#cfc8bb"
               reducedMotion
               calm={false}
               onReady={() => {}}

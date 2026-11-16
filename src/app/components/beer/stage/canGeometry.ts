@@ -58,21 +58,24 @@ const DIMENSIONS: Record<CanOnlySize, CanDimensions> = {
 
 /**
  * 50 cl cylindrical spirit bottle (Bäverhojt form), millimetres.
- * Measured from a product photo: long neck, short shoulder, heavy heel,
+ * Stockier than a typical wine bottle: shorter neck and body, heavy heel,
  * T-top cork. The cork sits on top of `height`.
  */
 const BOTTLE = {
-  radius: 34,
-  height: 208,
-  neckRadius: 12.4,
-  neckHeight: 54,
-  shoulder: 22,
-  heel: 16,
-  lip: 3.2,
-  corkRadius: 13.2,
-  corkHeight: 8,
-  corkPlugRadius: 11,
-  corkPlugDepth: 16,
+  // Body height ≈ diameter: a squat spirit bottle, not a wine bottle.
+  radius: 43.5,
+  height: 126,
+  neckRadius: 15.2,
+  neckHeight: 18,
+  shoulder: 13,
+  heel: 12,
+  lip: 2.5,
+  corkRadius: 15.4,
+  corkHeight: 7,
+  corkPlugRadius: 13,
+  corkPlugDepth: 10,
+  /** Front panel — leaves clear glass on the sides and back. */
+  labelArc: Math.PI * 0.44,
 };
 
 const RADIAL_SEGMENTS = 96;
@@ -219,10 +222,10 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   glassPath.lineTo(radius, shoulderStart);
   glassPath.bezierCurveTo(
     radius,
-    shoulderStart + shoulder * 0.48,
-    neckRadius + (radius - neckRadius) * 0.48,
-    neckStart - shoulder * 0.12,
-    neckRadius + 0.7,
+    shoulderStart + shoulder * 0.55,
+    neckRadius + (radius - neckRadius) * 0.55,
+    neckStart - shoulder * 0.08,
+    neckRadius + 0.8,
     neckStart,
   );
   glassPath.quadraticCurveTo(
@@ -274,18 +277,24 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   if (labelAspect && labelAspect > 0) {
     const labelRadius = radius + LABEL_OFFSET;
     const straight = shoulderStart - heel * 0.35;
-    const ideal = (2 * Math.PI * labelRadius) / labelAspect;
-    const labelHeight = Math.min(ideal, straight * 0.72);
+    const arc = BOTTLE.labelArc;
+    // Partial wrap: arc length / artwork aspect → height. Cap so it stays on
+    // the straight wall and does not climb the shoulder.
+    const ideal = (labelRadius * arc) / labelAspect;
+    const labelHeight = Math.min(ideal, straight * 0.82);
+    // Centre the panel on +Z (toward the camera), not a full 360° sleeve.
+    const thetaStart = Math.PI / 2 - arc / 2;
     const geometry = new CylinderGeometry(
       labelRadius,
       labelRadius,
       labelHeight,
-      RADIAL_SEGMENTS,
+      Math.max(24, Math.round(RADIAL_SEGMENTS * (arc / (Math.PI * 2)))),
       1,
       true,
+      thetaStart,
+      arc,
     );
-    // Centre the wrap on the body, a little above the heel.
-    geometry.translate(0, heel * 0.35 + straight * 0.48, 0);
+    geometry.translate(0, heel * 0.4 + straight * 0.5, 0);
     label = geometry;
   }
 
