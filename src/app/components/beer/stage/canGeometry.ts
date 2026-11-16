@@ -42,13 +42,15 @@ const DIMENSIONS: Record<CanSize, CanDimensions> = {
     chamfer: 10.5,
     standRadius: 24.6,
   },
+  // The 25 cl "sleek" format: narrower than a standard can but the same
+  // height. (The taller 53 mm "slim" can is a different format.)
   "25": {
-    radius: 26.6,
-    height: 134,
-    seamRadius: 25.4,
-    shoulder: 7,
-    chamfer: 8,
-    standRadius: 20.4,
+    radius: 28.7,
+    height: 115.2,
+    seamRadius: 26.2,
+    shoulder: 7.2,
+    chamfer: 8.2,
+    standRadius: 22.2,
   },
 };
 
