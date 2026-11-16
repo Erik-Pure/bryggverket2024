@@ -306,12 +306,21 @@ $tablet: 700px;
   }
 
   &.bottle {
-    width: min(38%, 150px);
+    // Taller vessel — keep it a touch narrower than a can so the neck reads.
+    width: min(34%, 140px);
 
-    img {
+    :global(.beerCan) {
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    // Label sits on the cylindrical body, below the shoulder — lower and
+    // shorter than the can treatment so it does not climb the neck.
+    :global(.beerLabel),
+    :global(.beerLabelShading) {
+      bottom: 6%;
+      height: 44%;
     }
   }
 }

@@ -8,10 +8,18 @@ import type { beverageThumb } from "@/app/lib/interface";
 import { urlFor } from "@/app/lib/sanity";
 import styles from "./beverages.module.scss";
 
+function resolveLabelUrl(
+  labelImage: beverageThumb["labelImage"],
+): string | null {
+  if (!labelImage) return null;
+  if (typeof labelImage === "string") return labelImage;
+  return urlFor(labelImage).width(900).url();
+}
+
 /**
- * One drink in the catalog. Uses the flat can with a CSS-wrapped label —
+ * One drink in the catalog. Uses the flat vessel with a CSS-wrapped label —
  * the same fake-3D treatment as before — so a full grid stays cheap to paint.
- * The real three.js can lives on the beverage page.
+ * The real three.js vessel lives on the beverage page.
  */
 export default function BeverageTile({ drink }: { drink: beverageThumb }) {
   const can = getCan(drink.can);
@@ -27,9 +35,11 @@ export default function BeverageTile({ drink }: { drink: beverageThumb }) {
     .filter(Boolean)
     .join(" · ");
 
-  const labelUrl = drink.labelImage
-    ? urlFor(drink.labelImage).width(900).url()
-    : null;
+  const labelUrl = resolveLabelUrl(drink.labelImage);
+  const isBottle = drink.can === "bottle";
+  const vesselSrc = isBottle
+    ? "/images/emptybottle.png"
+    : `/images/${drink.can ?? "black"}can.png`;
 
   return (
     <Link
@@ -44,42 +54,33 @@ export default function BeverageTile({ drink }: { drink: beverageThumb }) {
     >
       <span className={styles.glow} aria-hidden="true" />
       <div className={styles.stage}>
-        {drink.can === "bottle" ? (
-          <div className={`${styles.can} ${styles.bottle}`}>
+        <div
+          className={`${styles.can} ${isBottle ? styles.bottle : ""} ${
+            drink.can === "sleek" ? styles.sleek : ""
+          }`}
+        >
+          <div className="beerShowcase">
+            {labelUrl ? (
+              <>
+                <img
+                  className="beerLabel"
+                  src={labelUrl}
+                  alt=""
+                  style={{ left: "-115%" }}
+                />
+                <img className="beerLabel two" src={labelUrl} alt="" />
+              </>
+            ) : null}
+            <div className="beerLabelShading" />
             <Image
-              src="/images/bottlecan.png"
-              width={200}
-              height={480}
+              className="beerCan"
+              src={vesselSrc}
+              width={isBottle ? 200 : 160}
+              height={isBottle ? 450 : 300}
               alt=""
             />
           </div>
-        ) : (
-          <div
-            className={`${styles.can} ${drink.can === "sleek" ? styles.sleek : ""}`}
-          >
-            <div className="beerShowcase">
-              {labelUrl ? (
-                <>
-                  <img
-                    className="beerLabel"
-                    src={labelUrl}
-                    alt=""
-                    style={{ left: "-115%" }}
-                  />
-                  <img className="beerLabel two" src={labelUrl} alt="" />
-                </>
-              ) : null}
-              <div className="beerLabelShading" />
-              <Image
-                className="beerCan"
-                src={`/images/${drink.can ?? "black"}can.png`}
-                width={160}
-                height={300}
-                alt=""
-              />
-            </div>
-          </div>
-        )}
+        </div>
       </div>
       <div className={styles.copy}>
         <p className={styles.meta}>{meta}</p>
