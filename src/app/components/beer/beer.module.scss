@@ -1,0 +1,765 @@
+$desktop: 900px;
+
+@mixin display {
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 0.86;
+}
+
+@mixin eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.beer {
+  --pad: clamp(20px, 5vw, 72px);
+  position: relative;
+  overflow: visible;
+  overflow-x: clip;
+  background: var(--beer-bg);
+  color: var(--beer-ink);
+
+  p {
+    color: inherit;
+  }
+
+  ::selection {
+    background: var(--beer-ink);
+    color: var(--beer-bg);
+  }
+}
+
+/* Stage and chapters share one grid cell, so the sticky stage is confined
+   to exactly the height of the story. */
+.track {
+  position: relative;
+  display: grid;
+}
+
+.chapters {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+/* ---------- Stage: the sticky layer that carries the can ---------- */
+
+.stage {
+  grid-area: 1 / 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.stageReady {
+  opacity: 1;
+}
+
+/* Without WebGL the flat can from the beverage grid stands in the hero. */
+.stageFallback {
+  grid-area: 1 / 1;
+  align-self: start;
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: start center;
+  height: 100vh;
+  height: 100svh;
+  padding: 104px var(--pad) 0;
+  box-sizing: border-box;
+  pointer-events: none;
+
+  :global(.beerShowcase) {
+    width: min(34vw, 20vh, 220px);
+  }
+
+  @media (min-width: $desktop) {
+    place-items: center end;
+    padding: 60px 16vw 0 0;
+
+    :global(.beerShowcase) {
+      width: min(18vw, 34vh, 300px);
+    }
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 72px var(--pad) 96px;
+  box-sizing: border-box;
+
+  /* On wide screens the hero sits above the stage, so the can's glow never
+     washes out the title. */
+  @media (min-width: $desktop) {
+    z-index: 4;
+    padding: 84px var(--pad) clamp(28px, 5vh, 56px);
+  }
+}
+
+.heroInner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.back {
+  @include eyebrow;
+  align-self: flex-start;
+  color: var(--beer-ink);
+  padding: 8px 0;
+
+  span {
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover span {
+    transform: translateX(-4px);
+  }
+}
+
+.heroText {
+  margin-top: auto;
+
+  > * {
+    animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+
+  > :nth-child(3) {
+    animation-delay: 0.18s;
+  }
+
+  @media (min-width: $desktop) {
+    margin-block: auto;
+    padding-bottom: 3vh;
+  }
+}
+
+.tag {
+  display: inline-block;
+  margin: 0 0 14px -8px;
+  padding: 8px 26px;
+  transform: rotate(-3deg);
+  background: url("/images/btn-splash.svg") no-repeat center / cover;
+  color: #fff;
+  font-size: clamp(1.05rem, 0.85rem + 1vw, 1.7rem);
+  line-height: 1.2;
+
+  @media (min-width: $desktop) {
+    margin-bottom: 22px;
+  }
+}
+
+.beer p.tag {
+  color: #fff;
+}
+
+.tagInverted {
+  filter: invert(1);
+}
+
+.title {
+  @include display;
+  --title-width: calc(100vw - 2 * var(--pad));
+  margin: 0;
+  font-size: min(
+    6.5rem,
+    calc(var(--title-width) / (var(--title-measure) * 0.415))
+  );
+  text-wrap: balance;
+
+  @media (min-width: $desktop) {
+    --title-width: 52vw;
+    max-width: 60vw;
+    font-size: min(
+      17rem,
+      25vh,
+      calc(var(--title-width) / (var(--title-measure) * 0.415))
+    );
+  }
+}
+
+.heroMeta {
+  @include eyebrow;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 0;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+
+  li + li {
+    margin-left: 16px;
+    padding-left: 16px;
+    border-left: 2px solid var(--beer-line);
+  }
+
+  @media (min-width: $desktop) {
+    margin-top: 32px;
+    font-size: 0.95rem;
+  }
+}
+
+.scrollCue {
+  display: none;
+
+  @media (min-width: $desktop) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: #fff;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 5%;
+      background: url("/images/spinner-txt.svg") no-repeat center / cover;
+      animation: cueSpin 8s linear infinite;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 30%;
+      height: 45%;
+      background: url("/images/spinner-can-content.svg") repeat-x;
+      background-size: cover;
+      animation: cueFill 5s linear infinite;
+    }
+
+    img {
+      position: relative;
+      z-index: 1;
+      width: 40%;
+      height: auto;
+    }
+  }
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    translate: 0 36px;
+  }
+}
+
+@keyframes cueSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cueFill {
+  to {
+    background-position: 135% 0;
+  }
+}
+
+/* ---------- Chapters ---------- */
+
+.chapter {
+  position: relative;
+  z-index: 1;
+  padding: 12vh var(--pad);
+  padding-block: 12lvh;
+  box-sizing: border-box;
+
+  @media (min-width: $desktop) {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100lvh;
+  }
+}
+
+.inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+
+  @media (min-width: $desktop) {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 24px;
+    align-items: center;
+  }
+}
+
+.column {
+  min-width: 0;
+}
+
+.columnStart {
+  @media (min-width: $desktop) {
+    grid-column: 1 / span 6;
+  }
+}
+
+.columnEnd {
+  @media (min-width: $desktop) {
+    grid-column: 7 / span 6;
+    padding-left: 6%;
+  }
+}
+
+.kicker {
+  @include eyebrow;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 26px;
+}
+
+.kickerIndex {
+  font-variant-numeric: tabular-nums;
+}
+
+.kickerRule {
+  width: 36px;
+  height: 2px;
+  background: currentColor;
+}
+
+.prose {
+  max-width: 36em;
+
+  p {
+    margin: 0 0 1.1em;
+    font-size: clamp(1.02rem, 0.92rem + 0.4vw, 1.2rem);
+    line-height: 1.62;
+    color: var(--beer-ink-soft);
+  }
+
+  p:first-child {
+    font-size: clamp(1.35rem, 1.05rem + 1.25vw, 2.05rem);
+    font-weight: 600;
+    line-height: 1.28;
+    letter-spacing: -0.01em;
+    color: var(--beer-ink);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  p:empty {
+    display: none;
+  }
+}
+
+.poster {
+  margin: 44px 0 0;
+  max-width: 560px;
+  transform: rotate(-2deg);
+  box-shadow: 0 34px 60px -34px rgba(0, 0, 0, 0.65);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ---------- Facts ---------- */
+
+.figure {
+  max-width: 460px;
+}
+
+.figureValue {
+  @include display;
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  font-size: clamp(8rem, 44vw, 12rem);
+  line-height: 0.8;
+  font-variant-numeric: tabular-nums;
+
+  @media (min-width: $desktop) {
+    font-size: clamp(11rem, 21vw, 20rem);
+  }
+}
+
+.figureUnit {
+  margin: 0.05em 0 0 0.06em;
+  font-size: 0.42em;
+}
+
+.figureLabel {
+  @include eyebrow;
+  margin: 0.9em 0 0;
+  padding-top: 1.6em;
+}
+
+/* The brewery's hatched divider doubles as a strength meter. */
+.meter {
+  position: relative;
+  height: 10px;
+  margin-top: 16px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--beer-line) 0 3px,
+    transparent 3px 7px
+  );
+
+  span {
+    position: absolute;
+    inset: 0;
+    width: calc(var(--meter) * 100%);
+    background: currentColor;
+  }
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 20px 28px;
+  max-width: 560px;
+  margin: 44px 0 0;
+  padding-top: 18px;
+  border-top: 2px solid var(--beer-ink);
+
+  dt {
+    @include eyebrow;
+    font-size: 0.72rem;
+    color: var(--beer-ink-soft);
+  }
+
+  dd {
+    margin: 6px 0 0;
+    font-size: clamp(1.1rem, 0.95rem + 0.7vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.12;
+    text-transform: uppercase;
+  }
+}
+
+/* ---------- Label: pinned turntable ---------- */
+
+.label {
+  position: relative;
+  z-index: 1;
+  height: 220vh;
+  height: 220lvh;
+
+  @media (min-width: $desktop) {
+    height: 250vh;
+    height: 250lvh;
+  }
+}
+
+/* The turntable needs the 3D can. */
+.track:has(.stageFallback) .label {
+  display: none;
+}
+
+.labelPin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100lvh;
+  overflow: clip;
+}
+
+.marquee {
+  @include display;
+  position: absolute;
+  top: 44%;
+  left: 0;
+  display: flex;
+  gap: 0.3em;
+  margin-top: -0.5em;
+  font-size: clamp(9rem, 46vw, 34rem);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--beer-ink);
+  opacity: 0.1;
+  will-change: transform;
+
+  @media (min-width: $desktop) {
+    top: 52%;
+    font-size: clamp(14rem, 34vw, 34rem);
+  }
+}
+
+.labelCaption {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 96px;
+  text-align: center;
+
+  .kicker {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  @media (min-width: $desktop) {
+    right: auto;
+    bottom: clamp(36px, 8vh, 84px);
+    max-width: 320px;
+    text-align: left;
+
+    .kicker {
+      justify-content: flex-start;
+      margin-bottom: 18px;
+    }
+  }
+}
+
+.labelLead {
+  @include display;
+  margin: 0;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.6rem);
+}
+
+.labelHint {
+  margin: 10px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--beer-ink-soft);
+
+  @media (max-width: #{$desktop - 1px}) {
+    display: none;
+  }
+}
+
+.beer p.labelHint {
+  color: var(--beer-ink-soft);
+}
+
+/* ---------- Ingredients ---------- */
+
+.ingredients {
+  p {
+    @include display;
+    margin: 0 0 0.3em;
+    font-size: clamp(2.3rem, 1.4rem + 4.4vw, 5rem);
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+}
+
+.ingredientsLong {
+  max-width: 36em;
+
+  p {
+    margin: 0 0 0.4em;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+    font-weight: 600;
+    font-stretch: 100%;
+    letter-spacing: 0;
+    line-height: 1.5;
+    text-transform: none;
+  }
+}
+
+/* ---------- Summary ---------- */
+
+.summary {
+  padding-bottom: 104px;
+
+  @media (min-width: $desktop) {
+    padding-bottom: 12vh;
+    padding-bottom: 12lvh;
+  }
+}
+
+/* On small screens the summary is set straight on the page colour, since
+   it scrolls under the can. On large screens it becomes an inverted card. */
+.card {
+  --surface: transparent;
+  --text: var(--beer-ink);
+  --text-soft: var(--beer-ink-soft);
+  --rule: var(--beer-line);
+  --button: var(--beer-ink);
+  --button-text: var(--beer-bg);
+  color: var(--text);
+
+  @media (min-width: $desktop) {
+    --surface: var(--card-bg);
+    --text: var(--card-ink);
+    --text-soft: var(--card-ink-soft);
+    --rule: var(--card-line);
+    --button: var(--beer-bg);
+    --button-text: var(--beer-ink);
+    grid-column: 6 / span 7;
+    padding: clamp(36px, 4.4vw, 64px);
+    background: var(--surface);
+    box-shadow: 0 40px 80px -50px rgba(0, 0, 0, 0.7);
+  }
+}
+
+.cardKicker .kicker {
+  margin-bottom: 18px;
+}
+
+.cardTitle {
+  @include display;
+  margin: 0;
+  font-size: clamp(2.8rem, 1.6rem + 4.6vw, 5.4rem);
+  text-wrap: balance;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+  margin: clamp(24px, 3.4vw, 40px) 0 0;
+
+  > div {
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  dt {
+    @include eyebrow;
+    font-size: 0.7rem;
+    color: var(--text-soft);
+  }
+
+  dd {
+    margin: 5px 0 0;
+    font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  @media (min-width: $desktop) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.specsWide {
+  grid-column: 1 / -1;
+
+  dd {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(20px, 3vw, 32px);
+}
+
+.cta,
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 24px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cta {
+  background: var(--button);
+  color: var(--button-text);
+  box-shadow: inset 0 0 0 2px var(--button);
+
+  span {
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    background: transparent;
+    color: var(--text);
+
+    span {
+      transform: translate(3px, -3px);
+    }
+  }
+}
+
+.ctaGhost {
+  color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--rule);
+
+  &:hover {
+    box-shadow: inset 0 0 0 2px var(--text);
+  }
+}
+
+/* ---------- Next beer ---------- */
+
+.next {
+  position: relative;
+  z-index: 4;
+  display: block;
+  padding: clamp(56px, 11vh, 128px) var(--pad) clamp(64px, 12vh, 136px);
+  background: var(--next-bg);
+  color: var(--next-ink);
+}
+
+.nextKicker {
+  @include eyebrow;
+  display: block;
+  max-width: 1320px;
+  margin: 0 auto 14px;
+}
+
+.nextTitle {
+  @include display;
+  display: block;
+  max-width: 1320px;
+  margin: 0 auto;
+  font-size: clamp(3rem, 1.2rem + 9.5vw, 11rem);
+  text-wrap: balance;
+}
+
+.nextArrow {
+  display: inline-block;
+  margin-left: 0.18em;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.next:hover .nextArrow {
+  transform: translateX(0.22em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollCue::before,
+  .scrollCue::after,
+  .heroText > * {
+    animation: none;
+  }
+}
