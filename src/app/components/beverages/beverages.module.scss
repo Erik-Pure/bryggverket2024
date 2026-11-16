@@ -306,8 +306,8 @@ $tablet: 700px;
   }
 
   &.bottle {
-    // Taller vessel — keep it a touch narrower than a can so the neck reads.
-    width: min(34%, 140px);
+    // Taller vessel — match can presence in the grid (50 cl reads larger).
+    width: min(45%, 178px);
 
     :global(.beerCan) {
       display: block;

@@ -1,6 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  BackSide,
   type Group,
   LinearMipmapLinearFilter,
   MathUtils,
@@ -242,18 +243,31 @@ function BottleMeshes({
         <meshStandardMaterial color="#5a3720" roughness={0.78} metalness={0} />
       </mesh>
       {geometry.label && texture ? (
-        <mesh geometry={geometry.label}>
-          <meshPhysicalMaterial
-            map={texture}
-            metalness={0}
-            roughness={0.62}
-            clearcoat={0.08}
-            clearcoatRoughness={0.45}
-            polygonOffset
-            polygonOffsetFactor={-1}
-            depthWrite
-          />
-        </mesh>
+        <>
+          <mesh geometry={geometry.label}>
+            <meshPhysicalMaterial
+              map={texture}
+              metalness={0}
+              roughness={0.62}
+              clearcoat={0.08}
+              clearcoatRoughness={0.45}
+              polygonOffset
+              polygonOffsetFactor={-1}
+              depthWrite
+            />
+          </mesh>
+          {/* Paper reverse — visible through the glass when the bottle turns. */}
+          <mesh geometry={geometry.label}>
+            <meshStandardMaterial
+              color="#3a3a3a"
+              roughness={0.92}
+              metalness={0}
+              side={BackSide}
+              polygonOffset
+              polygonOffsetFactor={1}
+            />
+          </mesh>
+        </>
       ) : null}
     </>
   );
