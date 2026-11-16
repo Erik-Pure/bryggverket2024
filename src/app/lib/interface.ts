@@ -7,19 +7,42 @@ export interface beverageThumb {
   backgroundImage: any;
 }
 
+export interface imagePalette {
+  vibrant?: { background?: string };
+  dominant?: { background?: string };
+}
+
+export interface imageMeta {
+  aspectRatio?: number;
+  lqip?: string;
+  palette?: imagePalette;
+}
+
+export interface beverageLink {
+  title: string;
+  currentSlug: string;
+  can: string;
+  bgColor?: string;
+  palette?: imagePalette;
+}
+
 export interface beverage {
   title: string;
   currentSlug: string;
   labelImage: any;
+  /** Horizontal position of the label's front, in percent (0-100). */
+  labelFront?: number;
+  labelMeta?: imageMeta;
   description: any;
   ingredients: any;
   can: string;
-  percentage: number;
-  style: string;
+  percentage?: number;
+  style?: string;
   category: string;
-  link: string;
-  bgColor: string;
+  link?: string;
+  bgColor?: string;
   backgroundImage: any;
+  backgroundMeta?: imageMeta;
 }
 
 export interface aboutPage {
