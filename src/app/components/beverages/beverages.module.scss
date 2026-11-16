@@ -318,9 +318,9 @@ $tablet: 700px;
     // Clip the spinning label to the glass body width (~90% of the asset).
     :global(.beerLabelClip) {
       position: absolute;
-      // Inset past the glass highlight so the band matches the body width.
-      left: 8%;
-      right: 8%;
+      // Slightly inside the glass silhouette so the band reads as on the body.
+      left: 6%;
+      right: 6%;
       top: 0;
       bottom: 0;
       overflow: hidden;
@@ -328,11 +328,11 @@ $tablet: 700px;
       border-radius: 2px;
     }
 
-    // Just under the shoulder, covering most of the cylindrical body.
+    // Mid-body — under the shoulder, not hugging the base.
     :global(.beerLabel),
     :global(.beerLabelShading) {
-      bottom: 11%;
-      height: 52%;
+      bottom: 8%;
+      height: 48%;
     }
   }
 }

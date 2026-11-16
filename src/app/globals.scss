@@ -508,8 +508,8 @@ article {
   &.beerShowcaseBottle {
     .beerLabelClip {
       position: absolute;
-      left: 8%;
-      right: 8%;
+      left: 6%;
+      right: 6%;
       top: 0;
       bottom: 0;
       overflow: hidden;
@@ -519,8 +519,8 @@ article {
 
     .beerLabel,
     .beerLabelShading {
-      bottom: 11%;
-      height: 52%;
+      bottom: 8%;
+      height: 48%;
     }
   }
 }
