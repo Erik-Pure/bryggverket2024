@@ -62,21 +62,21 @@ const DIMENSIONS: Record<CanOnlySize, CanDimensions> = {
  * T-top cork. The cork sits on top of `height`.
  */
 const BOTTLE = {
-  // Bäverhojt: neck+cork ≈30% of total, rounded circular shoulder,
-  // body height ≈ diameter, shallow heel.
-  radius: 43,
-  height: 198,
-  neckRadius: 13.4,
-  neckHeight: 52,
-  shoulder: 36,
-  heel: 18,
+  // Bäverhojt: shorter neck and body, rounded shoulder,
+  // larger front-panel label (still not a full wrap).
+  radius: 44,
+  height: 168,
+  neckRadius: 13.6,
+  neckHeight: 38,
+  shoulder: 32,
+  heel: 15,
   lip: 3,
-  corkRadius: 14.2,
-  corkHeight: 7.5,
-  corkPlugRadius: 11.4,
-  corkPlugDepth: 12,
-  /** Front panel — leaves clear glass on the sides and back. */
-  labelArc: Math.PI * 0.44,
+  corkRadius: 14.4,
+  corkHeight: 7,
+  corkPlugRadius: 11.6,
+  corkPlugDepth: 10,
+  /** Larger front panel — still leaves clear glass at the back. */
+  labelArc: Math.PI * 0.72,
 };
 
 const RADIAL_SEGMENTS = 96;
@@ -289,10 +289,13 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
     const labelRadius = radius + LABEL_OFFSET;
     const straight = shoulderStart - heel * 0.35;
     const arc = BOTTLE.labelArc;
-    // Partial wrap: arc length / artwork aspect → height. Cap so it stays on
-    // the straight wall and does not climb the shoulder.
-    const ideal = (labelRadius * arc) / labelAspect;
-    const labelHeight = Math.min(ideal, straight * 0.82);
+    // Partial wrap: prefer a tall panel on the straight wall. Cap so it stays
+    // on the body and does not climb the shoulder.
+    const fromAspect = (labelRadius * arc) / labelAspect;
+    const labelHeight = Math.min(
+      Math.max(fromAspect, straight * 0.88),
+      straight * 0.98,
+    );
     // Centre the panel on +Z (toward the camera), not a full 360° sleeve.
     const thetaStart = Math.PI / 2 - arc / 2;
     const geometry = new CylinderGeometry(
@@ -305,7 +308,7 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
       thetaStart,
       arc,
     );
-    geometry.translate(0, heel * 0.4 + straight * 0.5, 0);
+    geometry.translate(0, heel * 0.35 + straight * 0.52, 0);
     label = geometry;
   }
 
