@@ -50,6 +50,14 @@ export type StageProps = {
   onReady: () => void;
 };
 
+/**
+ * On large desktop screens the can is composed within this box, centred in
+ * the viewport, so it keeps its proportions to the (capped) page column
+ * instead of growing with the monitor. Mirrored by the hero title in CSS.
+ */
+const MAX_STAGE_WIDTH = 1760;
+const MAX_STAGE_HEIGHT = 1100;
+
 /** Frames the turntable read-out takes to fade in and out. */
 const DIAL_FADE = 30;
 
@@ -206,7 +214,16 @@ export default function StageComposition({
     width,
     height,
   ]);
-  const pose = getPose(timeline, frame);
+  const scripted = getPose(timeline, frame);
+  const fitX = layout === "desktop" ? Math.min(1, MAX_STAGE_WIDTH / width) : 1;
+  const fitY =
+    layout === "desktop" ? Math.min(1, MAX_STAGE_HEIGHT / height) : 1;
+  const pose = {
+    ...scripted,
+    x: scripted.x * fitX,
+    y: scripted.y * fitY,
+    size: scripted.size * fitY,
+  };
   const turns = getTurns(timeline, frame);
   const centerX = width / 2 + (pose.x * width) / 2;
   const centerY = height / 2 - (pose.y * height) / 2;

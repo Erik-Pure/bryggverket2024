@@ -192,9 +192,11 @@ $desktop: 900px;
 
   @media (min-width: $desktop) {
     /* From the column's left edge to the left side of the hero can, which is
-       placed by viewport width but sized by viewport height. */
+       placed by stage width and sized by stage height (see MAX_STAGE_* in
+       StageComposition). */
     --title-width: calc(
-      72vw - 32vh - max(var(--pad), (100vw - 1320px) / 2)
+      50vw + 0.22 * min(100vw, 1760px) - 0.32 * min(100vh, 1100px) -
+        max(var(--pad), (100vw - 1320px) / 2)
     );
     max-width: calc(var(--title-width) * 1.1);
     font-size: min(
@@ -526,6 +528,7 @@ $desktop: 900px;
   }
 
   @media (min-width: $desktop) {
+    left: max(var(--pad), (100vw - 1320px) / 2);
     right: auto;
     bottom: clamp(36px, 8vh, 84px);
     max-width: 320px;
