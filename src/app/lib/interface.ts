@@ -1,12 +1,3 @@
-export interface beverageThumb {
-  title: string;
-  currentSlug: string;
-  labelImage: any;
-  can: string;
-  bgColor: string;
-  backgroundImage: any;
-}
-
 export interface imagePalette {
   vibrant?: { background?: string };
   dominant?: { background?: string };
@@ -16,6 +7,19 @@ export interface imageMeta {
   aspectRatio?: number;
   lqip?: string;
   palette?: imagePalette;
+}
+
+export interface beverageThumb {
+  title: string;
+  currentSlug: string;
+  labelImage: any;
+  can: string;
+  category?: string;
+  style?: string;
+  percentage?: number;
+  bgColor?: string;
+  backgroundImage?: any;
+  labelMeta?: imageMeta;
 }
 
 export interface beverageLink {

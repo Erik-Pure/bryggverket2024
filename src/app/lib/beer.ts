@@ -52,6 +52,17 @@ export function getCan(canType: string | null | undefined): CanConfig {
   }
 }
 
+/** CMS category values, in the order filters should appear. */
+export const CATEGORY_ORDER = [
+  "strong",
+  "drink",
+  "soda",
+  "weak",
+  "noalco",
+] as const;
+
+export type BeverageCategory = (typeof CATEGORY_ORDER)[number];
+
 export function getCategory(category: string | null | undefined): string {
   switch (category) {
     case "strong":
@@ -63,17 +74,25 @@ export function getCategory(category: string | null | undefined): string {
     case "soda":
       return "Läsk";
     case "noalco":
-      return "Alkoholfri öl";
+      return "Alkoholfri";
     default:
       return "Dryck";
   }
 }
 
+/** Categories that actually appear in a list of beverages, in filter order. */
+export function listPresentCategories(
+  categories: Array<string | null | undefined>,
+): BeverageCategory[] {
+  const present = new Set(categories.filter(Boolean));
+  return CATEGORY_ORDER.filter((id) => present.has(id));
+}
+
+/** Formats ABV with a period, e.g. "7.5", matching the brand's label style. */
 export function formatAbv(percentage: number): string {
-  return percentage.toLocaleString("sv-SE", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 1,
-  });
+  return Number.isInteger(percentage)
+    ? String(percentage)
+    : percentage.toFixed(1);
 }
 
 export interface BeerTheme {

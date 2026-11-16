@@ -4,7 +4,7 @@ import { animate, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef } from "react";
 
 function format(value: number, decimals: number): string {
-  return value.toLocaleString("sv-SE", {
+  return value.toLocaleString("en-US", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
