@@ -25,7 +25,9 @@ interface CanDimensions {
   standRadius: number;
 }
 
-const DIMENSIONS: Record<CanSize, CanDimensions> = {
+type CanOnlySize = Exclude<CanSize, "bottle">;
+
+const DIMENSIONS: Record<CanOnlySize, CanDimensions> = {
   "33": {
     radius: 33.1,
     height: 115.2,
@@ -54,6 +56,25 @@ const DIMENSIONS: Record<CanSize, CanDimensions> = {
   },
 };
 
+/**
+ * 50 cl cylindrical spirit bottle (Bäverhojt form), millimetres.
+ * Measured from a product photo: long neck, short shoulder, heavy heel,
+ * T-top cork. The cork sits on top of `height`.
+ */
+const BOTTLE = {
+  radius: 34,
+  height: 208,
+  neckRadius: 12.4,
+  neckHeight: 54,
+  shoulder: 22,
+  heel: 16,
+  lip: 3.2,
+  corkRadius: 13.2,
+  corkHeight: 8,
+  corkPlugRadius: 11,
+  corkPlugDepth: 16,
+};
+
 const RADIAL_SEGMENTS = 96;
 const LABEL_OFFSET = 0.14;
 
@@ -62,25 +83,42 @@ const LABEL_OFFSET = 0.14;
  * keeps the 44 cl visibly bigger than the 33 cl without breaking layouts.
  */
 export function getFitHeight(size: CanSize): number {
+  if (size === "bottle") {
+    // Include the cork so the bottle's full silhouette fits the stage.
+    return (BOTTLE.height + BOTTLE.corkHeight + 125) / 2;
+  }
   return (DIMENSIONS[size].height + 125) / 2;
 }
 
 /** Real proportions relative to the normalised height, for 2D layout. */
 export function getCanProportions(size: CanSize) {
+  if (size === "bottle") {
+    const height = BOTTLE.height + BOTTLE.corkHeight;
+    const fit = getFitHeight(size);
+    return { height: height / fit, width: (BOTTLE.radius * 2) / fit };
+  }
   const { height, radius } = DIMENSIONS[size];
   const fit = getFitHeight(size);
   return { height: height / fit, width: (radius * 2) / fit };
 }
 
+export type VesselKind = "can" | "bottle";
+
 export interface CanGeometry {
+  kind: VesselKind;
   height: number;
   radius: number;
-  base: BufferGeometry;
-  body: BufferGeometry;
-  end: BufferGeometry;
-  tab: BufferGeometry;
-  rivet: BufferGeometry;
-  score: BufferGeometry;
+  base: BufferGeometry | null;
+  body: BufferGeometry | null;
+  end: BufferGeometry | null;
+  tab: BufferGeometry | null;
+  rivet: BufferGeometry | null;
+  score: BufferGeometry | null;
+  /** Clear glass shell for the spirit bottle. */
+  glass: BufferGeometry | null;
+  cork: BufferGeometry | null;
+  corkTop: BufferGeometry | null;
+  liquid: BufferGeometry | null;
   label: BufferGeometry | null;
   dispose: () => void;
 }
@@ -152,10 +190,140 @@ function buildScore(): BufferGeometry {
   );
 }
 
+function buildBottleGeometry(labelAspect: number | null): CanGeometry {
+  const {
+    radius,
+    height,
+    neckRadius,
+    neckHeight,
+    shoulder,
+    heel,
+    lip,
+    corkRadius,
+    corkHeight,
+    corkPlugRadius,
+    corkPlugDepth,
+  } = BOTTLE;
+
+  const shoulderStart = height - neckHeight - shoulder;
+  const neckStart = height - neckHeight;
+  const lipY = height;
+
+  // Outer glass silhouette: push-up bottom, heavy heel, cylinder, shoulder,
+  // long neck and a small finishing lip.
+  const glassPath = new Path();
+  glassPath.moveTo(0.001, heel * 0.55);
+  glassPath.quadraticCurveTo(radius * 0.35, heel * 0.7, radius * 0.62, 3.2);
+  glassPath.quadraticCurveTo(radius * 0.78, 1.1, radius * 0.86, 0.4);
+  glassPath.quadraticCurveTo(radius * 0.94, 0.05, radius, 0);
+  glassPath.lineTo(radius, shoulderStart);
+  glassPath.bezierCurveTo(
+    radius,
+    shoulderStart + shoulder * 0.48,
+    neckRadius + (radius - neckRadius) * 0.48,
+    neckStart - shoulder * 0.12,
+    neckRadius + 0.7,
+    neckStart,
+  );
+  glassPath.quadraticCurveTo(
+    neckRadius,
+    neckStart + 1.4,
+    neckRadius,
+    neckStart + 3.2,
+  );
+  glassPath.lineTo(neckRadius, lipY - lip);
+  glassPath.quadraticCurveTo(
+    neckRadius + 1.15,
+    lipY - lip * 0.4,
+    neckRadius + 1.65,
+    lipY - 0.45,
+  );
+  glassPath.quadraticCurveTo(neckRadius + 1.2, lipY, neckRadius - 0.35, lipY);
+  glassPath.lineTo(Math.max(0.001, neckRadius - 2.2), lipY);
+  const glass = lathe(glassPath, 28);
+
+  // Cork: plug down the neck, flat wooden T-top on the lip.
+  const cork = new CylinderGeometry(
+    corkPlugRadius,
+    corkPlugRadius * 0.98,
+    corkPlugDepth,
+    48,
+  );
+  cork.translate(0, lipY - corkPlugDepth / 2 + 1.5, 0);
+
+  const corkTop = new CylinderGeometry(
+    corkRadius,
+    corkRadius * 0.98,
+    corkHeight,
+    48,
+  );
+  corkTop.translate(0, lipY + corkHeight / 2, 0);
+
+  // Liquid sits inside the body, just below the shoulder.
+  const liquidRadius = radius - 2.2;
+  const liquidHeight = shoulderStart - heel * 0.7 - 2;
+  const liquid = new CylinderGeometry(
+    liquidRadius,
+    liquidRadius,
+    liquidHeight,
+    64,
+  );
+  liquid.translate(0, heel * 0.7 + 1 + liquidHeight / 2, 0);
+
+  let label: BufferGeometry | null = null;
+  if (labelAspect && labelAspect > 0) {
+    const labelRadius = radius + LABEL_OFFSET;
+    const straight = shoulderStart - heel * 0.35;
+    const ideal = (2 * Math.PI * labelRadius) / labelAspect;
+    const labelHeight = Math.min(ideal, straight * 0.72);
+    const geometry = new CylinderGeometry(
+      labelRadius,
+      labelRadius,
+      labelHeight,
+      RADIAL_SEGMENTS,
+      1,
+      true,
+    );
+    // Centre the wrap on the body, a little above the heel.
+    geometry.translate(0, heel * 0.35 + straight * 0.48, 0);
+    label = geometry;
+  }
+
+  const totalHeight = height + corkHeight;
+  const all = [glass, cork, corkTop, liquid, label];
+  for (const geometry of all) {
+    geometry?.translate(0, -totalHeight / 2, 0);
+  }
+
+  return {
+    kind: "bottle",
+    height: totalHeight,
+    radius,
+    base: null,
+    body: null,
+    end: null,
+    tab: null,
+    rivet: null,
+    score: null,
+    glass,
+    cork,
+    corkTop,
+    liquid,
+    label,
+    dispose: () => {
+      for (const geometry of all) {
+        geometry?.dispose();
+      }
+    },
+  };
+}
+
 export function buildCanGeometry(
   size: CanSize,
   labelAspect: number | null,
 ): CanGeometry {
+  if (size === "bottle") return buildBottleGeometry(labelAspect);
+
   const { radius, height, seamRadius, shoulder, chamfer, standRadius } =
     DIMENSIONS[size];
   const domeHeight = radius * 0.3;
@@ -269,6 +437,7 @@ export function buildCanGeometry(
   }
 
   return {
+    kind: "can",
     height,
     radius,
     base,
@@ -277,6 +446,10 @@ export function buildCanGeometry(
     tab,
     rivet,
     score,
+    glass: null,
+    cork: null,
+    corkTop: null,
+    liquid: null,
     label,
     dispose: () => {
       for (const geometry of all) {

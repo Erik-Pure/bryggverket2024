@@ -35,21 +35,32 @@ export default function BeerStage({ canType, ...scene }: BeerStageProps) {
   useEffect(() => setWebgl(supportsWebGL()), []);
   const handleReady = useCallback(() => setReady(true), []);
 
+  const vesselSrc = `/images/${canType}can.png`;
+  const isBottle = canType === "bottle";
+
   if (webgl === false) {
     return (
       <div className={styles.stageFallback} aria-hidden="true">
-        <div className="beerShowcase">
-          {scene.labelUrl ? (
-            <img
-              className="beerLabel"
-              src={scene.labelUrl}
-              alt=""
-              style={{ left: "-115%" }}
-            />
-          ) : null}
-          <div className="beerLabelShading" />
-          <img className="beerCan" src={`/images/${canType}can.png`} alt="" />
-        </div>
+        {isBottle ? (
+          <img
+            src={vesselSrc}
+            alt=""
+            style={{ width: "min(28vw, 180px)", height: "auto" }}
+          />
+        ) : (
+          <div className="beerShowcase">
+            {scene.labelUrl ? (
+              <img
+                className="beerLabel"
+                src={scene.labelUrl}
+                alt=""
+                style={{ left: "-115%" }}
+              />
+            ) : null}
+            <div className="beerLabelShading" />
+            <img className="beerCan" src={vesselSrc} alt="" />
+          </div>
+        )}
       </div>
     );
   }
