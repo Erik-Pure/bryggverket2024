@@ -62,18 +62,19 @@ const DIMENSIONS: Record<CanOnlySize, CanDimensions> = {
  * T-top cork. The cork sits on top of `height`.
  */
 const BOTTLE = {
-  // Body height ≈ diameter: a squat spirit bottle, not a wine bottle.
-  radius: 43.5,
-  height: 126,
-  neckRadius: 15.2,
-  neckHeight: 18,
-  shoulder: 13,
-  heel: 12,
-  lip: 2.5,
-  corkRadius: 15.4,
-  corkHeight: 7,
-  corkPlugRadius: 13,
-  corkPlugDepth: 10,
+  // Bäverhojt: neck+cork ≈30% of total, rounded circular shoulder,
+  // body height ≈ diameter, shallow heel.
+  radius: 43,
+  height: 198,
+  neckRadius: 13.4,
+  neckHeight: 52,
+  shoulder: 36,
+  heel: 18,
+  lip: 3,
+  corkRadius: 14.2,
+  corkHeight: 7.5,
+  corkPlugRadius: 11.4,
+  corkPlugDepth: 12,
   /** Front panel — leaves clear glass on the sides and back. */
   labelArc: Math.PI * 0.44,
 };
@@ -215,24 +216,31 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   // Outer glass silhouette: push-up bottom, heavy heel, cylinder, shoulder,
   // long neck and a small finishing lip.
   const glassPath = new Path();
-  glassPath.moveTo(0.001, heel * 0.55);
-  glassPath.quadraticCurveTo(radius * 0.35, heel * 0.7, radius * 0.62, 3.2);
-  glassPath.quadraticCurveTo(radius * 0.78, 1.1, radius * 0.86, 0.4);
-  glassPath.quadraticCurveTo(radius * 0.94, 0.05, radius, 0);
+  glassPath.moveTo(0.001, heel * 0.28);
+  glassPath.quadraticCurveTo(radius * 0.28, heel * 0.32, radius * 0.55, 2.4);
+  glassPath.quadraticCurveTo(radius * 0.78, 0.7, radius * 0.9, 0.25);
+  glassPath.quadraticCurveTo(radius * 0.96, 0.05, radius, 0);
   glassPath.lineTo(radius, shoulderStart);
-  glassPath.bezierCurveTo(
-    radius,
-    shoulderStart + shoulder * 0.55,
-    neckRadius + (radius - neckRadius) * 0.55,
-    neckStart - shoulder * 0.08,
-    neckRadius + 0.8,
-    neckStart,
-  );
+  // Near-quarter circular arc: dome the top of the body almost all the way
+  // to the neck radius so there is no conical frustum left.
+  const arcR = Math.min(shoulder * 0.92, radius - neckRadius - 1.2);
+  const arcSteps = 20;
+  const arcMax = Math.PI * 0.455; // ~82°
+  for (let i = 1; i <= arcSteps; i++) {
+    const t = (i / arcSteps) * arcMax;
+    glassPath.lineTo(
+      radius - arcR + arcR * Math.cos(t),
+      shoulderStart + arcR * Math.sin(t),
+    );
+  }
+  const arcEndX = radius - arcR + arcR * Math.cos(arcMax);
+  const arcEndY = shoulderStart + arcR * Math.sin(arcMax);
+  // Tiny soft blend onto the vertical neck.
   glassPath.quadraticCurveTo(
+    neckRadius + (arcEndX - neckRadius) * 0.35,
+    arcEndY + (neckStart - arcEndY) * 0.55,
     neckRadius,
-    neckStart + 1.4,
-    neckRadius,
-    neckStart + 3.2,
+    neckStart + 2.5,
   );
   glassPath.lineTo(neckRadius, lipY - lip);
   glassPath.quadraticCurveTo(
@@ -243,7 +251,7 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   );
   glassPath.quadraticCurveTo(neckRadius + 1.2, lipY, neckRadius - 0.35, lipY);
   glassPath.lineTo(Math.max(0.001, neckRadius - 2.2), lipY);
-  const glass = lathe(glassPath, 28);
+  const glass = lathe(glassPath, 64);
 
   // Cork: plug down the neck, flat wooden T-top on the lip.
   const cork = new CylinderGeometry(
@@ -263,8 +271,11 @@ function buildBottleGeometry(labelAspect: number | null): CanGeometry {
   corkTop.translate(0, lipY + corkHeight / 2, 0);
 
   // Liquid sits inside the body, just below the shoulder.
-  const liquidRadius = radius - 2.2;
-  const liquidHeight = shoulderStart - heel * 0.7 - 2;
+  const liquidRadius = radius - 2.4;
+  const liquidHeight = Math.max(
+    8,
+    shoulderStart - heel * 0.7 - shoulder * 0.35,
+  );
   const liquid = new CylinderGeometry(
     liquidRadius,
     liquidRadius,
