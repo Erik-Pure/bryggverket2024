@@ -249,6 +249,9 @@ function BottleMeshes({
             roughness={0.62}
             clearcoat={0.08}
             clearcoatRoughness={0.45}
+            polygonOffset
+            polygonOffsetFactor={-1}
+            depthWrite
           />
         </mesh>
       ) : null}
@@ -350,11 +353,7 @@ export default function CanScene({
         <group ref={live}>
           <group rotation={[pose.tiltX, 0, pose.tiltZ]} scale={scale}>
             <group ref={liveSpin}>
-              <group
-                rotation-y={
-                  -(turns + (isBottle ? 0 : labelFront)) * Math.PI * 2
-                }
-              >
+              <group rotation-y={-(turns + labelFront) * Math.PI * 2}>
                 {isBottle ? (
                   <BottleMeshes geometry={geometry} texture={texture} />
                 ) : (
