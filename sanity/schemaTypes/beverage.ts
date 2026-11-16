@@ -1,3 +1,5 @@
+import type {NumberRule} from 'sanity'
+
 export default {
     name: 'beverage',
     type: 'document',
@@ -20,6 +22,14 @@ export default {
             name: 'labelImage',
             type: 'image',
             title: 'Etikett',
+        },
+        {
+            name: 'labelFront',
+            type: 'number',
+            title: 'Etikettens framsida, 0–100 (Valfritt)',
+            description:
+                'Var framsidans mitt ligger på etiketten, i procent från vänster kant. Styr vilken del av etiketten 3D-burken visar först. Lämna tomt för standardvärdet 60.',
+            validation: (rule: NumberRule) => rule.min(0).max(100),
         },
         {
             name: 'can',

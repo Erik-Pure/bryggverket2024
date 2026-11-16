@@ -8,6 +8,8 @@ Website for [Bryggverket](https://bryggverket.se), a brewery in Umeå, Sweden.
 - **React 19**
 - **Sanity v3** — headless CMS ([studio](./sanity/))
 - **Motion** — scroll-driven animations
+- **three.js** (React Three Fiber) — the 3D can on the beverage page
+- **Remotion** — the can's scroll-scrubbed choreography ([license](https://remotion.dev/license))
 - **SCSS** — global styles
 - **Biome** — linting and formatting
 
