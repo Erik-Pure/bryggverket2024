@@ -33,30 +33,41 @@ export interface ScenePose {
   veil: number;
 }
 
+/** Shared silhouette for the anonymous black cans. */
+const CAN_SIZE = 0.52;
+
 const HIDDEN: ActorPose = {
   x: 0,
-  y: -0.2,
-  size: 0.28,
-  tiltX: 0.1,
+  y: -0.15,
+  size: CAN_SIZE,
+  tiltX: 0.12,
   tiltZ: 0,
   grounded: 0,
   visible: 0,
 };
 
+/**
+ * Storyboard
+ * 1. Hero — one can from the lid, rising into frame
+ * 2. About — the same can rights itself and drifts aside
+ * 3. Drinks — two companions join into an even black lineup
+ * 4. Events — playful lean, still the pack
+ * 5. Merch — pack eases back / softens
+ */
 const DESKTOP: Record<LandingChapter, ScenePose> = {
   hero: {
     actors: [
       {
         x: 0,
         y: -0.64,
-        size: 0.78,
-        tiltX: 0.5,
-        tiltZ: -0.14,
+        size: 0.86,
+        tiltX: 0.62,
+        tiltZ: -0.1,
         grounded: 0,
         visible: 1,
       },
-      { ...HIDDEN, x: 0.55 },
-      { ...HIDDEN, x: -0.55 },
+      { ...HIDDEN, x: 0.5, y: -0.25 },
+      { ...HIDDEN, x: -0.5, y: -0.25 },
     ],
     glow: 1,
     veil: 0,
@@ -65,45 +76,63 @@ const DESKTOP: Record<LandingChapter, ScenePose> = {
     actors: [
       {
         x: 0.56,
-        y: -0.04,
-        size: 0.68,
-        tiltX: 0.16,
-        tiltZ: 0.12,
+        y: -0.02,
+        size: 0.6,
+        // Rights itself from the lid view.
+        tiltX: 0.08,
+        tiltZ: 0.06,
         grounded: 0,
         visible: 1,
       },
-      { ...HIDDEN, x: 0.75 },
-      { ...HIDDEN, x: 0.3 },
+      // Companions hover just off-stage so the join feels continuous.
+      {
+        x: 1.05,
+        y: -0.06,
+        size: CAN_SIZE,
+        tiltX: 0.1,
+        tiltZ: 0.05,
+        grounded: 0,
+        visible: 0.08,
+      },
+      {
+        x: 1.18,
+        y: -0.1,
+        size: CAN_SIZE,
+        tiltX: 0.08,
+        tiltZ: -0.04,
+        grounded: 0,
+        visible: 0.05,
+      },
     ],
-    glow: 0.75,
+    glow: 0.72,
     veil: 0,
   },
   drinks: {
     actors: [
       {
-        x: 0.22,
-        y: -0.04,
-        size: 0.5,
-        tiltX: 0.1,
-        tiltZ: -0.06,
-        grounded: 0,
-        visible: 1,
-      },
-      {
-        x: 0.52,
-        y: 0.02,
-        size: 0.56,
-        tiltX: 0.12,
-        tiltZ: 0.04,
-        grounded: 0,
-        visible: 1,
-      },
-      {
-        x: 0.8,
-        y: -0.05,
-        size: 0.46,
+        x: 0.3,
+        y: -0.01,
+        size: CAN_SIZE,
         tiltX: 0.08,
-        tiltZ: 0.1,
+        tiltZ: -0.04,
+        grounded: 0,
+        visible: 1,
+      },
+      {
+        x: 0.54,
+        y: 0.01,
+        size: CAN_SIZE,
+        tiltX: 0.09,
+        tiltZ: 0.02,
+        grounded: 0,
+        visible: 1,
+      },
+      {
+        x: 0.78,
+        y: -0.01,
+        size: CAN_SIZE,
+        tiltX: 0.08,
+        tiltZ: 0.06,
         grounded: 0,
         visible: 1,
       },
@@ -112,37 +141,54 @@ const DESKTOP: Record<LandingChapter, ScenePose> = {
     veil: 0,
   },
   events: {
+    // Playful lean on the right — same side as the drinks pack.
     actors: [
       {
-        x: -0.72,
+        x: 0.58,
         y: -0.02,
-        size: 0.48,
+        size: CAN_SIZE,
         tiltX: 0.14,
         tiltZ: -0.3,
         grounded: 0,
         visible: 1,
       },
-      { ...HIDDEN, x: -0.2 },
-      { ...HIDDEN, x: -0.7 },
+      {
+        x: 0.82,
+        y: -0.06,
+        size: CAN_SIZE,
+        tiltX: 0.1,
+        tiltZ: -0.08,
+        grounded: 0,
+        visible: 0.55,
+      },
+      { ...HIDDEN, x: 1.05 },
     ],
-    glow: 0.75,
+    glow: 0.7,
     veil: 0,
   },
   merch: {
     actors: [
       {
-        x: 0.62,
-        y: -0.12,
+        x: 0.72,
+        y: -0.1,
         size: 0.38,
-        tiltX: 0.06,
-        tiltZ: 0.08,
+        tiltX: 0.05,
+        tiltZ: 0.05,
         grounded: 1,
-        visible: 0.45,
+        visible: 0.35,
       },
-      { ...HIDDEN, x: 0.75, visible: 0 },
-      { ...HIDDEN, x: 0.4, visible: 0 },
+      {
+        x: 0.92,
+        y: -0.12,
+        size: 0.34,
+        tiltX: 0.04,
+        tiltZ: 0.03,
+        grounded: 1,
+        visible: 0.18,
+      },
+      { ...HIDDEN, x: 0.5, visible: 0 },
     ],
-    glow: 0.3,
+    glow: 0.25,
     veil: 0,
   },
 };
@@ -152,10 +198,10 @@ const MOBILE: Record<LandingChapter, ScenePose> = {
     actors: [
       {
         x: 0,
-        y: -0.42,
-        size: 0.62,
-        tiltX: 0.44,
-        tiltZ: -0.14,
+        y: -0.4,
+        size: 0.64,
+        tiltX: 0.52,
+        tiltZ: -0.12,
         grounded: 0,
         visible: 1,
       },
@@ -169,67 +215,75 @@ const MOBILE: Record<LandingChapter, ScenePose> = {
     actors: [
       {
         x: 0,
-        y: 0.46,
-        size: 0.3,
-        tiltX: 0.12,
-        tiltZ: 0.08,
+        y: 0.44,
+        size: 0.34,
+        tiltX: 0.1,
+        tiltZ: 0.06,
         grounded: 0,
         visible: 1,
       },
-      { ...HIDDEN },
-      { ...HIDDEN },
+      { ...HIDDEN, x: 0.35 },
+      { ...HIDDEN, x: -0.35 },
     ],
-    glow: 0.7,
+    glow: 0.65,
     veil: 1,
   },
   drinks: {
     actors: [
       {
-        x: -0.4,
-        y: 0.44,
-        size: 0.26,
-        tiltX: 0.1,
-        tiltZ: -0.08,
+        x: -0.36,
+        y: 0.42,
+        size: 0.3,
+        tiltX: 0.08,
+        tiltZ: -0.06,
         grounded: 0,
         visible: 1,
       },
       {
         x: 0,
-        y: 0.48,
+        y: 0.46,
         size: 0.3,
-        tiltX: 0.12,
+        tiltX: 0.1,
         tiltZ: 0.02,
         grounded: 0,
         visible: 1,
       },
       {
-        x: 0.4,
-        y: 0.44,
-        size: 0.26,
-        tiltX: 0.1,
-        tiltZ: 0.1,
+        x: 0.36,
+        y: 0.42,
+        size: 0.3,
+        tiltX: 0.08,
+        tiltZ: 0.08,
         grounded: 0,
         visible: 1,
       },
     ],
-    glow: 0.85,
+    glow: 0.8,
     veil: 1,
   },
   events: {
     actors: [
       {
-        x: 0,
-        y: 0.46,
+        x: -0.22,
+        y: 0.44,
         size: 0.28,
         tiltX: 0.1,
-        tiltZ: -0.16,
+        tiltZ: -0.18,
         grounded: 0,
         visible: 1,
       },
-      { ...HIDDEN },
+      {
+        x: 0.22,
+        y: 0.42,
+        size: 0.28,
+        tiltX: 0.08,
+        tiltZ: -0.08,
+        grounded: 0,
+        visible: 0.8,
+      },
       { ...HIDDEN },
     ],
-    glow: 0.75,
+    glow: 0.7,
     veil: 1,
   },
   merch: {
@@ -238,29 +292,30 @@ const MOBILE: Record<LandingChapter, ScenePose> = {
         x: 0,
         y: 0.5,
         size: 0.22,
-        tiltX: 0.06,
-        tiltZ: 0.06,
+        tiltX: 0.05,
+        tiltZ: 0.04,
         grounded: 1,
-        visible: 0.35,
+        visible: 0.32,
       },
       { ...HIDDEN },
       { ...HIDDEN },
     ],
-    glow: 0.25,
+    glow: 0.22,
     veil: 0,
   },
 };
 
 /**
- * Label facing while a chapter is held, in turns, plus how far the can
- * drifts during that chapter.
+ * Axis turns while a chapter is held. No labels — the spin is only for
+ * catching studio light on the black aluminium.
  */
 const FACING: Record<LandingChapter, { phase: number[]; drift: number[] }> = {
-  hero: { phase: [0, 0, 0], drift: [0.04, 0, 0] },
-  about: { phase: [0.18, 0, 0], drift: [0.1, 0, 0] },
-  drinks: { phase: [0.05, 0.22, 0.38], drift: [0.14, 0.14, 0.14] },
-  events: { phase: [0.3, 0, 0], drift: [0.12, 0, 0] },
-  merch: { phase: [0.08, 0, 0], drift: [0.04, 0, 0] },
+  hero: { phase: [0, 0, 0], drift: [0.06, 0, 0] },
+  // Half-turn while the can rights itself between hero and about.
+  about: { phase: [0.18, 0, 0], drift: [0.14, 0, 0] },
+  drinks: { phase: [0.08, 0.2, 0.34], drift: [0.1, 0.1, 0.1] },
+  events: { phase: [0.28, 0.4, 0], drift: [0.1, 0.08, 0] },
+  merch: { phase: [0.1, 0.16, 0], drift: [0.04, 0.03, 0] },
 };
 
 const ACTOR_KEYS: (keyof ActorPose)[] = [

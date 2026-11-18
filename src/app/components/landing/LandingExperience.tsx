@@ -189,7 +189,7 @@ export default function LandingExperience({
             data-chapter="events"
           >
             <div className="container">
-              <div className={`${styles.row} ${styles.rowEnd}`}>
+              <div className={`${styles.row} ${styles.rowStart}`}>
                 <div className={styles.eventsCopy}>
                   <Reveal className={styles.copy}>
                     <Kicker index={3}>Event</Kicker>

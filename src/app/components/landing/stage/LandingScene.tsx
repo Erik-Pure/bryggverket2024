@@ -262,10 +262,12 @@ export default function LandingScene({
 
   return (
     <>
-      <directionalLight position={[-5, 6, 9]} intensity={1.35} />
-      <directionalLight position={[6, 2, 6]} intensity={0.5} />
-      <directionalLight position={[0, -3, 6]} intensity={0.3} />
-      <ambientLight intensity={0.45} />
+      {/* Stronger key/rim so bare black aluminium still reads as metal. */}
+      <directionalLight position={[-5, 6, 9]} intensity={1.55} />
+      <directionalLight position={[6, 2, 6]} intensity={0.65} />
+      <directionalLight position={[0, 8, -4]} intensity={0.45} />
+      <directionalLight position={[0, -3, 6]} intensity={0.28} />
+      <ambientLight intensity={0.4} />
       {actors.map((pose, index) => (
         <CanActor
           key={`actor-${index}-${featured[index].canSize}`}
