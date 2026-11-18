@@ -192,14 +192,14 @@ function CanActor({
       eased.current.x * 0.12 * motion * current.visible;
   });
 
+  // depth 0 = far back, 1 = front (toward the camera at +z).
+  const z = (pose.depth - 0.5) * visibleHeight * 0.55;
+
   return (
     <group
-      position={[
-        (pose.x * visibleWidth) / 2,
-        (pose.y * visibleHeight) / 2,
-        pose.x * -0.35,
-      ]}
+      position={[(pose.x * visibleWidth) / 2, (pose.y * visibleHeight) / 2, z]}
       visible={show}
+      renderOrder={Math.round(pose.depth * 10)}
     >
       <group ref={live}>
         <group rotation={[pose.tiltX, 0, pose.tiltZ]} scale={scale}>

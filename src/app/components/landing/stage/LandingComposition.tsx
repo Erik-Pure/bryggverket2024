@@ -69,13 +69,16 @@ export default function LandingComposition({
     size: actor.size * fitY,
   })) as typeof scripted.actors;
 
-  // Glow / shadow follow the most visible actor.
+  // Glow / shadow follow the front-most visible actor.
   let lead = actors[0];
   let leadIndex = 0;
+  let leadScore = actors[0].visible * 0.5 + actors[0].depth;
   actors.forEach((actor, index) => {
-    if (actor.visible > lead.visible) {
+    const score = actor.visible * 0.5 + actor.depth;
+    if (actor.visible > 0.05 && score >= leadScore) {
       lead = actor;
       leadIndex = index;
+      leadScore = score;
     }
   });
   const proportions = getCanProportions(featured[leadIndex].canSize);
