@@ -163,9 +163,9 @@ export default async function Home() {
     leadCan.color,
   );
 
+  // Avoid <main>/<article> — globals set overflow:hidden on both, which
+  // prevents the sticky Remotion stage from pinning while scrolling.
   return (
-    <main>
-      <LandingExperience content={landing} featured={cans} glow={theme.glow} />
-    </main>
+    <LandingExperience content={landing} featured={cans} glow={theme.glow} />
   );
 }

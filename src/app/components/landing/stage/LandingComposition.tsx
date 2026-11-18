@@ -94,7 +94,7 @@ export default function LandingComposition({
     interpolate(lead.grounded, [0, 1], [0.18, 0.42]) * lead.visible;
 
   return (
-    <AbsoluteFill>
+    <AbsoluteFill style={{ background: "transparent" }}>
       {layout === "mobile" ? (
         <AbsoluteFill
           style={{

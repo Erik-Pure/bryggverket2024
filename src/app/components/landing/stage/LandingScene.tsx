@@ -150,16 +150,19 @@ function CanActor({
   const liveSpin = useRef<Group>(null);
   const eased = useRef({ x: 0, y: 0 });
   const energy = useRef(1);
+  const poseRef = useRef(pose);
+  poseRef.current = pose;
 
   const scale = (pose.size * visibleHeight) / getFitHeight(featured.canSize);
-  const floating = 1 - pose.grounded;
   const blackCan = featured.canColor === "black";
   const isBottle = geometry.kind === "bottle";
+  const show = ready && pose.visible > 0.02;
 
   useFrame((state, elapsed) => {
     const group = live.current;
     const spin = liveSpin.current;
     if (!group || !spin) return;
+    const current = poseRef.current;
     const delta = Math.min(elapsed, 0.1);
     const arrival = easeOutQuart(intro.current);
     const time = state.clock.elapsedTime;
@@ -171,33 +174,32 @@ function CanActor({
 
     energy.current +=
       ((calm ? 0 : 1) - energy.current) * (1 - Math.exp(-delta * 2.5));
-    const drift = floating * motion * energy.current * pose.visible;
+    const drift =
+      (1 - current.grounded) * motion * energy.current * current.visible;
 
-    const hover = Math.sin(time * 0.9 + pose.x) * 0.014 * drift;
+    const hover = Math.sin(time * 0.9 + current.x) * 0.014 * drift;
     group.position.y = (hover - (1 - arrival) * 0.45) * visibleHeight * 0.5;
     group.rotation.x =
-      Math.sin(time * 0.7 + 1.3 + pose.x) * 0.02 * drift +
-      eased.current.y * 0.04 * motion * pose.visible;
+      Math.sin(time * 0.7 + 1.3 + current.x) * 0.02 * drift +
+      eased.current.y * 0.04 * motion * current.visible;
     group.rotation.z =
-      Math.cos(time * 0.55 + pose.x) * 0.016 * drift + (1 - arrival) * -0.28;
+      Math.cos(time * 0.55 + current.x) * 0.016 * drift + (1 - arrival) * -0.28;
     group.scale.setScalar(
-      (0.72 + 0.28 * arrival) * Math.max(0.001, pose.visible),
+      (0.72 + 0.28 * arrival) * Math.max(0.001, current.visible),
     );
     spin.rotation.y =
       (1 - arrival) * -Math.PI * 0.9 +
-      eased.current.x * 0.12 * motion * pose.visible;
+      eased.current.x * 0.12 * motion * current.visible;
   });
-
-  if (pose.visible < 0.02) return null;
 
   return (
     <group
       position={[
         (pose.x * visibleWidth) / 2,
         (pose.y * visibleHeight) / 2,
-        pose.x * -0.4,
+        pose.x * -0.35,
       ]}
-      visible={ready}
+      visible={show}
     >
       <group ref={live}>
         <group rotation={[pose.tiltX, 0, pose.tiltZ]} scale={scale}>
@@ -237,7 +239,6 @@ export default function LandingScene({
   useStudioEnvironment(tint);
   const pointer = usePointer(!reducedMotion);
 
-  // Mark ready once the first label (or blank) has had a beat to settle.
   useEffect(() => {
     const timer = window.setTimeout(() => {
       ready$.current = true;
@@ -261,14 +262,13 @@ export default function LandingScene({
 
   return (
     <>
-      <directionalLight position={[-5, 6, 9]} intensity={0.85} />
-      <directionalLight position={[6, 2, 6]} intensity={0.25} />
+      <directionalLight position={[-5, 6, 9]} intensity={1.35} />
+      <directionalLight position={[6, 2, 6]} intensity={0.5} />
+      <directionalLight position={[0, -3, 6]} intensity={0.3} />
+      <ambientLight intensity={0.45} />
       {actors.map((pose, index) => (
         <CanActor
-          key={
-            featured[index].labelUrl ??
-            `can-${featured[index].canSize}-${index}`
-          }
+          key={`actor-${index}-${featured[index].canSize}`}
           pose={pose}
           turns={turns[index]}
           featured={featured[index]}

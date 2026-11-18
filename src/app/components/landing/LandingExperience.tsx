@@ -83,7 +83,7 @@ export default function LandingExperience({
   // Mid-scroll lives in the dark brand world; hero opens light, merch closes light.
   const inkProgress = useTransform(
     scrollYProgress,
-    [0, 0.08, 0.18, 0.78, 0.9, 1],
+    [0, 0.06, 0.14, 0.82, 0.92, 1],
     [0, 0, 1, 1, 0, 0],
   );
 
@@ -104,7 +104,9 @@ export default function LandingExperience({
       <div className={styles.track}>
         <LandingStage
           featured={featured}
-          bg={dark ? "#050505" : "#f4f2ee"}
+          // Keep the studio tint stable — rebuilding the PMREM env on
+          // light/dark switches disposed materials and hid the cans.
+          bg="#141216"
           glow={glow}
         />
 
@@ -205,7 +207,9 @@ export default function LandingExperience({
                       Ja! Jag vill ha kul
                     </Link>
                   </Reveal>
-                  <Reveal className={`${styles.media} ${styles.mediaMuted}`}>
+                  <Reveal
+                    className={`${styles.media} ${styles.mediaMuted} ${styles.eventsMedia}`}
+                  >
                     <Image
                       src="/images/event.webp"
                       width={640}

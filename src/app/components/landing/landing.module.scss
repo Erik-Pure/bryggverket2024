@@ -1,16 +1,21 @@
 $desktop: 900px;
 
 .experience {
-  --landing-bg: #ffffff;
+  --landing-bg: #f3f0ea;
   --landing-ink: #000000;
   --landing-ink-soft: #333333;
   --landing-accent: rgb(253, 70, 210);
   position: relative;
   overflow: visible;
-  overflow-x: clip;
-  background: var(--landing-bg);
+  background:
+    radial-gradient(
+      120% 70% at 50% 18%,
+      #ffffff 0%,
+      var(--landing-bg) 58%,
+      #e8e3d8 100%
+    );
   color: var(--landing-ink);
-  transition: background-color 0.45s ease;
+  transition: background-color 0.45s ease, background 0.45s ease;
 
   p {
     color: var(--landing-ink-soft);
@@ -26,9 +31,16 @@ $desktop: 900px;
 }
 
 .experienceDark {
-  --landing-bg: #000000;
+  --landing-bg: #050505;
   --landing-ink: #ffffff;
   --landing-ink-soft: #cccccc;
+  background:
+    radial-gradient(
+      90% 55% at 70% 45%,
+      #1a1520 0%,
+      #050505 55%,
+      #000000 100%
+    );
 
   :global(.border),
   :global(.specialIngress) {
@@ -45,7 +57,7 @@ $desktop: 900px;
   grid-area: 1 / 1;
   min-width: 0;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .stage {
@@ -54,7 +66,7 @@ $desktop: 900px;
   top: 0;
   height: 100vh;
   height: 100lvh;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.7s ease;
@@ -66,17 +78,15 @@ $desktop: 900px;
 
 .chapter {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: 160vh;
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding: clamp(96px, 14vh, 140px) 0 clamp(72px, 10vh, 120px);
+  padding: clamp(96px, 14vh, 140px) 0 clamp(96px, 14vh, 140px);
 }
 
 .hero {
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: 115vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -87,10 +97,10 @@ $desktop: 900px;
 
 .heroInner {
   width: 100%;
-  padding-top: clamp(22vh, 28vh, 32vh);
-  padding-bottom: 42vh;
+  padding-top: clamp(16vh, 20vh, 24vh);
+  padding-bottom: 52vh;
   position: relative;
-  z-index: 2;
+  z-index: 4;
 }
 
 .heroTitle {
@@ -107,9 +117,10 @@ $desktop: 900px;
 .scrollCue {
   position: absolute;
   left: 50%;
-  bottom: 18vh;
+  bottom: 8vh;
   transform: translateX(-50%);
   opacity: 0.55;
+  z-index: 4;
   animation: cuePulse 2.4s ease-in-out infinite;
 }
 
@@ -133,7 +144,7 @@ $desktop: 900px;
 
 .copy {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   max-width: 34rem;
 }
 
@@ -187,7 +198,7 @@ $desktop: 900px;
 
 .media {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   width: 100%;
   max-width: 420px;
   margin: 24px 0 0;
@@ -205,7 +216,15 @@ $desktop: 900px;
 
 .eventsCopy {
   justify-self: end;
-  width: min(100%, 34rem);
+  width: min(100%, 30rem);
+  display: grid;
+  gap: 16px;
+}
+
+.eventsMedia {
+  max-width: 280px;
+  justify-self: end;
+  opacity: 0.88;
 }
 
 .merch {
@@ -220,12 +239,12 @@ $desktop: 900px;
   max-width: 40rem;
   margin: 0 auto;
   position: relative;
-  z-index: 2;
+  z-index: 4;
 }
 
 .merchMedia {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   width: min(100%, 920px);
   margin: 0 auto;
 
@@ -237,21 +256,26 @@ $desktop: 900px;
 }
 
 @media (min-width: $desktop) {
+  .hero {
+    min-height: 120vh;
+  }
+
   .heroInner {
-    padding-top: clamp(18vh, 24vh, 28vh);
-    padding-bottom: 48vh;
+    padding-top: clamp(14vh, 18vh, 22vh);
+    padding-bottom: 54vh;
   }
 
   .scrollCue {
-    bottom: 14vh;
+    bottom: 6vh;
   }
 
   .chapter {
+    min-height: 170vh;
     padding: clamp(80px, 12vh, 120px) 0;
   }
 
   .row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   }
 
   .rowStart .copy {
@@ -262,34 +286,41 @@ $desktop: 900px;
     justify-items: end;
   }
 
-  .about .copy {
-    max-width: 32rem;
-  }
-
+  .about .copy,
   .drinks .copy {
     max-width: 30rem;
   }
 
-  .events .media {
-    max-width: 360px;
+  .events .eventsMedia {
+    max-width: 260px;
+  }
+
+  .merch {
+    min-height: 140vh;
   }
 }
 
 @media (max-width: #{$desktop - 1px}) {
+  .hero {
+    min-height: 118vh;
+  }
+
   .heroInner {
-    padding-top: 18vh;
-    padding-bottom: 46vh;
+    padding-top: 14vh;
+    padding-bottom: 48vh;
   }
 
   .chapter {
+    min-height: 145vh;
     align-items: flex-end;
-    padding-top: 46vh;
-    padding-bottom: 110px;
+    padding-top: 42vh;
+    padding-bottom: 120px;
   }
 
   .merch {
     align-items: center;
-    padding-top: 36vh;
+    padding-top: 34vh;
+    min-height: 130vh;
   }
 
   .eventsCopy {

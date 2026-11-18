@@ -77,9 +77,9 @@ function measure(host: HTMLElement): Metrics | null {
     const rect = chapter.getBoundingClientRect();
     const top = rect.top + window.scrollY - trackTop;
     const id = chapter.dataset.chapter as LandingChapter;
-    const pinned = layout === "desktop";
-    const focus = (pinned ? 0.5 : 0.62) * height;
-    const travel = (pinned ? 1 : 0.45) * height;
+    // Hold the pose while the chapter's middle is near the viewport centre.
+    const focus = (layout === "desktop" ? 0.5 : 0.64) * height;
+    const travel = (layout === "desktop" ? 0.55 : 0.4) * height;
     const start = top - focus + travel / 2;
     const end = top + rect.height - focus - travel / 2;
     const middle = (start + end) / 2;
@@ -90,7 +90,7 @@ function measure(host: HTMLElement): Metrics | null {
     });
   }
 
-  const longestMove = (layout === "desktop" ? 0.9 : 0.45) * height;
+  const longestMove = (layout === "desktop" ? 0.7 : 0.4) * height;
   const marks: ChapterMark[] = spans.map((span, index) => {
     const next = spans[index + 1];
     const end = next ? Math.max(span.end, next.start - longestMove) : span.end;
@@ -287,6 +287,7 @@ export default function LandingPlayer({
           doubleClickToFullscreen={false}
           spaceKeyToPlayOrPause={false}
           allowFullscreen={false}
+          acknowledgeRemotionLicense
           errorFallback={() => null}
         />
       ) : null}
