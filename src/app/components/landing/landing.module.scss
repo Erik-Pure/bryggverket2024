@@ -1,0 +1,303 @@
+$desktop: 900px;
+
+.experience {
+  --landing-bg: #ffffff;
+  --landing-ink: #000000;
+  --landing-ink-soft: #333333;
+  --landing-accent: rgb(253, 70, 210);
+  position: relative;
+  overflow: visible;
+  overflow-x: clip;
+  background: var(--landing-bg);
+  color: var(--landing-ink);
+  transition: background-color 0.45s ease;
+
+  p {
+    color: var(--landing-ink-soft);
+  }
+
+  :global(.border) {
+    transition: filter 0.45s ease;
+  }
+
+  :global(.specialIngress) {
+    transition: filter 0.45s ease;
+  }
+}
+
+.experienceDark {
+  --landing-bg: #000000;
+  --landing-ink: #ffffff;
+  --landing-ink-soft: #cccccc;
+
+  :global(.border),
+  :global(.specialIngress) {
+    filter: invert(1);
+  }
+}
+
+.track {
+  position: relative;
+  display: grid;
+}
+
+.chapters {
+  grid-area: 1 / 1;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.stage {
+  grid-area: 1 / 1;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.stageReady {
+  opacity: 1;
+}
+
+.chapter {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: clamp(96px, 14vh, 140px) 0 clamp(72px, 10vh, 120px);
+}
+
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.heroInner {
+  width: 100%;
+  padding-top: clamp(22vh, 28vh, 32vh);
+  padding-bottom: 42vh;
+  position: relative;
+  z-index: 2;
+}
+
+.heroTitle {
+  font-stretch: 62%;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  margin: 0;
+}
+
+.heroIngress {
+  margin-top: 12px;
+}
+
+.scrollCue {
+  position: absolute;
+  left: 50%;
+  bottom: 18vh;
+  transform: translateX(-50%);
+  opacity: 0.55;
+  animation: cuePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes cuePulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollCue {
+    animation: none;
+  }
+}
+
+.copy {
+  position: relative;
+  z-index: 2;
+  max-width: 34rem;
+}
+
+.copyWide {
+  max-width: 38rem;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--landing-ink-soft);
+  opacity: 0.72;
+}
+
+.kickerIndex {
+  font-variant-numeric: tabular-nums;
+}
+
+.kickerRule {
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.sectionTitle {
+  margin: 0;
+}
+
+.sectionBody {
+  margin-top: 8px;
+
+  p:first-child {
+    margin-top: 0;
+  }
+}
+
+.row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.media {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  margin: 24px 0 0;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.mediaMuted {
+  opacity: 0.9;
+}
+
+.eventsCopy {
+  justify-self: end;
+  width: min(100%, 34rem);
+}
+
+.merch {
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  padding-bottom: clamp(80px, 12vh, 140px);
+}
+
+.merchCopy {
+  max-width: 40rem;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.merchMedia {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 920px);
+  margin: 0 auto;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+@media (min-width: $desktop) {
+  .heroInner {
+    padding-top: clamp(18vh, 24vh, 28vh);
+    padding-bottom: 48vh;
+  }
+
+  .scrollCue {
+    bottom: 14vh;
+  }
+
+  .chapter {
+    padding: clamp(80px, 12vh, 120px) 0;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .rowStart .copy {
+    justify-self: start;
+  }
+
+  .rowEnd {
+    justify-items: end;
+  }
+
+  .about .copy {
+    max-width: 32rem;
+  }
+
+  .drinks .copy {
+    max-width: 30rem;
+  }
+
+  .events .media {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: #{$desktop - 1px}) {
+  .heroInner {
+    padding-top: 18vh;
+    padding-bottom: 46vh;
+  }
+
+  .chapter {
+    align-items: flex-end;
+    padding-top: 46vh;
+    padding-bottom: 110px;
+  }
+
+  .merch {
+    align-items: center;
+    padding-top: 36vh;
+  }
+
+  .eventsCopy {
+    width: 100%;
+  }
+
+  .events .media {
+    max-width: 240px;
+    margin: 20px auto 0;
+  }
+}
