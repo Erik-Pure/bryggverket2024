@@ -1,30 +1,15 @@
-import LandingExperience from "./components/landing/LandingExperience";
-import type { FeaturedCan } from "./components/landing/stage/LandingScene";
+import BeerOverview from "./components/BeerOverview";
+import EventOverview from "./components/EventOverview";
+import LandingHero from "./components/LandingHero";
+import MerchOverview from "./components/MerchOverview";
 import type { landingPage } from "./lib/interface";
 import { client } from "./lib/sanity";
+import styles from "./page.module.scss";
 
 export const revalidate = 300;
 
-/** Anonymous black cans — the landing never fronts a specific drink. */
-const BLACK_CAN: FeaturedCan = {
-  canSize: "33",
-  canColor: "black",
-  labelUrl: null,
-  labelAspect: null,
-  labelFront: 0,
-};
-
-const CANS: [FeaturedCan, FeaturedCan, FeaturedCan] = [
-  BLACK_CAN,
-  BLACK_CAN,
-  BLACK_CAN,
-];
-
-/** Soft studio glow that suits bare black aluminium. */
-const STAGE_GLOW = "#9a93a8";
-
-async function getData(): Promise<landingPage> {
-  const query = `*[_type == 'landing'][0] {
+async function getData() {
+  const query = `*[_type == 'landing'] {
     title,
     ingress,
     aboutTitle,
@@ -39,17 +24,40 @@ async function getData(): Promise<landingPage> {
     merchTitle,
     merchIngress,
     merchDesc,
-  }`;
+  }[0]`;
 
-  return client.fetch(query);
+  const data = await client.fetch(query);
+
+  return data;
 }
 
 export default async function Home() {
-  const landing = await getData();
+  const data: landingPage = await getData();
 
-  // Avoid <main>/<article> — globals set overflow:hidden on both, which
-  // prevents the sticky Remotion stage from pinning while scrolling.
   return (
-    <LandingExperience content={landing} featured={CANS} glow={STAGE_GLOW} />
+    <main className={styles.main}>
+      <LandingHero
+        title={data.title}
+        ingress={data.ingress}
+        aboutTitle={data.aboutTitle}
+        aboutIngress={data.aboutIngress}
+        aboutDesc={data.aboutDesc}
+      />
+      <BeerOverview
+        title={data.drinkTitle}
+        ingress={data.drinkIngress}
+        text={data.drinkDesc}
+      />
+      <EventOverview
+        title={data.eventTitle}
+        ingress={data.eventIngress}
+        text={data.eventDesc}
+      />
+      <MerchOverview
+        title={data.merchTitle}
+        ingress={data.merchIngress}
+        text={data.merchDesc}
+      />
+    </main>
   );
 }
