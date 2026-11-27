@@ -81,6 +81,19 @@ export default {
             }
         },
         {
+            name: 'segment',
+            type: 'string',
+            title: 'Segment',
+            options: {
+                list: [
+                    {title: 'Core', value: 'core'},
+                    {title: 'Seasonal', value: 'seasonal'},
+                    {title: 'Legacy', value: 'legacy'},
+                    {title: 'Limited', value: 'limited'},
+                ],
+            }
+        },
+        {
             name: 'ingredients',
             type: 'array',
             title: 'Innehållsförteckning',

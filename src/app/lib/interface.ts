@@ -15,6 +15,7 @@ export interface beverageThumb {
   labelImage: any;
   can: string;
   category?: string;
+  segment?: string;
   style?: string;
   percentage?: number;
   bgColor?: string;

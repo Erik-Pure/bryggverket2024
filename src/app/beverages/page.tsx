@@ -27,6 +27,7 @@ const getData = cache(async (): Promise<PageData> => {
       "currentSlug": slug.current,
       can,
       category,
+      segment,
       style,
       percentage,
       bgColor,

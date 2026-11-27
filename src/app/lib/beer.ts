@@ -104,6 +104,44 @@ export function listPresentCategories(
   return CATEGORY_ORDER.filter((id) => present.has(id));
 }
 
+/** CMS segment values, in the order filters should appear. */
+export const SEGMENT_ORDER = [
+  "core",
+  "seasonal",
+  "legacy",
+  "limited",
+] as const;
+
+export type BeverageSegment = (typeof SEGMENT_ORDER)[number];
+
+export function getSegment(segment: string | null | undefined): string {
+  switch (segment) {
+    case "core":
+      return "Core";
+    case "seasonal":
+      return "Seasonal";
+    case "legacy":
+      return "Legacy";
+    case "limited":
+      return "Limited";
+    default:
+      return "Segment";
+  }
+}
+
+/**
+ * Segments that actually appear in a list of beverages, in filter order.
+ * Empty segments are omitted until at least one drink uses them.
+ */
+export function listPresentSegments(
+  segments: Array<string | null | undefined>,
+): BeverageSegment[] {
+  const present = new Set(
+    segments.filter((value): value is string => Boolean(value)),
+  );
+  return SEGMENT_ORDER.filter((id) => present.has(id));
+}
+
 /** Formats ABV with a period, e.g. "7.5", matching the brand's label style. */
 export function formatAbv(percentage: number): string {
   return Number.isInteger(percentage)

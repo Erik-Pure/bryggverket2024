@@ -9,29 +9,35 @@ import {
 import { useMemo, useState, useTransition } from "react";
 import {
   type BeverageCategory,
+  type BeverageSegment,
   getCategory,
+  getSegment,
   listPresentCategories,
+  listPresentSegments,
 } from "@/app/lib/beer";
 import type { beverageThumb } from "@/app/lib/interface";
 import BeverageTile from "./BeverageTile";
 import styles from "./beverages.module.scss";
 
-type Filter = "all" | BeverageCategory;
+type CategoryFilter = "all" | BeverageCategory;
+type SegmentFilter = "all" | BeverageSegment;
 
 /**
  * Filterable catalog of every beverage. Filtering is client-side: the list
  * is small (~30) and already on the page, so a round-trip would only slow it.
+ * Segment and category filters combine with AND.
  */
 export default function BeveragesCatalog({
   drinks,
 }: {
   drinks: beverageThumb[];
 }) {
-  const [filter, setFilter] = useState<Filter>("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
+  const [segmentFilter, setSegmentFilter] = useState<SegmentFilter>("all");
   const [, startTransition] = useTransition();
   const reduced = useReducedMotion();
 
-  const counts = useMemo(() => {
+  const categoryCounts = useMemo(() => {
     const next: Record<string, number> = { all: drinks.length };
     for (const drink of drinks) {
       if (!drink.category) continue;
@@ -40,30 +46,55 @@ export default function BeveragesCatalog({
     return next;
   }, [drinks]);
 
-  // Only categories that actually have at least one drink — empty types
-  // (e.g. Sprit before any spirit exists) never get a chip.
+  const segmentCounts = useMemo(() => {
+    const next: Record<string, number> = { all: drinks.length };
+    for (const drink of drinks) {
+      if (!drink.segment) continue;
+      next[drink.segment] = (next[drink.segment] ?? 0) + 1;
+    }
+    return next;
+  }, [drinks]);
+
+  // Only categories/segments that actually have at least one drink —
+  // empty types never get a chip.
   const categories = useMemo(
     () =>
       listPresentCategories(drinks.map((drink) => drink.category)).filter(
-        (id) => (counts[id] ?? 0) > 0,
+        (id) => (categoryCounts[id] ?? 0) > 0,
       ),
-    [drinks, counts],
+    [drinks, categoryCounts],
+  );
+
+  const segments = useMemo(
+    () =>
+      listPresentSegments(drinks.map((drink) => drink.segment)).filter(
+        (id) => (segmentCounts[id] ?? 0) > 0,
+      ),
+    [drinks, segmentCounts],
   );
 
   const visible = useMemo(
     () =>
-      filter === "all"
-        ? drinks
-        : drinks.filter((drink) => drink.category === filter),
-    [drinks, filter],
+      drinks.filter((drink) => {
+        const matchCategory =
+          categoryFilter === "all" || drink.category === categoryFilter;
+        const matchSegment =
+          segmentFilter === "all" || drink.segment === segmentFilter;
+        return matchCategory && matchSegment;
+      }),
+    [drinks, categoryFilter, segmentFilter],
   );
 
-  const select = (next: Filter) => {
-    startTransition(() => setFilter(next));
+  const selectCategory = (next: CategoryFilter) => {
+    startTransition(() => setCategoryFilter(next));
   };
 
-  // No point showing filters when there is only one (or zero) type.
-  const showFilters = categories.length > 1;
+  const selectSegment = (next: SegmentFilter) => {
+    startTransition(() => setSegmentFilter(next));
+  };
+
+  const showCategoryFilters = categories.length > 1;
+  const showSegmentFilters = segments.length > 1;
 
   return (
     <section className={styles.catalog} aria-label="Alla drycker">
@@ -72,31 +103,70 @@ export default function BeveragesCatalog({
         role="toolbar"
         aria-label="Filtrera drycker"
       >
-        {showFilters ? (
-          <>
+        {showSegmentFilters ? (
+          <div
+            className={styles.chipGroup}
+            role="group"
+            aria-label="Filtrera på segment"
+          >
             <button
               type="button"
-              className={`${styles.chip} ${filter === "all" ? styles.chipActive : ""}`}
-              aria-pressed={filter === "all"}
-              onClick={() => select("all")}
+              className={`${styles.chip} ${segmentFilter === "all" ? styles.chipActive : ""}`}
+              aria-pressed={segmentFilter === "all"}
+              onClick={() => selectSegment("all")}
             >
               Alla
-              <span className={styles.chipCount}>{counts.all}</span>
+              <span className={styles.chipCount}>{segmentCounts.all}</span>
+            </button>
+            {segments.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={`${styles.chip} ${segmentFilter === id ? styles.chipActive : ""}`}
+                aria-pressed={segmentFilter === id}
+                onClick={() => selectSegment(id)}
+              >
+                {getSegment(id)}
+                <span className={styles.chipCount}>
+                  {segmentCounts[id] ?? 0}
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {showCategoryFilters ? (
+          <div
+            className={styles.chipGroup}
+            role="group"
+            aria-label="Filtrera på kategori"
+          >
+            <button
+              type="button"
+              className={`${styles.chip} ${categoryFilter === "all" ? styles.chipActive : ""}`}
+              aria-pressed={categoryFilter === "all"}
+              onClick={() => selectCategory("all")}
+            >
+              Alla
+              <span className={styles.chipCount}>{categoryCounts.all}</span>
             </button>
             {categories.map((id) => (
               <button
                 key={id}
                 type="button"
-                className={`${styles.chip} ${filter === id ? styles.chipActive : ""}`}
-                aria-pressed={filter === id}
-                onClick={() => select(id)}
+                className={`${styles.chip} ${categoryFilter === id ? styles.chipActive : ""}`}
+                aria-pressed={categoryFilter === id}
+                onClick={() => selectCategory(id)}
               >
                 {getCategory(id)}
-                <span className={styles.chipCount}>{counts[id] ?? 0}</span>
+                <span className={styles.chipCount}>
+                  {categoryCounts[id] ?? 0}
+                </span>
               </button>
             ))}
-          </>
+          </div>
         ) : null}
+
         <p className={styles.status} aria-live="polite">
           {visible.length} {visible.length === 1 ? "dryck" : "drycker"}
         </p>
@@ -113,7 +183,7 @@ export default function BeveragesCatalog({
                 animate={{ opacity: 1 }}
                 exit={reduced ? undefined : { opacity: 0 }}
               >
-                Inga drycker i den kategorin just nu.
+                Inga drycker med den filtreringen just nu.
               </motion.p>
             ) : (
               visible.map((drink) => (

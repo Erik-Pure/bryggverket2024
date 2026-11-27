@@ -118,7 +118,7 @@ $tablet: 700px;
   z-index: 4;
   display: flex;
   flex-wrap: nowrap;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   max-width: 1480px;
   margin: 0 auto;
@@ -137,6 +137,18 @@ $tablet: 700px;
   @media (min-width: $desktop) {
     flex-wrap: wrap;
     overflow: visible;
+  }
+}
+
+.chipGroup {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+
+  @media (min-width: $desktop) {
+    flex-wrap: wrap;
   }
 }
 
