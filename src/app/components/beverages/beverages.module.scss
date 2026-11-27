@@ -116,9 +116,9 @@ $tablet: 700px;
   position: sticky;
   top: 52px;
   z-index: 4;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 16px;
   align-items: center;
   max-width: 1480px;
   margin: 0 auto;
@@ -127,6 +127,15 @@ $tablet: 700px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.filterRow {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
 
@@ -135,9 +144,15 @@ $tablet: 700px;
   }
 
   @media (min-width: $desktop) {
-    flex-wrap: wrap;
     overflow: visible;
   }
+}
+
+.filterLabel {
+  @include eyebrow;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.45);
+  min-width: 4.5rem;
 }
 
 .chipGroup {
@@ -198,9 +213,12 @@ $tablet: 700px;
 
 .status {
   @include eyebrow;
-  flex-shrink: 0;
-  margin: 0 0 0 auto;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  margin: 0;
   color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
 }
 
 .grid {
