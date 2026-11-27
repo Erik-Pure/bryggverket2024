@@ -195,10 +195,6 @@ export default function BeveragesCatalog({
               </fieldset>
             </div>
           ) : null}
-
-          <p className={styles.status} aria-live="polite">
-            {visible.length} {visible.length === 1 ? "dryck" : "drycker"}
-          </p>
         </div>
       </div>
 

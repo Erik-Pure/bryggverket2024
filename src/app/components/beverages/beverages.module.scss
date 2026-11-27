@@ -122,34 +122,59 @@ $tablet: 700px;
   z-index: 4;
   background: #0d0d0e;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  @media (max-width: 760px) {
+    // Mobile header is only the logo strip at the top.
+    top: 50px;
+  }
 }
 
 .toolbarInner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px 16px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
   max-width: 1480px;
   margin: 0 auto;
-  padding: 14px var(--pad);
+  padding: 14px 0 12px;
+
+  @media (min-width: $desktop) {
+    gap: 10px;
+    align-items: center;
+    padding: 14px var(--pad);
+  }
 }
 
 .filterRow {
+  position: relative;
   grid-column: 1;
   display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
 
-  &::-webkit-scrollbar {
-    display: none;
+  // Soft edge so cut-off chips read as "swipe for more", not broken layout.
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 36px;
+    height: 40px;
+    background: linear-gradient(to right, transparent, #0d0d0e 85%);
+    pointer-events: none;
+
+    @media (min-width: $desktop) {
+      display: none;
+    }
   }
 
   @media (min-width: $desktop) {
-    overflow: visible;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    align-items: center;
   }
 }
 
@@ -157,22 +182,44 @@ $tablet: 700px;
   @include eyebrow;
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.45);
-  min-width: 4.5rem;
+  padding: 0 var(--pad);
+
+  @media (min-width: $desktop) {
+    min-width: 4.5rem;
+    padding: 0;
+  }
 }
 
 .chipGroup {
   display: flex;
-  flex-shrink: 0;
   flex-wrap: nowrap;
   gap: 8px;
   align-items: center;
-  margin: 0;
-  padding: 0;
-  border: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  // fieldset defaults to min-content width and blocks overflow scroll
+  min-width: 0;
   min-inline-size: 0;
+  margin: 0;
+  padding: 0 calc(var(--pad) + 20px) 0 var(--pad);
+  border: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (min-width: $desktop) {
+    width: auto;
+    max-width: none;
+    flex-shrink: 0;
     flex-wrap: wrap;
+    overflow: visible;
+    padding: 0;
   }
 }
 
@@ -181,9 +228,9 @@ $tablet: 700px;
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
-  padding: 10px 14px;
+  padding: 9px 12px;
   color: rgba(255, 255, 255, 0.62);
   background: transparent;
   border: 0;
@@ -193,6 +240,11 @@ $tablet: 700px;
     color 0.18s ease,
     background-color 0.18s ease,
     box-shadow 0.18s ease;
+
+  @media (min-width: $desktop) {
+    gap: 8px;
+    padding: 10px 14px;
+  }
 
   &:hover {
     color: #fff;
@@ -214,16 +266,6 @@ $tablet: 700px;
 .chipCount {
   font-variant-numeric: tabular-nums;
   opacity: 0.7;
-}
-
-.status {
-  @include eyebrow;
-  grid-column: 2;
-  grid-row: 1;
-  align-self: center;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.45);
-  white-space: nowrap;
 }
 
 .grid {
