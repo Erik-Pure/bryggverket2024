@@ -123,81 +123,83 @@ export default function BeveragesCatalog({
         role="toolbar"
         aria-label="Filtrera drycker"
       >
-        {showSegmentFilters ? (
-          <div className={styles.filterRow}>
-            <span className={styles.filterLabel} id="filter-segment-label">
-              Segment
-            </span>
-            <fieldset
-              className={styles.chipGroup}
-              aria-labelledby="filter-segment-label"
-            >
-              <button
-                type="button"
-                className={`${styles.chip} ${segmentFilter === "all" ? styles.chipActive : ""}`}
-                aria-pressed={segmentFilter === "all"}
-                onClick={() => selectSegment("all")}
+        <div className={styles.toolbarInner}>
+          {showSegmentFilters ? (
+            <div className={styles.filterRow}>
+              <span className={styles.filterLabel} id="filter-segment-label">
+                Segment
+              </span>
+              <fieldset
+                className={styles.chipGroup}
+                aria-labelledby="filter-segment-label"
               >
-                Alla
-                <span className={styles.chipCount}>{segmentCounts.all}</span>
-              </button>
-              {segments.map((id) => (
                 <button
-                  key={id}
                   type="button"
-                  className={`${styles.chip} ${segmentFilter === id ? styles.chipActive : ""}`}
-                  aria-pressed={segmentFilter === id}
-                  onClick={() => selectSegment(id)}
+                  className={`${styles.chip} ${segmentFilter === "all" ? styles.chipActive : ""}`}
+                  aria-pressed={segmentFilter === "all"}
+                  onClick={() => selectSegment("all")}
                 >
-                  {getSegment(id)}
-                  <span className={styles.chipCount}>
-                    {segmentCounts[id] ?? 0}
-                  </span>
+                  Alla
+                  <span className={styles.chipCount}>{segmentCounts.all}</span>
                 </button>
-              ))}
-            </fieldset>
-          </div>
-        ) : null}
+                {segments.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`${styles.chip} ${segmentFilter === id ? styles.chipActive : ""}`}
+                    aria-pressed={segmentFilter === id}
+                    onClick={() => selectSegment(id)}
+                  >
+                    {getSegment(id)}
+                    <span className={styles.chipCount}>
+                      {segmentCounts[id] ?? 0}
+                    </span>
+                  </button>
+                ))}
+              </fieldset>
+            </div>
+          ) : null}
 
-        {showCategoryFilters ? (
-          <div className={styles.filterRow}>
-            <span className={styles.filterLabel} id="filter-type-label">
-              Typ
-            </span>
-            <fieldset
-              className={styles.chipGroup}
-              aria-labelledby="filter-type-label"
-            >
-              <button
-                type="button"
-                className={`${styles.chip} ${categoryFilter === "all" ? styles.chipActive : ""}`}
-                aria-pressed={categoryFilter === "all"}
-                onClick={() => selectCategory("all")}
+          {showCategoryFilters ? (
+            <div className={styles.filterRow}>
+              <span className={styles.filterLabel} id="filter-type-label">
+                Typ
+              </span>
+              <fieldset
+                className={styles.chipGroup}
+                aria-labelledby="filter-type-label"
               >
-                Alla
-                <span className={styles.chipCount}>{categoryCounts.all}</span>
-              </button>
-              {categories.map((id) => (
                 <button
-                  key={id}
                   type="button"
-                  className={`${styles.chip} ${categoryFilter === id ? styles.chipActive : ""}`}
-                  aria-pressed={categoryFilter === id}
-                  onClick={() => selectCategory(id)}
+                  className={`${styles.chip} ${categoryFilter === "all" ? styles.chipActive : ""}`}
+                  aria-pressed={categoryFilter === "all"}
+                  onClick={() => selectCategory("all")}
                 >
-                  {getCategory(id)}
-                  <span className={styles.chipCount}>
-                    {categoryCounts[id] ?? 0}
-                  </span>
+                  Alla
+                  <span className={styles.chipCount}>{categoryCounts.all}</span>
                 </button>
-              ))}
-            </fieldset>
-          </div>
-        ) : null}
+                {categories.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className={`${styles.chip} ${categoryFilter === id ? styles.chipActive : ""}`}
+                    aria-pressed={categoryFilter === id}
+                    onClick={() => selectCategory(id)}
+                  >
+                    {getCategory(id)}
+                    <span className={styles.chipCount}>
+                      {categoryCounts[id] ?? 0}
+                    </span>
+                  </button>
+                ))}
+              </fieldset>
+            </div>
+          ) : null}
 
-        <p className={styles.status} aria-live="polite">
-          {visible.length} {visible.length === 1 ? "dryck" : "drycker"}
-        </p>
+          <p className={styles.status} aria-live="polite">
+            {visible.length} {visible.length === 1 ? "dryck" : "drycker"}
+          </p>
+        </div>
       </div>
 
       <LayoutGroup>

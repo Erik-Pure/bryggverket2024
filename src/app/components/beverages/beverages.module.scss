@@ -23,8 +23,10 @@ $tablet: 700px;
   --pad: clamp(20px, 5vw, 72px);
   background: #0d0d0e;
   color: #f4f1ea;
-  overflow: visible;
+  // clip horizontal bleed only — avoid overflow-y:auto (from visible+clip)
+  // which breaks sticky offset relative to the fixed header.
   overflow-x: clip;
+  overflow-y: clip;
 }
 
 /* ---------- Hero: one composition ---------- */
@@ -113,9 +115,16 @@ $tablet: 700px;
 }
 
 .toolbar {
+  // Full-bleed sticky bar so tiles cannot show through at the sides.
+  // Offset clears the fixed site header (~66px: logo + nav padding + border).
   position: sticky;
-  top: 52px;
+  top: 66px;
   z-index: 4;
+  background: #0d0d0e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.toolbarInner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px 16px;
@@ -123,10 +132,6 @@ $tablet: 700px;
   max-width: 1480px;
   margin: 0 auto;
   padding: 14px var(--pad);
-  background: color-mix(in srgb, #0d0d0e 86%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .filterRow {
