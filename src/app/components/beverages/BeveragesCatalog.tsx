@@ -22,10 +22,19 @@ import styles from "./beverages.module.scss";
 type CategoryFilter = "all" | BeverageCategory;
 type SegmentFilter = "all" | BeverageSegment;
 
+function matchesSegment(
+  drink: beverageThumb,
+  segmentFilter: SegmentFilter,
+): boolean {
+  // Legacy is opt-in — hidden from "Alla", visible only when Legacy is selected.
+  if (segmentFilter === "all") return drink.segment !== "legacy";
+  return drink.segment === segmentFilter;
+}
+
 /**
  * Filterable catalog of every beverage. Filtering is client-side: the list
  * is small (~30) and already on the page, so a round-trip would only slow it.
- * Segment and category filters combine with AND.
+ * Segment and category filters combine with AND. Legacy is opt-in.
  */
 export default function BeveragesCatalog({
   drinks,
@@ -37,32 +46,40 @@ export default function BeveragesCatalog({
   const [, startTransition] = useTransition();
   const reduced = useReducedMotion();
 
-  const categoryCounts = useMemo(() => {
-    const next: Record<string, number> = { all: drinks.length };
-    for (const drink of drinks) {
-      if (!drink.category) continue;
-      next[drink.category] = (next[drink.category] ?? 0) + 1;
-    }
-    return next;
-  }, [drinks]);
-
   const segmentCounts = useMemo(() => {
-    const next: Record<string, number> = { all: drinks.length };
+    const next: Record<string, number> = { all: 0 };
     for (const drink of drinks) {
+      if (drink.segment !== "legacy") next.all += 1;
       if (!drink.segment) continue;
       next[drink.segment] = (next[drink.segment] ?? 0) + 1;
     }
     return next;
   }, [drinks]);
 
+  // Categories are counted within the active segment pool so chip numbers
+  // match what the grid will show under the current segment filter.
+  const categoryPool = useMemo(
+    () => drinks.filter((drink) => matchesSegment(drink, segmentFilter)),
+    [drinks, segmentFilter],
+  );
+
+  const categoryCounts = useMemo(() => {
+    const next: Record<string, number> = { all: categoryPool.length };
+    for (const drink of categoryPool) {
+      if (!drink.category) continue;
+      next[drink.category] = (next[drink.category] ?? 0) + 1;
+    }
+    return next;
+  }, [categoryPool]);
+
   // Only categories/segments that actually have at least one drink —
   // empty types never get a chip.
   const categories = useMemo(
     () =>
-      listPresentCategories(drinks.map((drink) => drink.category)).filter(
+      listPresentCategories(categoryPool.map((drink) => drink.category)).filter(
         (id) => (categoryCounts[id] ?? 0) > 0,
       ),
-    [drinks, categoryCounts],
+    [categoryPool, categoryCounts],
   );
 
   const segments = useMemo(
@@ -78,9 +95,7 @@ export default function BeveragesCatalog({
       drinks.filter((drink) => {
         const matchCategory =
           categoryFilter === "all" || drink.category === categoryFilter;
-        const matchSegment =
-          segmentFilter === "all" || drink.segment === segmentFilter;
-        return matchCategory && matchSegment;
+        return matchCategory && matchesSegment(drink, segmentFilter);
       }),
     [drinks, categoryFilter, segmentFilter],
   );
@@ -90,11 +105,16 @@ export default function BeveragesCatalog({
   };
 
   const selectSegment = (next: SegmentFilter) => {
-    startTransition(() => setSegmentFilter(next));
+    startTransition(() => {
+      setSegmentFilter(next);
+      setCategoryFilter("all");
+    });
   };
 
   const showCategoryFilters = categories.length > 1;
-  const showSegmentFilters = segments.length > 1;
+  // Show segment chips when there is more than one segment, or when Legacy
+  // exists so visitors can opt in (Alla alone would hide everything Legacy).
+  const showSegmentFilters = segments.length > 1 || segments.includes("legacy");
 
   return (
     <section className={styles.catalog} aria-label="Alla drycker">
