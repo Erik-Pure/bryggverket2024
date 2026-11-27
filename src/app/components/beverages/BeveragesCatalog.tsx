@@ -104,9 +104,8 @@ export default function BeveragesCatalog({
         aria-label="Filtrera drycker"
       >
         {showSegmentFilters ? (
-          <div
+          <fieldset
             className={styles.chipGroup}
-            role="group"
             aria-label="Filtrera på segment"
           >
             <button
@@ -132,13 +131,12 @@ export default function BeveragesCatalog({
                 </span>
               </button>
             ))}
-          </div>
+          </fieldset>
         ) : null}
 
         {showCategoryFilters ? (
-          <div
+          <fieldset
             className={styles.chipGroup}
-            role="group"
             aria-label="Filtrera på kategori"
           >
             <button
@@ -164,7 +162,7 @@ export default function BeveragesCatalog({
                 </span>
               </button>
             ))}
-          </div>
+          </fieldset>
         ) : null}
 
         <p className={styles.status} aria-live="polite">

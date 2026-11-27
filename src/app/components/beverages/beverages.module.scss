@@ -146,6 +146,10 @@ $tablet: 700px;
   flex-wrap: nowrap;
   gap: 8px;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
 
   @media (min-width: $desktop) {
     flex-wrap: wrap;

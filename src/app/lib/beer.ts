@@ -105,12 +105,7 @@ export function listPresentCategories(
 }
 
 /** CMS segment values, in the order filters should appear. */
-export const SEGMENT_ORDER = [
-  "core",
-  "seasonal",
-  "legacy",
-  "limited",
-] as const;
+export const SEGMENT_ORDER = ["core", "seasonal", "legacy", "limited"] as const;
 
 export type BeverageSegment = (typeof SEGMENT_ORDER)[number];
 
